@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const FB_APP_PLAY_URL =
   'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state.json');
+const STORAGE = path.resolve('./storage_state2.json');
 const CSV = path.resolve('./daily_scores.csv');
 const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
 const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
