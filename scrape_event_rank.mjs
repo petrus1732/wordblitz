@@ -4,9 +4,11 @@ import path from 'node:path';
 
 const FB_APP_PLAY_URL =
   'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state.json');
 const OUTPUT_JSON = path.resolve('./event_rankings.json');
 const NOW = new Date();
+const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
+const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
 
 const UNIT_IN_MS = {
   second: 1000,
@@ -62,22 +64,16 @@ function parseRelativeDate(raw, base = NOW) {
   const text = normaliseWhitespace(raw).toLowerCase();
   if (!text) return null;
 
-  if (text === 'just now' || text === 'now' || text === 'today')
+  if (text.includes("hour"))
     return formatDate(base);
 
-  if (text === 'yesterday') {
-    const copy = new Date(base);
-    copy.setDate(copy.getDate() - 1);
-    return formatDate(copy);
-  }
-
   const relativeMatch = text.match(
-    /(?:about\s+)?(a|an|\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago/
+    /(?:about\s+)?(a|\d+)\s+(day)s?\s+ago/
   );
   if (relativeMatch) {
     const [, quantityText, unit] = relativeMatch;
     const quantity =
-      quantityText === 'a' || quantityText === 'an'
+      quantityText === 'a'
         ? 1
         : Number.parseInt(quantityText, 10);
     const unitMs = UNIT_IN_MS[unit];
@@ -109,6 +105,31 @@ function parseRelativeDate(raw, base = NOW) {
   return null;
 }
 
+async function readExistingEvents(filePath) {
+  try {
+    const raw = await fs.readFile(filePath, 'utf8');
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    if (err.code === 'ENOENT') return [];
+    console.warn(`Unable to read existing event rankings: ${err.message}`);
+    return [];
+  }
+}
+
+function mergeEventsByDate(existing, updates) {
+  const orderedMap = new Map();
+  const addEvent = event => {
+    if (!event || typeof event !== 'object') return;
+    const eventDate = event.date ?? 'unknown';
+    orderedMap.set(eventDate, event);
+  };
+
+  existing.forEach(addEvent);
+  updates.forEach(addEvent);
+  return Array.from(orderedMap.values());
+}
+
 function isEventClosed(metadata, isoDate) {
   const timeText = normaliseWhitespace(metadata?.relativeTime).toLowerCase();
   console.log(`  Detected time text: "${timeText}"`);
@@ -133,13 +154,15 @@ function isEventClosed(metadata, isoDate) {
 }
 
 async function extractLeaderboard(frame) {
-  return frame.$$eval('.rank-list-item', items =>
-    items
+  return frame.$$eval(
+    '.rank-list-item',
+    (items, { discardId, renameId, renameName }) =>
+      items
       .map(el => {
         const rankText = el.querySelector('.number')?.innerText ?? '';
         const rank = Number.parseInt(rankText.replace(/\D+/g, ''), 10);
 
-        const name = (el.querySelector('.name-text-a .ensure-space-if-empty')?.innerText ?? '')
+        let name = (el.querySelector('.name-text-a .ensure-space-if-empty')?.innerText ?? '')
           .replace(/\u00a0/g, ' ')
           .trim();
 
@@ -150,11 +173,18 @@ async function extractLeaderboard(frame) {
         const avatar = el.querySelector('.profile-picture img')?.src ?? '';
         const idMatch = avatar.match(/([0-9a-f]{32})/i);
         const playerId = idMatch ? idMatch[1] : '';
+        if (playerId === discardId) return null;
+        if (playerId === renameId) name = renameName;
 
         if (Number.isNaN(rank) || !name || Number.isNaN(points)) return null;
         return { rank, name, points, playerId, avatar };
       })
-      .filter(Boolean)
+        .filter(Boolean),
+    {
+      discardId: PLAYER_DISCARD_ID,
+      renameId: PLAYER_RENAME_ID,
+      renameName: '奕安',
+    }
   );
 }
 
@@ -164,10 +194,12 @@ async function readEventCardMetadata(card) {
       (value ?? '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
 
     const timeElement =
-      el.querySelector('.cell-time .time-since') ?? el.querySelector('.cell-time');
+      el.querySelector('.cell-time .time-since') ?? null;
+    console.log(`  Raw time element text: "${timeElement?.textContent ?? ''}"`);
 
     return {
-      title: clean(el.querySelector('.cell-title')?.textContent)
+      title: clean(el.querySelector('.cell-title')?.textContent),
+      relativeTime: clean(timeElement?.textContent),
     };
   });
 }
@@ -192,6 +224,7 @@ async function readEventCardMetadata(card) {
   await frame.waitForSelector('.cell-event', { timeout: 90000 });
   console.log('Event list detected.');
 
+  const existingEvents = await readExistingEvents(OUTPUT_JSON);
   const events = [];
   let index = 0;
 
@@ -202,10 +235,10 @@ async function readEventCardMetadata(card) {
 
     const card = cards[index];
     const metadata = await readEventCardMetadata(card);
+    console.log(` Event ${index + 1}/${cards.length} metadata:`, metadata);
     const title = normaliseWhitespace(metadata.title);
     const eventDate =
       parseRelativeDate(metadata.relativeTime) ??
-      parseRelativeDate(metadata.subtitle) ??
       'unknown';
     const closed = isEventClosed(metadata, eventDate);
 
@@ -248,8 +281,7 @@ async function readEventCardMetadata(card) {
     const rankings = await extractLeaderboard(frame);
     events.push({
       date: eventDate,
-      name: title,
-      
+      name: title, 
       rankings,
     });
 
@@ -273,8 +305,13 @@ async function readEventCardMetadata(card) {
     index++;
   }
 
-  await fs.writeFile(OUTPUT_JSON, JSON.stringify(events, null, 2), 'utf8');
-  console.log(`Saved ${events.length} events to ${OUTPUT_JSON}`);
+  const mergedEvents = mergeEventsByDate(existingEvents, events);
+  await fs.writeFile(
+    OUTPUT_JSON,
+    JSON.stringify(mergedEvents, null, 2),
+    'utf8'
+  );
+  console.log(`Saved ${mergedEvents.length} events to ${OUTPUT_JSON}`);
   await browser.close();
 })().catch(err => {
   console.error(err);

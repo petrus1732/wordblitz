@@ -153,4 +153,59 @@ Example output:
 
 The output file provides a structured history of boards and word counts for the tracked event week.
 
+---
+
+### `calculate_points.mjs`
+
+Aggregates scores from `daily_scores.csv` and `event_rankings.json` into a JSON file grouped by month (`points.json` by default). Each month contains the full leaderboard, including medal counts (gold/silver/bronze), medal totals, avatar URLs, and the bonuses used by the site.
+
+**Usage**
+
+```bash
+node calculate_points.mjs
+# or limit to a single month / partial month
+node calculate_points.mjs --month 2025-11 --through 2025-11-05 --output data/points.json
+```
+
+**Options**
+
+- `--month YYYY-MM` (optional): limit scoring to a single month (defaults to every month present in the inputs).
+- `--through YYYY-MM-DD` (optional, requires `--month`): only include days up to this date within the selected month.
+- `--daily <path>` / `--event <path>`: override input files (`daily_scores.csv` / `event_rankings.json` by default).
+- `--output <path>`: destination JSON (`points.json` by default).
+
+**Scoring Rules Implemented**
+
+- Daily placements: 1st = 19 pts, 2nd = 15, 3rd = 11, 4th-10th = 7 down to 1; Saturdays are doubled.
+- Medal counts: gold/silver/bronze awarded for 1st/2nd/3rd in daily games only; medal totals are tracked per month.
+- Medal set bonuses: the first five players each month to record at least one gold, silver, and bronze earn 50/40/30/20/10 pts.
+- Longest Top-10 streak: every player tied for the longest consecutive-day streak within the month earns 25 pts.
+- Event placements: ranks 1-15 earn 60 down to 4 pts (-4 per position).
+
+The resulting JSON looks like:
+
+```json
+{
+  "2025-10": [
+    {
+      "playerId": "abc",
+      "name": "Player",
+      "avatar": "https://…",
+      "dailyPoints": 141,
+      "eventPoints": 180,
+      "goldCount": 3,
+      "silverCount": 1,
+      "bronzeCount": 0,
+      "medalCount": 4,
+      "medalBonus": 40,
+      "streakBonus": 25,
+      "totalPoints": 386,
+      "longestTop10Streak": 8,
+      "medalSetRank": 2,
+      "medalSetCompletedOn": "2025-10-12"
+    }
+  ]
+}
+```
+
 
