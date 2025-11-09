@@ -7,6 +7,9 @@ import {
 } from 'react'
 import type { MouseEvent, ReactNode } from 'react'
 
+const rawBase = import.meta.env.BASE_URL ?? '/'
+const BASE_PATH = rawBase === '/' ? '' : rawBase.replace(/\/+$/, '')
+
 type RouterValue = {
   path: string
   navigate: (to: string) => void
@@ -37,6 +40,7 @@ export function Link({
   className?: string
 }) {
   const { navigate } = useRouter()
+  const href = buildHref(to)
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (
@@ -54,16 +58,19 @@ export function Link({
   }
 
   return (
-    <a href={to} onClick={handleClick} className={className}>
+    <a href={href} onClick={handleClick} className={className}>
       {children}
     </a>
   )
 }
 
 function useBrowserRouter(): RouterValue {
-  const getPath = () => normalizePath(
-    typeof window === 'undefined' ? '/' : window.location.pathname,
-  )
+  const getPath = () =>
+    normalizePath(
+      typeof window === 'undefined'
+        ? '/'
+        : stripBasePath(window.location.pathname),
+    )
   const [path, setPath] = useState(getPath)
 
   useEffect(() => {
@@ -77,7 +84,8 @@ function useBrowserRouter(): RouterValue {
     if (typeof window === 'undefined') return
     const nextPath = normalizePath(to)
     if (nextPath === path) return
-    window.history.pushState({}, '', nextPath)
+    const href = buildHref(nextPath)
+    window.history.pushState({}, '', href)
     setPath(nextPath)
   }
 
@@ -95,4 +103,25 @@ function normalizePath(path: string) {
   const trimmed = path.trim()
   if (trimmed === '/') return '/'
   return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed
+}
+
+function stripBasePath(pathname: string) {
+  if (!pathname) return '/'
+  if (!BASE_PATH) return pathname || '/'
+  if (pathname === BASE_PATH) return '/'
+  if (pathname.startsWith(`${BASE_PATH}/`)) {
+    const stripped = pathname.slice(BASE_PATH.length)
+    return stripped || '/'
+  }
+  return pathname
+}
+
+function buildHref(path: string) {
+  const normalized = normalizePath(path)
+  if (!BASE_PATH) return normalized
+  if (normalized === '/') {
+    return BASE_PATH || '/'
+  }
+  const suffix = normalized.startsWith('/') ? normalized : `/${normalized}`
+  return `${BASE_PATH}${suffix}`
 }
