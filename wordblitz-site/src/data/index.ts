@@ -214,13 +214,17 @@ export const events: EventDetails[] = eventRankings
     const boards = detail?.sortedBoards ?? []
     const finalDate = detail?.finalDate ?? event.date
     const id = `${slugify(event.name)}-${event.date}`
+    const coveredDates =
+      boards.length > 0
+        ? boards.map((board) => board.date)
+        : generateFallbackDates(finalDate, boards.length || 7)
     return {
       id,
       name: event.name,
       finalDate,
       boards,
       rankings: event.rankings,
-      coveredDates: boards.map((board) => board.date),
+      coveredDates,
     }
   })
   .sort((a, b) => b.finalDate.localeCompare(a.finalDate))
@@ -376,4 +380,23 @@ function findEventDetail(name: string, rankingDate: string) {
 
 function toTime(dateStr: string) {
   return Number(new Date(dateStr).getTime())
+}
+
+function generateFallbackDates(finalDate: string, days = 7) {
+  const parsed = new Date(finalDate)
+  if (Number.isNaN(parsed.valueOf())) return []
+  const dates: string[] = []
+  for (let offset = days - 1; offset >= 0; offset -= 1) {
+    const current = new Date(parsed)
+    current.setDate(parsed.getDate() - offset)
+    dates.push(formatDate(current))
+  }
+  return dates
+}
+
+function formatDate(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
