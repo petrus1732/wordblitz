@@ -82,6 +82,11 @@ type RawEventDetail = {
   boards: EventBoard[]
 }
 
+type RawEventDetailWithMeta = RawEventDetail & {
+  finalDate: string
+  sortedBoards: EventBoard[]
+}
+
 type RawEventRanking = {
   date: string
   name: string
@@ -178,22 +183,41 @@ export const dailyGames: DailyGame[] = allDailyDates
 
 export const dailyGameByDate = new Map(dailyGames.map((game) => [game.date, game]))
 
-const eventDetailByKey = new Map(
-  eventDetails.map((detail) => {
-    const finalDate = detail.boards.at(-1)?.date ?? ''
-    return [makeEventKey(detail.eventName, finalDate), detail]
-  }),
+const eventDetailsWithMeta: RawEventDetailWithMeta[] = eventDetails.map(
+  (detail) => {
+    const sortedBoards = [...(detail.boards ?? [])].sort((a, b) =>
+      a.date.localeCompare(b.date),
+    )
+    const finalDate =
+      sortedBoards.length > 0 ? sortedBoards.at(-1)!.date : '1970-01-01'
+    return {
+      ...detail,
+      finalDate,
+      sortedBoards,
+    }
+  },
 )
+
+const eventDetailsByName = eventDetailsWithMeta.reduce<
+  Map<string, RawEventDetailWithMeta[]>
+>((acc, detail) => {
+  const key = normalizeEventName(detail.eventName)
+  const list = acc.get(key) ?? []
+  list.push(detail)
+  acc.set(key, list)
+  return acc
+}, new Map())
 
 export const events: EventDetails[] = eventRankings
   .map((event) => {
-    const detail = eventDetailByKey.get(makeEventKey(event.name, event.date))
-    const boards = detail?.boards ?? []
+    const detail = findEventDetail(event.name, event.date)
+    const boards = detail?.sortedBoards ?? []
+    const finalDate = detail?.finalDate ?? event.date
     const id = `${slugify(event.name)}-${event.date}`
     return {
       id,
       name: event.name,
-      finalDate: event.date,
+      finalDate,
       boards,
       rankings: event.rankings,
       coveredDates: boards.map((board) => board.date),
@@ -327,6 +351,29 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, '')
 }
 
-function makeEventKey(name: string, finalDate: string) {
-  return `${name}__${finalDate}`
+function normalizeEventName(name: string) {
+  return name.toLowerCase().trim()
+}
+
+function findEventDetail(name: string, rankingDate: string) {
+  const key = normalizeEventName(name)
+  const candidates = eventDetailsByName.get(key)
+  if (!candidates || candidates.length === 0) return null
+  const targetTime = toTime(rankingDate)
+  let best = candidates[0]
+  let bestDiff = Math.abs(toTime(best.finalDate) - targetTime)
+
+  for (const candidate of candidates) {
+    const diff = Math.abs(toTime(candidate.finalDate) - targetTime)
+    if (diff < bestDiff) {
+      best = candidate
+      bestDiff = diff
+    }
+  }
+
+  return best
+}
+
+function toTime(dateStr: string) {
+  return Number(new Date(dateStr).getTime())
 }

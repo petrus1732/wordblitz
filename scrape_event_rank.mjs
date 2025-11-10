@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const FB_APP_PLAY_URL =
   'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state.json');
+const STORAGE = path.resolve('./storage_state2.json');
 const OUTPUT_JSON = path.resolve('./event_rankings.json');
 const NOW = new Date();
 const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
@@ -64,8 +64,10 @@ function parseRelativeDate(raw, base = NOW) {
   const text = normaliseWhitespace(raw).toLowerCase();
   if (!text) return null;
 
-  if (text.includes("hour"))
-    return formatDate(base);
+  if (text.includes('hour')) {
+    const target = new Date(base.getTime() - UNIT_IN_MS.day);
+    return formatDate(target);
+  }
 
   const relativeMatch = text.match(
     /(?:about\s+)?(a|\d+)\s+(day)s?\s+ago/
@@ -78,7 +80,8 @@ function parseRelativeDate(raw, base = NOW) {
         : Number.parseInt(quantityText, 10);
     const unitMs = UNIT_IN_MS[unit];
     if (!Number.isNaN(quantity) && unitMs) {
-      const target = new Date(base.getTime() - quantity * unitMs);
+      const adjustedQuantity = quantity + 1; // in-game daily summaries lag by one day
+      const target = new Date(base.getTime() - adjustedQuantity * unitMs);
       return formatDate(target);
     }
   }
