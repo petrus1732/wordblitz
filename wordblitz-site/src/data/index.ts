@@ -93,6 +93,7 @@ export interface EventBreakdownPlayer {
   avatar: string
   scores: Record<string, ScoreCell>
   total: number
+  totalScore?: number
 }
 
 export interface EventBreakdownMonth {
@@ -110,6 +111,7 @@ export interface DailyBreakdownPlayer {
   avatar: string
   scores: Record<string, ScoreCell>
   total: number
+  totalScore?: number
 }
 
 export interface DailyBreakdownMonth {
@@ -352,6 +354,7 @@ export const eventBreakdownByMonth = new Map(
         avatar: player.avatar ?? '',
         scores: mapScoreRecord(player.scores),
         total: toNumber(player.total),
+        totalScore: toNumber(player.totalScore),
       })),
     },
   ]),
@@ -370,6 +373,7 @@ export const dailyBreakdownByMonth = new Map(
         avatar: player.avatar ?? '',
         scores: mapScoreRecord(player.scores),
         total: toNumber(player.total),
+        totalScore: toNumber(player.totalScore),
       })),
     },
   ]),
