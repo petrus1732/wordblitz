@@ -24,6 +24,8 @@ type Route =
   | { kind: 'not-found'; message?: string }
 
 const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const EVENT_COLORS = ['event-a', 'event-b', 'event-c', 'event-d', 'event-e']
+const eventColorMap = new Map<string, string>()
 
 export default function App() {
   const { path } = useRouter()
@@ -119,18 +121,13 @@ function MonthView({ monthKey }: { monthKey: string }) {
         </div>
       </section>
 
-      <section className="panel">
-        <div className="panel-heading">
-          <div>
-            <p className="eyebrow">Total leaderboard</p>
-            <h3>Season standings</h3>
-            <p className="subtle">
-              Calculated via calculate_points.mjs and refreshed from points.json.
-            </p>
-          </div>
-        </div>
+      <CollapsiblePanel
+        title="Season standings"
+        eyebrow="Total leaderboard"
+        description="Calculated via calculate_points.mjs and refreshed from points.json."
+      >
         <PointsTable rows={monthPoints} />
-      </section>
+      </CollapsiblePanel>
 
       <section className="panel">
         <div className="panel-heading">
@@ -342,8 +339,32 @@ function CalendarView({
     )
   }
 
+  const legendEntries = new Map<string, string>()
+  calendar.forEach((week) =>
+    week.forEach((cell) =>
+      cell.events.forEach((event) => {
+        const slug = getEventColorSlug(event.name)
+        legendEntries.set(event.name, slug)
+      }),
+    ),
+  )
+
   return (
     <div className="calendar">
+      <div className="calendar-legend">
+        <div className="legend-item">
+          <span className="legend-dot legend-dot--daily">D</span>
+          Daily board
+        </div>
+        {Array.from(legendEntries.entries()).map(([name, slug]) => (
+          <div className="legend-item" key={name}>
+            <span className={`legend-dot legend-dot--${slug}`}>
+              {getEventInitial(name)}
+            </span>
+            {name}
+          </div>
+        ))}
+      </div>
       <div className="calendar-grid calendar-grid--header">
         {weekdayLabels.map((label) => (
           <div key={label} className="calendar-weekday">
@@ -364,23 +385,28 @@ function CalendarView({
                 <div className="calendar-cell__date">
                   {cell.dayNumber}
                 </div>
-                {cell.hasDaily && (
-                  <Link
-                    to={`/daily/${cell.isoDate}`}
-                    className="calendar-chip calendar-chip--daily"
-                  >
-                    Daily board
-                  </Link>
-                )}
-                {cell.events.map((event) => (
-                  <Link
-                    key={`${event.id}-${cell.isoDate}`}
-                    to={`/event/${event.id}`}
-                    className="calendar-chip calendar-chip--event"
-                  >
-                    {event.name}
-                  </Link>
-                ))}
+                <div className="calendar-chip-stack">
+                  {cell.hasDaily && (
+                    <Link
+                      to={`/daily/${cell.isoDate}`}
+                      className="calendar-chip calendar-chip--daily"
+                    >
+                      D
+                    </Link>
+                  )}
+                  {cell.events.map((event) => {
+                    const slug = getEventColorSlug(event.name)
+                    return (
+                      <Link
+                        key={`${event.id}-${cell.isoDate}`}
+                        to={`/event/${event.id}`}
+                        className={`calendar-chip calendar-chip--event calendar-chip--${slug}`}
+                      >
+                        {getEventInitial(event.name)}
+                      </Link>
+                    )
+                  })}
+                </div>
               </>
             )}
           </div>
@@ -404,6 +430,9 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
             <th>Player</th>
             <th>Daily</th>
             <th>Event</th>
+            <th>Daily avg</th>
+            <th>Event avg</th>
+            <th>Daily plays</th>
             <th>Gold</th>
             <th>Silver</th>
             <th>Bronze</th>
@@ -412,8 +441,6 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
             <th>Streak bonus</th>
             <th>Total</th>
             <th>Top 10 streak</th>
-            <th>Medal set rank</th>
-            <th>Completed on</th>
           </tr>
         </thead>
         <tbody>
@@ -433,6 +460,9 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
               </td>
               <td>{player.dailyPoints.toLocaleString()}</td>
               <td>{player.eventPoints.toLocaleString()}</td>
+              <td>{player.averageDailyScore.toFixed(2)}</td>
+              <td>{player.averageEventScore.toFixed(2)}</td>
+              <td>{player.dailyGamesPlayed}</td>
               <td>{player.goldCount}</td>
               <td>{player.silverCount}</td>
               <td>{player.bronzeCount}</td>
@@ -441,8 +471,6 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
               <td>{player.streakBonus.toLocaleString()}</td>
               <td>{player.totalPoints.toLocaleString()}</td>
               <td>{player.longestTop10Streak}</td>
-              <td>{player.medalSetRank ?? '—'}</td>
-              <td>{player.medalSetCompletedOn || '—'}</td>
             </tr>
           ))}
         </tbody>
@@ -597,6 +625,38 @@ function WordList({ words }: { words: string[] }) {
   )
 }
 
+function CollapsiblePanel({
+  eyebrow,
+  title,
+  description,
+  children,
+}: {
+  eyebrow: string
+  title: string
+  description?: string
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(false)
+  return (
+    <section className="panel collapsible-panel">
+      <button
+        type="button"
+        className="collapsible-toggle"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+      >
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h3>{title}</h3>
+          {description && <p className="subtle">{description}</p>}
+        </div>
+        <span className="collapsible-icon">{open ? '−' : '+'}</span>
+      </button>
+      {open && <div className="collapsible-content">{children}</div>}
+    </section>
+  )
+}
+
 function getBonusKey(bonus?: string) {
   const normalized = bonus?.trim().toUpperCase()
   if (!normalized) return ''
@@ -690,4 +750,28 @@ function matchRoute(path: string): Route {
   }
 
   return { kind: 'not-found' }
+}
+
+function getEventInitial(name: string) {
+  const specialMap: Record<string, string> = {
+    'blitz round': 'B',
+    evolution: 'E',
+    inspiration: 'I',
+    'quadruple bonus': 'Q',
+    '5+ bonus': '5',
+    '4+ words': '4',
+  }
+  const key = name.toLowerCase()
+  if (specialMap[key]) return specialMap[key]
+  const match = key.match(/\p{L}|\d/u)
+  return match ? match[0].toUpperCase() : '?'
+}
+
+function getEventColorSlug(name: string) {
+  const normalized = name.toLowerCase()
+  if (!eventColorMap.has(normalized)) {
+    const assigned = EVENT_COLORS[eventColorMap.size % EVENT_COLORS.length]
+    eventColorMap.set(normalized, assigned)
+  }
+  return eventColorMap.get(normalized) ?? EVENT_COLORS[0]
 }

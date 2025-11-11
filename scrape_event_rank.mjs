@@ -4,11 +4,11 @@ import path from 'node:path';
 
 const FB_APP_PLAY_URL =
   'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
 const OUTPUT_JSON = path.resolve('./event_rankings.json');
 const NOW = new Date();
 const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
 const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
+const STORAGE_PATHS = ['./storage_state.json', './storage_state2.json'];
 
 const UNIT_IN_MS = {
   second: 1000,
@@ -163,11 +163,12 @@ async function extractLeaderboard(frame) {
       items
       .map(el => {
         const rankText = el.querySelector('.number')?.innerText ?? '';
-        const rank = Number.parseInt(rankText.replace(/\D+/g, ''), 10);
+        const parsedRank = Number.parseInt(rankText.replace(/\D+/g, ''), 10);
 
         let name = (el.querySelector('.name-text-a .ensure-space-if-empty')?.innerText ?? '')
           .replace(/\u00a0/g, ' ')
           .trim();
+        const normalizedName = name.toLowerCase();
 
         const pointsText = el.querySelector('.primary-explaining-text-A')?.innerText ?? '';
         const pointsMatch = pointsText.match(/([\d,]+)/);
@@ -179,7 +180,10 @@ async function extractLeaderboard(frame) {
         if (playerId === discardId) return null;
         if (playerId === renameId) name = renameName;
 
-        if (Number.isNaN(rank) || !name || Number.isNaN(points)) return null;
+        if (!name || Number.isNaN(points)) return null;
+        const rank =
+          normalizedName === 'all arenas' ? 0 : Number.isNaN(parsedRank) ? null : parsedRank;
+        if (rank === null) return null;
         return { rank, name, points, playerId, avatar };
       })
         .filter(Boolean),
@@ -207,7 +211,8 @@ async function readEventCardMetadata(card) {
   });
 }
 
-(async () => {
+async function runForStorage(storagePath) {
+  const STORAGE = path.resolve(storagePath);
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
   const page = await context.newPage();
@@ -316,6 +321,16 @@ async function readEventCardMetadata(card) {
   );
   console.log(`Saved ${mergedEvents.length} events to ${OUTPUT_JSON}`);
   await browser.close();
+}
+
+(async () => {
+  for (const storagePath of STORAGE_PATHS) {
+    try {
+      await runForStorage(storagePath);
+    } catch (err) {
+      console.error(`Failed for ${storagePath}:`, err);
+    }
+  }
 })().catch(err => {
   console.error(err);
   process.exitCode = 1;

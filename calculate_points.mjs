@@ -122,19 +122,22 @@ function parseDailyRows(csvPath) {
       rankStr,
       playerId,
       name,
-      points,
+      scoreText,
       avatarUrl,
     ] = parseCsvLine(line)
     if (!dailyDate || dailyDate.length !== 10) return
     const rank = Number(rankStr)
     if (!Number.isFinite(rank) || rank < 1) return
     if (!avatarUrl) return
+    const rawScore = Number(scoreText?.replace(/,/g, ''))
+
     records.push({
       date: dailyDate,
       month: dailyDate.slice(0, 7),
       rank,
       playerId: playerId || `name:${name || 'Unknown'}`,
       name: name || 'Unknown',
+      score: Number.isFinite(rawScore) ? rawScore : null,
       avatarUrl: avatarUrl || '',
       isSaturday: isSaturday(dailyDate),
       rawIndex: index,
@@ -161,6 +164,11 @@ function parseEventRows(jsonPath) {
     ;(event.rankings || []).forEach((entry, idx) => {
       const rank = Number(entry?.rank)
       if (!Number.isFinite(rank) || rank < 1) return
+      const rawPoints = Number(
+        typeof entry?.points === 'string'
+          ? entry.points.replace(/,/g, '')
+          : entry?.points,
+      )
       rows.push({
         date: eventDate,
         month: eventDate.slice(0, 7),
@@ -168,6 +176,7 @@ function parseEventRows(jsonPath) {
         playerId: entry?.playerId || `name:${entry?.name || 'Unknown'}`,
         name: entry?.name || 'Unknown',
         avatar: entry?.avatar || '',
+        score: Number.isFinite(rawPoints) ? rawPoints : null,
         rawIndex: eventIdx * 1000 + idx,
       })
     })
@@ -268,6 +277,10 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
         top10Dates: new Set(),
         longestTop10Streak: 0,
         totalPoints: 0,
+        dailyGamesPlayed: 0,
+        eventGamesPlayed: 0,
+        totalDailyScore: 0,
+        totalEventScore: 0,
       })
     }
     const player = players.get(playerId)
@@ -284,6 +297,10 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
     const player = getPlayer(row.playerId, row.name, row.avatarUrl)
     const earned = getDailyPoints(row.rank, row.isSaturday)
     player.dailyPoints += earned
+    player.dailyGamesPlayed += 1
+    if (row.score !== null && row.score !== undefined) {
+      player.totalDailyScore += row.score
+    }
     if (row.rank <= 10) {
       player.top10Dates.add(row.date)
     }
@@ -325,6 +342,10 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
     if (!points) return
     const player = getPlayer(row.playerId, row.name, row.avatar)
     player.eventPoints += points
+    player.eventGamesPlayed += 1
+    if (row.score !== null && row.score !== undefined) {
+      player.totalEventScore += row.score
+    }
   })
 
   let bestStreak = 0
@@ -359,6 +380,15 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
       avatar: player.avatar,
       dailyPoints: player.dailyPoints,
       eventPoints: player.eventPoints,
+      dailyGamesPlayed: player.dailyGamesPlayed,
+      averageDailyScore:
+        player.dailyGamesPlayed > 0
+          ? Number((player.totalDailyScore / player.dailyGamesPlayed).toFixed(2))
+          : 0,
+      averageEventScore:
+        player.eventGamesPlayed > 0
+          ? Number((player.totalEventScore / player.eventGamesPlayed).toFixed(2))
+          : 0,
       goldCount: player.medalCounts.gold,
       silverCount: player.medalCounts.silver,
       bronzeCount: player.medalCounts.bronze,

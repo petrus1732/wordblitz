@@ -8,7 +8,34 @@ const FB_APP_PLAY_URL =
 
 const storage_paths = ['./storage_state.json', './storage_state2.json'];
 
-for (const storage_path of storage_paths) {
+function normaliseWhitespace(value) {
+  if (!value) return '';
+  return value.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+async function readDailyCardMetadata(card) {
+  return card.evaluate((el) => {
+    const clean = (value) =>
+      (value ?? '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+    const title = clean(
+      el.querySelector('.cell-title')?.textContent ??
+        el.querySelector('.cell-body .title')?.textContent ??
+        '',
+    );
+    const relativeTime = clean(
+      el.querySelector('.cell-time .time-since')?.textContent ?? '',
+    );
+    return { title, relativeTime };
+  });
+}
+
+function isDailyClosed(metadata) {
+  const text = normaliseWhitespace(metadata?.relativeTime).toLowerCase();
+  if (!text) return false;
+  return !text.includes('left');
+}
+
+async function runForStorage(storage_path) {
   const STORAGE = path.resolve(storage_path);
   const CSV = path.resolve('./daily_scores.csv');
   const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
@@ -195,10 +222,9 @@ for (const storage_path of storage_paths) {
     return 'unknown';
   }
 
-  (async () => {
-    const browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext({ storageState: STORAGE });
-    const page = await context.newPage();
+  const browser = await chromium.launch({ headless: false });
+  const context = await browser.newContext({ storageState: STORAGE });
+  const page = await context.newPage();
     console.log('🚀 開啟 Word Blitz 主畫面…');
     await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
@@ -218,6 +244,16 @@ for (const storage_path of storage_paths) {
     for (let i = 0; i < dailyCards.length; i++) {
       console.log(`\n▶️ 正在處理第 ${i + 1}/${dailyCards.length} 個 Daily…`);
       const card = dailyCards[i];
+
+      const metadata = await readDailyCardMetadata(card).catch(() => null);
+      if (!metadata || !isDailyClosed(metadata)) {
+        console.log(
+          `Skipping open daily ${i + 1}/${dailyCards.length}: ${
+            metadata?.title || 'Unknown'
+          } (${metadata?.relativeTime || 'unknown'})`,
+        );
+        continue;
+      }
 
       await card.scrollIntoViewIfNeeded().catch(() => {});
       await card.click().catch(() => console.warn('⚠️ 點擊 Daily 失敗，嘗試繼續。'));
@@ -257,7 +293,19 @@ for (const storage_path of storage_paths) {
         await newFrame.waitForSelector('.cell-daily', { timeout: 60000 });
       }
     }
-
     console.log('🎉 所有 Daily Game 已處理完畢！');
-  })();
+    await browser.close();
 }
+
+;(async () => {
+  for (const storagePath of storage_paths) {
+    try {
+      await runForStorage(storagePath);
+    } catch (err) {
+      console.error(`Failed for ${storagePath}:`, err);
+    }
+  }
+})().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});

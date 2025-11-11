@@ -4,6 +4,9 @@ import dailyDetailsJson from '../../../daily_details.json'
 import eventDetailsJson from '../../../event_details.json'
 import eventRankingsJson from '../../../event_rankings.json'
 
+const DAY_IN_MS = 24 * 60 * 60 * 1000
+const MAX_EVENT_DETAIL_GAP_MS = 3 * DAY_IN_MS
+
 type CsvRow = Record<string, string>
 
 export interface PlayerPoints {
@@ -12,6 +15,9 @@ export interface PlayerPoints {
   avatar: string
   dailyPoints: number
   eventPoints: number
+  dailyGamesPlayed: number
+  averageDailyScore: number
+  averageEventScore: number
   goldCount: number
   silverCount: number
   bronzeCount: number
@@ -99,6 +105,9 @@ type RawPlayerPoints = {
   avatar?: string
   dailyPoints: number
   eventPoints: number
+  dailyGamesPlayed?: number
+  averageDailyScore?: number
+  averageEventScore?: number
   goldCount: number
   silverCount: number
   bronzeCount: number
@@ -137,6 +146,9 @@ export const playerPointsByMonth = new Map(
         avatar: row.avatar ?? '',
         dailyPoints: toNumber(row.dailyPoints),
         eventPoints: toNumber(row.eventPoints),
+        dailyGamesPlayed: toNumber(row.dailyGamesPlayed),
+        averageDailyScore: toNumber(row.averageDailyScore),
+        averageEventScore: toNumber(row.averageEventScore),
         goldCount: toNumber(row.goldCount),
         silverCount: toNumber(row.silverCount),
         bronzeCount: toNumber(row.bronzeCount),
@@ -375,7 +387,7 @@ function findEventDetail(name: string, rankingDate: string) {
     }
   }
 
-  return best
+  return bestDiff <= MAX_EVENT_DETAIL_GAP_MS ? best : null
 }
 
 function toTime(dateStr: string) {
