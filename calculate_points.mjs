@@ -408,13 +408,13 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
     })
 
   filteredEvents.forEach((row) => {
-    const points = getEventPoints(row.rank)
-    if (!points) return
     const player = getPlayer(row.playerId, row.name, row.avatar)
+    const rank = Number.isFinite(row.rank) ? row.rank : null
+    const points = rank !== null ? getEventPoints(rank) : 0
     player.eventPoints += points
     player.eventGamesPlayed += 1
-    if (Number.isFinite(row.rank)) {
-      player.eventRankTotal += row.rank
+    if (rank !== null) {
+      player.eventRankTotal += rank
     }
     if (row.score !== null && row.score !== undefined) {
       player.totalEventScore += row.score
