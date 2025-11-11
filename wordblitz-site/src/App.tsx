@@ -428,6 +428,7 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
           <tr>
             <th>#</th>
             <th>Player</th>
+            <th>Total</th>
             <th>Daily</th>
             <th>Event</th>
             <th>Daily avg</th>
@@ -439,7 +440,6 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
             <th>Medals</th>
             <th>Medal bonus</th>
             <th>Streak bonus</th>
-            <th>Total</th>
             <th>Top 10 streak</th>
           </tr>
         </thead>
@@ -458,6 +458,7 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
                 ) : null}
                 <span>{player.name}</span>
               </td>
+              <td>{player.totalPoints.toLocaleString()}</td>
               <td>{player.dailyPoints.toLocaleString()}</td>
               <td>{player.eventPoints.toLocaleString()}</td>
               <td>{player.averageDailyScore.toFixed(2)}</td>
@@ -469,7 +470,6 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
               <td>{player.medalCount}</td>
               <td>{player.medalBonus.toLocaleString()}</td>
               <td>{player.streakBonus.toLocaleString()}</td>
-              <td>{player.totalPoints.toLocaleString()}</td>
               <td>{player.longestTop10Streak}</td>
             </tr>
           ))}
