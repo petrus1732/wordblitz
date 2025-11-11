@@ -3,6 +3,8 @@ import pointsJson from '../../../points.json'
 import dailyDetailsJson from '../../../daily_details.json'
 import eventDetailsJson from '../../../event_details.json'
 import eventRankingsJson from '../../../event_rankings.json'
+import eventBreakdownJson from '../../../event_breakdown.json'
+import dailyBreakdownJson from '../../../daily_breakdown.json'
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000
 const MAX_EVENT_DETAIL_GAP_MS = 3 * DAY_IN_MS
@@ -16,7 +18,10 @@ export interface PlayerPoints {
   dailyPoints: number
   eventPoints: number
   dailyGamesPlayed: number
+  eventGamesPlayed: number
+  averageDailyRank: number
   averageDailyScore: number
+  averageEventRank: number
   averageEventScore: number
   goldCount: number
   silverCount: number
@@ -76,6 +81,48 @@ export interface EventDetails {
   coveredDates: string[]
 }
 
+export interface EventBreakdownEvent {
+  id: string
+  name: string
+  date: string
+}
+
+export interface EventBreakdownPlayer {
+  playerId: string
+  name: string
+  avatar: string
+  scores: Record<string, ScoreCell>
+  total: number
+}
+
+export interface EventBreakdownMonth {
+  events: EventBreakdownEvent[]
+  players: EventBreakdownPlayer[]
+}
+
+export interface DailyBreakdownDay {
+  date: string
+}
+
+export interface DailyBreakdownPlayer {
+  playerId: string
+  name: string
+  avatar: string
+  scores: Record<string, ScoreCell>
+  total: number
+}
+
+export interface DailyBreakdownMonth {
+  days: DailyBreakdownDay[]
+  players: DailyBreakdownPlayer[]
+}
+
+interface ScoreCell {
+  rank: number | null
+  score: number | null
+  points: number
+}
+
 type RawDailyDetail = {
   date: string
   wordCount: number
@@ -99,6 +146,30 @@ type RawEventRanking = {
   rankings: EventRankingEntry[]
 }
 
+type RawEventBreakdown = Record<
+  string,
+  {
+    events: EventBreakdownEvent[]
+    players: Array<
+      Omit<EventBreakdownPlayer, 'scores'> & {
+        scores?: Record<string, Partial<ScoreCell>>
+      }
+    >
+  }
+>
+
+type RawDailyBreakdown = Record<
+  string,
+  {
+    days: DailyBreakdownDay[]
+    players: Array<
+      Omit<DailyBreakdownPlayer, 'scores'> & {
+        scores?: Record<string, Partial<ScoreCell>>
+      }
+    >
+  }
+>
+
 type RawPlayerPoints = {
   playerId: string
   name: string
@@ -106,7 +177,10 @@ type RawPlayerPoints = {
   dailyPoints: number
   eventPoints: number
   dailyGamesPlayed?: number
+  eventGamesPlayed?: number
+  averageDailyRank?: number
   averageDailyScore?: number
+  averageEventRank?: number
   averageEventScore?: number
   goldCount: number
   silverCount: number
@@ -135,6 +209,8 @@ const dailyRankings = parsedDailyScores.map((row) => ({
 const dailyDetails = dailyDetailsJson as RawDailyDetail[]
 const eventDetails = eventDetailsJson as RawEventDetail[]
 const eventRankings = eventRankingsJson as RawEventRanking[]
+const rawEventBreakdown = eventBreakdownJson as RawEventBreakdown
+const rawDailyBreakdown = dailyBreakdownJson as RawDailyBreakdown
 
 export const playerPointsByMonth = new Map(
   Object.entries(rawPointsByMonth).map(([month, rows]) => [
@@ -147,7 +223,10 @@ export const playerPointsByMonth = new Map(
         dailyPoints: toNumber(row.dailyPoints),
         eventPoints: toNumber(row.eventPoints),
         dailyGamesPlayed: toNumber(row.dailyGamesPlayed),
+        eventGamesPlayed: toNumber(row.eventGamesPlayed),
+        averageDailyRank: toNumber(row.averageDailyRank),
         averageDailyScore: toNumber(row.averageDailyScore),
+        averageEventRank: toNumber(row.averageEventRank),
         averageEventScore: toNumber(row.averageEventScore),
         goldCount: toNumber(row.goldCount),
         silverCount: toNumber(row.silverCount),
@@ -262,6 +341,42 @@ events.forEach((event) =>
 )
 playerPointsByMonth.forEach((_, month) => monthSet.add(month))
 
+export const eventBreakdownByMonth = new Map(
+  Object.entries(rawEventBreakdown).map(([month, payload]) => [
+    month,
+    {
+      events: payload.events ?? [],
+      players: (payload.players ?? []).map((player) => ({
+        playerId: player.playerId,
+        name: player.name,
+        avatar: player.avatar ?? '',
+        scores: mapScoreRecord(player.scores),
+        total: toNumber(player.total),
+      })),
+    },
+  ]),
+)
+
+eventBreakdownByMonth.forEach((_, month) => monthSet.add(month))
+
+export const dailyBreakdownByMonth = new Map(
+  Object.entries(rawDailyBreakdown).map(([month, payload]) => [
+    month,
+    {
+      days: payload.days ?? [],
+      players: (payload.players ?? []).map((player) => ({
+        playerId: player.playerId,
+        name: player.name,
+        avatar: player.avatar ?? '',
+        scores: mapScoreRecord(player.scores),
+        total: toNumber(player.total),
+      })),
+    },
+  ]),
+)
+
+dailyBreakdownByMonth.forEach((_, month) => monthSet.add(month))
+
 export const availableMonths = Array.from(monthSet).sort((a, b) =>
   b.localeCompare(a),
 )
@@ -344,6 +459,29 @@ function toNumber(value: string | number | null | undefined) {
   if (typeof value === 'string' && value.trim().length === 0) return 0
   const parsed = Number(value)
   return Number.isNaN(parsed) ? 0 : parsed
+}
+
+function mapScoreRecord(record?: Record<string, Partial<ScoreCell>>) {
+  if (!record) return {}
+  const entries: Array<[string, ScoreCell]> = []
+  Object.entries(record).forEach(([key, value]) => {
+    if (!value) return
+    entries.push([
+      key,
+      {
+        rank:
+          typeof value.rank === 'number' && Number.isFinite(value.rank)
+            ? value.rank
+            : null,
+        score:
+          typeof value.score === 'number' && Number.isFinite(value.score)
+            ? value.score
+            : null,
+        points: toNumber(value.points),
+      },
+    ])
+  })
+  return Object.fromEntries(entries)
 }
 
 function groupBy<T>(rows: T[], getter: (row: T) => string) {

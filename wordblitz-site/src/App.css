@@ -266,6 +266,15 @@
   white-space: nowrap;
 }
 
+.matrix-subhead {
+  text-align: center !important;
+  font-size: 0.75rem;
+}
+
+.matrix-cell {
+  text-align: center;
+}
+
 .data-table td {
   padding: 0.75rem 0.75rem 0.75rem 0;
   border-bottom: 1px solid rgba(148, 163, 184, 0.1);

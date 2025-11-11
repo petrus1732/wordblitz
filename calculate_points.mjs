@@ -18,6 +18,8 @@ const MEDAL_SET_BONUS = [50, 40, 30, 20, 10]
 const STREAK_BONUS = 25
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 const DEFAULT_OUTPUT = 'points.json'
+const EVENT_BREAKDOWN_OUTPUT = 'event_breakdown.json'
+const DAILY_BREAKDOWN_OUTPUT = 'daily_breakdown.json'
 
 function parseArgs(argv) {
   const args = {}
@@ -102,6 +104,10 @@ function parseCsvLine(line) {
   }
   values.push(current)
   return values
+}
+
+function ensureArray(value) {
+  return Array.isArray(value) ? value : []
 }
 
 function parseDailyRows(csvPath) {
@@ -208,6 +214,18 @@ function groupByMonth(rows) {
   }, new Map())
 }
 
+function groupEventsByMonth(events) {
+  return events.reduce((map, event) => {
+    const date = event?.date
+    if (!date || date.length !== 10) return map
+    const month = date.slice(0, 7)
+    const list = map.get(month) ?? []
+    list.push(event)
+    map.set(month, list)
+    return map
+  }, new Map())
+}
+
 function getDailyPoints(rank, isSaturday) {
   const base = DAILY_POINTS.get(rank) || 0
   if (!base) return 0
@@ -217,6 +235,16 @@ function getDailyPoints(rank, isSaturday) {
 function getEventPoints(rank) {
   if (rank < 1 || rank > 15) return 0
   return 64 - rank * 4
+}
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 function isSaturday(dateStr) {
@@ -248,18 +276,23 @@ function computeStreakLength(dates) {
   return longest
 }
 
-function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
+function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
   const filteredDaily = (dailyRows || []).filter((row) => row.date <= throughDate)
   const filteredEvents = (eventRows || []).filter(
     (row) => row.date <= throughDate,
   )
+  const monthEvents = (rawEvents || []).filter((event) => event.date <= throughDate)
+  const sortedEvents = monthEvents.slice().sort((a, b) => a.date.localeCompare(b.date))
 
-  if (!filteredDaily.length && !filteredEvents.length) {
-    return []
+  if (!filteredDaily.length && !filteredEvents.length && !monthEvents.length) {
+    return { leaderboard: [], dailyMatrix: null, eventMatrix: null }
   }
 
   const players = new Map()
   const medalCompletions = []
+  const dailyMatrixPlayers = new Map()
+  const dailyDates = new Set()
+  const eventMatrixPlayers = new Map()
 
   function getPlayer(playerId, name = 'Unknown', avatarUrl = '') {
     if (!players.has(playerId)) {
@@ -281,9 +314,30 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
         eventGamesPlayed: 0,
         totalDailyScore: 0,
         totalEventScore: 0,
+        dailyRankTotal: 0,
+        eventRankTotal: 0,
       })
     }
     const player = players.get(playerId)
+    if (name && name !== 'Unknown' && player.name !== name) {
+      player.name = name
+    }
+    if (avatarUrl && !player.avatar) {
+      player.avatar = avatarUrl
+    }
+    return player
+  }
+
+  function getMatrixPlayer(map, playerId, name, avatarUrl = '') {
+    if (!map.has(playerId)) {
+      map.set(playerId, {
+        playerId,
+        name,
+        avatar: avatarUrl || '',
+        scores: {},
+      })
+    }
+    const player = map.get(playerId)
     if (name && name !== 'Unknown' && player.name !== name) {
       player.name = name
     }
@@ -298,6 +352,9 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
     const earned = getDailyPoints(row.rank, row.isSaturday)
     player.dailyPoints += earned
     player.dailyGamesPlayed += 1
+    if (Number.isFinite(row.rank)) {
+      player.dailyRankTotal += row.rank
+    }
     if (row.score !== null && row.score !== undefined) {
       player.totalDailyScore += row.score
     }
@@ -321,6 +378,19 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
         rawIndex: row.rawIndex,
       })
     }
+
+    dailyDates.add(row.date)
+    const matrixPlayer = getMatrixPlayer(
+      dailyMatrixPlayers,
+      row.playerId,
+      row.name,
+      row.avatarUrl,
+    )
+    matrixPlayer.scores[row.date] = {
+      rank: Number.isFinite(row.rank) ? row.rank : null,
+      score: row.score ?? null,
+      points: (matrixPlayer.scores[row.date]?.points ?? 0) + earned,
+    }
   })
 
   medalCompletions
@@ -343,10 +413,34 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
     const player = getPlayer(row.playerId, row.name, row.avatar)
     player.eventPoints += points
     player.eventGamesPlayed += 1
+    if (Number.isFinite(row.rank)) {
+      player.eventRankTotal += row.rank
+    }
     if (row.score !== null && row.score !== undefined) {
       player.totalEventScore += row.score
     }
   })
+
+  sortedEvents.forEach((event) => {
+      const eventId = `${slugify(event.name)}-${event.date}`
+      ensureArray(event.rankings).forEach((entry) => {
+        const rank = Number(entry?.rank)
+        const points = getEventPoints(rank)
+        if (!points) return
+        const rawScore = Number(entry?.points)
+        const matrixPlayer = getMatrixPlayer(
+          eventMatrixPlayers,
+          entry?.playerId || `name:${entry?.name || 'Unknown'}`,
+          entry?.name || 'Unknown',
+          entry?.avatar || '',
+        )
+        matrixPlayer.scores[eventId] = {
+          rank: Number.isFinite(rank) ? rank : null,
+          score: Number.isFinite(rawScore) ? rawScore : null,
+          points,
+        }
+      })
+    })
 
   let bestStreak = 0
   players.forEach((player) => {
@@ -381,9 +475,18 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
       dailyPoints: player.dailyPoints,
       eventPoints: player.eventPoints,
       dailyGamesPlayed: player.dailyGamesPlayed,
+      eventGamesPlayed: player.eventGamesPlayed,
+      averageDailyRank:
+        player.dailyGamesPlayed > 0
+          ? Number((player.dailyRankTotal / player.dailyGamesPlayed).toFixed(2))
+          : 0,
       averageDailyScore:
         player.dailyGamesPlayed > 0
           ? Number((player.totalDailyScore / player.dailyGamesPlayed).toFixed(2))
+          : 0,
+      averageEventRank:
+        player.eventGamesPlayed > 0
+          ? Number((player.eventRankTotal / player.eventGamesPlayed).toFixed(2))
           : 0,
       averageEventScore:
         player.eventGamesPlayed > 0
@@ -409,7 +512,50 @@ function computeMonthLeaderboard(month, dailyRows, eventRows, throughDate) {
     return a.name.localeCompare(b.name)
   })
 
-  return leaderboard
+  const dailyDays = Array.from(dailyDates).sort()
+  const dailyMatrix =
+    dailyDays.length && dailyMatrixPlayers.size
+      ? {
+          days: dailyDays.map((date) => ({ date })),
+          players: Array.from(dailyMatrixPlayers.values())
+            .map((player) => {
+              const total = dailyDays.reduce(
+                (sum, date) => sum + (player.scores[date]?.points ?? 0),
+                0,
+              )
+              return {
+                ...player,
+                total,
+              }
+            })
+            .sort((a, b) => b.total - a.total),
+        }
+      : null
+
+  const eventMatrix =
+    sortedEvents.length && eventMatrixPlayers.size
+      ? {
+          events: sortedEvents.map((event) => ({
+            id: `${slugify(event.name)}-${event.date}`,
+            name: event.name,
+            date: event.date,
+          })),
+          players: Array.from(eventMatrixPlayers.values())
+            .map((player) => {
+              const total = sortedEvents.reduce((sum, event) => {
+                const eventId = `${slugify(event.name)}-${event.date}`
+                return sum + (player.scores[eventId]?.points ?? 0)
+              }, 0)
+              return {
+                ...player,
+                total,
+              }
+            })
+            .sort((a, b) => b.total - a.total),
+        }
+      : null
+
+  return { leaderboard, dailyMatrix, eventMatrix }
 }
 
 function main() {
@@ -426,6 +572,8 @@ function main() {
     const dailyPath = resolvePath(args.daily ?? 'daily_scores.csv')
     const eventPath = resolvePath(args.event ?? 'event_rankings.json')
     const outputPath = resolvePath(args.output ?? DEFAULT_OUTPUT)
+    const eventBreakdownPath = resolvePath(EVENT_BREAKDOWN_OUTPUT)
+    const dailyBreakdownPath = resolvePath(DAILY_BREAKDOWN_OUTPUT)
 
     if (!fs.existsSync(dailyPath)) {
       throw new Error(`Cannot find daily scores file at ${dailyPath}`)
@@ -435,11 +583,14 @@ function main() {
     }
 
     const dailyRows = parseDailyRows(dailyPath)
+    const rawEventData = JSON.parse(fs.readFileSync(eventPath, 'utf8'))
     const eventRows = parseEventRows(eventPath)
 
     const allMonths = collectMonths(dailyRows, eventRows)
     if (!allMonths.length) {
       fs.writeFileSync(outputPath, '{}\n', 'utf8')
+      fs.writeFileSync(eventBreakdownPath, '{}\n', 'utf8')
+      fs.writeFileSync(dailyBreakdownPath, '{}\n', 'utf8')
       console.log(`No data found. Wrote empty JSON to ${outputPath}`)
       return
     }
@@ -448,26 +599,44 @@ function main() {
     const uniqueMonths = Array.from(new Set(targetMonths)).sort()
     const dailyByMonth = groupByMonth(dailyRows)
     const eventByMonth = groupByMonth(eventRows)
-    const results = {}
+    const rawEventsByMonth = groupEventsByMonth(rawEventData)
+    const pointsResults = {}
+    const eventBreakdownResults = {}
+    const dailyBreakdownResults = {}
 
     uniqueMonths.forEach((monthKey) => {
       const throughDate =
         month && monthKey === month && throughOverride
           ? throughOverride
           : monthRange(monthKey).end
-      const leaderboard = computeMonthLeaderboard(
+      const { leaderboard, dailyMatrix, eventMatrix } = computeMonthData(
         monthKey,
         dailyByMonth.get(monthKey),
         eventByMonth.get(monthKey),
+        rawEventsByMonth.get(monthKey),
         throughDate,
       )
       if (leaderboard.length) {
-        results[monthKey] = leaderboard
+        pointsResults[monthKey] = leaderboard
+      }
+      if (dailyMatrix) {
+        dailyBreakdownResults[monthKey] = dailyMatrix
+      }
+      if (eventMatrix) {
+        eventBreakdownResults[monthKey] = eventMatrix
       }
     })
 
-    fs.writeFileSync(`${outputPath}`, `${JSON.stringify(results, null, 2)}\n`)
-    const monthList = Object.keys(results)
+    fs.writeFileSync(`${outputPath}`, `${JSON.stringify(pointsResults, null, 2)}\n`)
+    fs.writeFileSync(
+      eventBreakdownPath,
+      `${JSON.stringify(eventBreakdownResults, null, 2)}\n`,
+    )
+    fs.writeFileSync(
+      dailyBreakdownPath,
+      `${JSON.stringify(dailyBreakdownResults, null, 2)}\n`,
+    )
+    const monthList = Object.keys(pointsResults)
     console.log(
       `Calculated leaderboards for ${
         monthList.length

@@ -9,10 +9,14 @@ import {
   formatDisplayDate,
   formatMonthLabel,
   playerPointsByMonth,
+  eventBreakdownByMonth,
+  dailyBreakdownByMonth,
   type BoardTile,
   type DailyGame,
   type EventDetails,
   type PlayerPoints as PlayerPointsRow,
+  type EventBreakdownMonth,
+  type DailyBreakdownMonth,
 } from './data'
 import { Link, useRouter } from './router'
 
@@ -105,6 +109,8 @@ function MonthView({ monthKey }: { monthKey: string }) {
 
   const calendar = buildCalendar(monthKey, dailyGameByDate, eventDatesLookup)
   const monthPoints = playerPointsByMonth.get(monthKey) ?? []
+  const eventMatrix = eventBreakdownByMonth.get(monthKey)
+  const dailyMatrix = dailyBreakdownByMonth.get(monthKey)
 
   return (
     <>
@@ -128,6 +134,26 @@ function MonthView({ monthKey }: { monthKey: string }) {
       >
         <PointsTable rows={monthPoints} />
       </CollapsiblePanel>
+
+      {dailyMatrix && dailyMatrix.days.length > 0 && (
+        <CollapsiblePanel
+          title="Daily standings"
+          eyebrow="Daily breakdown"
+          description="Each cell displays rank, raw score, and custom points for that day."
+        >
+          <DailyMatrixTable matrix={dailyMatrix} />
+        </CollapsiblePanel>
+      )}
+
+      {eventMatrix && eventMatrix.events.length > 0 && (
+        <CollapsiblePanel
+          title="Event standings"
+          eyebrow="Event breakdown"
+          description="Each cell displays rank, raw score, and custom points for that event week."
+        >
+          <EventMatrixTable matrix={eventMatrix} />
+        </CollapsiblePanel>
+      )}
 
       <section className="panel">
         <div className="panel-heading">
@@ -426,21 +452,27 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
       <table className="data-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Player</th>
-            <th>Total</th>
-            <th>Daily</th>
-            <th>Event</th>
-            <th>Daily avg</th>
-            <th>Event avg</th>
-            <th>Daily plays</th>
-            <th>Gold</th>
-            <th>Silver</th>
-            <th>Bronze</th>
-            <th>Medals</th>
-            <th>Medal bonus</th>
-            <th>Streak bonus</th>
-            <th>Top 10 streak</th>
+            <th rowSpan={2}>#</th>
+            <th rowSpan={2}>Player</th>
+            <th rowSpan={2}>Total</th>
+            <th rowSpan={2}>Daily</th>
+            <th rowSpan={2}>Event</th>
+            <th colSpan={2}>Daily avg</th>
+            <th colSpan={2}>Event avg</th>
+            <th rowSpan={2}>Daily plays</th>
+            <th rowSpan={2}>Gold</th>
+            <th rowSpan={2}>Silver</th>
+            <th rowSpan={2}>Bronze</th>
+            <th rowSpan={2}>Medals</th>
+            <th rowSpan={2}>Medal bonus</th>
+            <th rowSpan={2}>Streak bonus</th>
+            <th rowSpan={2}>Top 10 streak</th>
+          </tr>
+          <tr>
+            <th className="matrix-subhead">Rank</th>
+            <th className="matrix-subhead">Score</th>
+            <th className="matrix-subhead">Rank</th>
+            <th className="matrix-subhead">Score</th>
           </tr>
         </thead>
         <tbody>
@@ -461,8 +493,26 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
               <td>{player.totalPoints.toLocaleString()}</td>
               <td>{player.dailyPoints.toLocaleString()}</td>
               <td>{player.eventPoints.toLocaleString()}</td>
-              <td>{player.averageDailyScore.toFixed(2)}</td>
-              <td>{player.averageEventScore.toFixed(2)}</td>
+              <td className="matrix-cell">
+                {player.dailyGamesPlayed > 0
+                  ? player.averageDailyRank.toFixed(2)
+                  : '—'}
+              </td>
+              <td className="matrix-cell">
+                {player.dailyGamesPlayed > 0
+                  ? player.averageDailyScore.toFixed(2)
+                  : '—'}
+              </td>
+              <td className="matrix-cell">
+                {player.eventGamesPlayed > 0
+                  ? player.averageEventRank.toFixed(2)
+                  : '—'}
+              </td>
+              <td className="matrix-cell">
+                {player.eventGamesPlayed > 0
+                  ? player.averageEventScore.toFixed(2)
+                  : '—'}
+              </td>
               <td>{player.dailyGamesPlayed}</td>
               <td>{player.goldCount}</td>
               <td>{player.silverCount}</td>
@@ -654,6 +704,167 @@ function CollapsiblePanel({
       </button>
       {open && <div className="collapsible-content">{children}</div>}
     </section>
+  )
+}
+
+function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
+  if (!matrix.events.length || !matrix.players.length) {
+    return <p className="subtle">No event data is available for this month.</p>
+  }
+
+  const events = matrix.events
+  const players = matrix.players
+
+  return (
+    <div className="table-wrapper">
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th rowSpan={2}>#</th>
+            <th rowSpan={2}>Player</th>
+            <th rowSpan={2}>Total</th>
+            {events.map((event) => (
+              <th key={event.id} colSpan={3}>
+                {event.name}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {events.flatMap((event) => [
+              <th className="matrix-subhead" key={`${event.id}-rank`}>
+                Rank
+              </th>,
+              <th className="matrix-subhead" key={`${event.id}-score`}>
+                Score
+              </th>,
+              <th className="matrix-subhead" key={`${event.id}-points`}>
+                Points
+              </th>,
+            ])}
+          </tr>
+        </thead>
+        <tbody>
+          {players.map((player, index) => (
+            <tr key={player.playerId}>
+              <td>{index + 1}</td>
+              <td className="player-cell">
+                {player.avatar ? (
+                  <img
+                    src={player.avatar}
+                    alt=""
+                    className="player-avatar"
+                    loading="lazy"
+                  />
+                ) : null}
+                <span>{player.name}</span>
+              </td>
+              <td>{player.total.toLocaleString()}</td>
+              {events.flatMap((event) => {
+                const score = player.scores[event.id]
+                return [
+                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-rank`}>
+                    {score?.rank ?? '—'}
+                  </td>,
+                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-score`}>
+                    {score?.score !== null && score?.score !== undefined
+                      ? score.score.toLocaleString()
+                      : '—'}
+                  </td>,
+                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-points`}>
+                    {score ? score.points.toLocaleString() : '—'}
+                  </td>,
+                ]
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
+  if (!matrix.days.length || !matrix.players.length) {
+    return <p className="subtle">No daily data is available for this month.</p>
+  }
+
+  const days = matrix.days
+  const players = matrix.players
+
+  const formatDayLabel = (iso: string) => {
+    const date = new Date(iso)
+    if (Number.isNaN(date.valueOf())) return iso
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    })
+  }
+
+  return (
+    <div className="table-wrapper">
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th rowSpan={2}>#</th>
+            <th rowSpan={2}>Player</th>
+            <th rowSpan={2}>Total</th>
+            {days.map((day) => (
+              <th key={day.date} colSpan={3}>
+                {formatDayLabel(day.date)}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {days.flatMap((day) => [
+              <th className="matrix-subhead" key={`${day.date}-rank`}>
+                Rank
+              </th>,
+              <th className="matrix-subhead" key={`${day.date}-score`}>
+                Score
+              </th>,
+              <th className="matrix-subhead" key={`${day.date}-points`}>
+                Points
+              </th>,
+            ])}
+          </tr>
+        </thead>
+        <tbody>
+          {players.map((player, index) => (
+            <tr key={player.playerId}>
+              <td>{index + 1}</td>
+              <td className="player-cell">
+                {player.avatar ? (
+                  <img
+                    src={player.avatar}
+                    alt=""
+                    className="player-avatar"
+                    loading="lazy"
+                  />
+                ) : null}
+                <span>{player.name}</span>
+              </td>
+              <td>{player.total.toLocaleString()}</td>
+              {days.flatMap((day) => {
+                const score = player.scores[day.date]
+                return [
+                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-rank`}>
+                    {score?.rank ?? '—'}
+                  </td>,
+                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-score`}>
+                    {score?.score !== null && score?.score !== undefined
+                      ? score.score.toLocaleString()
+                      : '—'}
+                  </td>,
+                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-points`}>
+                    {score ? score.points.toLocaleString() : '—'}
+                  </td>,
+                ]
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
