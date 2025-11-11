@@ -27,8 +27,7 @@ function main() {
     rows
       .slice(0, 20)
       .forEach((player, index) => {
-        const rank = String(index + 1).padStart(2, ' ')
-        console.log(`${rank}. ${player.name} - ${player.totalPoints}`)
+        console.log(`${player.name} - ${player.totalPoints}`)
       })
   } catch (error) {
     console.error(error.message)

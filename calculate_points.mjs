@@ -422,25 +422,24 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
   })
 
   sortedEvents.forEach((event) => {
-      const eventId = `${slugify(event.name)}-${event.date}`
-      ensureArray(event.rankings).forEach((entry) => {
-        const rank = Number(entry?.rank)
-        const points = getEventPoints(rank)
-        if (!points) return
-        const rawScore = Number(entry?.points)
-        const matrixPlayer = getMatrixPlayer(
-          eventMatrixPlayers,
-          entry?.playerId || `name:${entry?.name || 'Unknown'}`,
-          entry?.name || 'Unknown',
-          entry?.avatar || '',
-        )
-        matrixPlayer.scores[eventId] = {
-          rank: Number.isFinite(rank) ? rank : null,
-          score: Number.isFinite(rawScore) ? rawScore : null,
-          points,
-        }
-      })
+    const eventId = `${slugify(event.name)}-${event.date}`
+    ensureArray(event.rankings).forEach((entry) => {
+      const rank = Number(entry?.rank)
+      const points = getEventPoints(rank)
+      const rawScore = Number(entry?.points)
+      const matrixPlayer = getMatrixPlayer(
+        eventMatrixPlayers,
+        entry?.playerId || `name:${entry?.name || 'Unknown'}`,
+        entry?.name || 'Unknown',
+        entry?.avatar || '',
+      )
+      matrixPlayer.scores[eventId] = {
+        rank: Number.isFinite(rank) ? rank : null,
+        score: Number.isFinite(rawScore) ? rawScore : null,
+        points,
+      }
     })
+  })
 
   let bestStreak = 0
   players.forEach((player) => {
@@ -523,12 +522,23 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
                 (sum, date) => sum + (player.scores[date]?.points ?? 0),
                 0,
               )
+              const totalScore = dailyDays.reduce(
+                (sum, date) => sum + (player.scores[date]?.score ?? 0),
+                0,
+              )
               return {
                 ...player,
                 total,
+                totalScore,
               }
             })
-            .sort((a, b) => b.total - a.total),
+            .sort((a, b) => {
+              if (b.total !== a.total) return b.total - a.total
+              const aScore = a.totalScore ?? 0
+              const bScore = b.totalScore ?? 0
+              if (bScore !== aScore) return bScore - aScore
+              return a.name.localeCompare(b.name)
+            }),
         }
       : null
 
@@ -546,12 +556,23 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
                 const eventId = `${slugify(event.name)}-${event.date}`
                 return sum + (player.scores[eventId]?.points ?? 0)
               }, 0)
+              const totalScore = sortedEvents.reduce((sum, event) => {
+                const eventId = `${slugify(event.name)}-${event.date}`
+                return sum + (player.scores[eventId]?.score ?? 0)
+              }, 0)
               return {
                 ...player,
                 total,
+                totalScore,
               }
             })
-            .sort((a, b) => b.total - a.total),
+            .sort((a, b) => {
+              if (b.total !== a.total) return b.total - a.total
+              const aScore = a.totalScore ?? 0
+              const bScore = b.totalScore ?? 0
+              if (bScore !== aScore) return bScore - aScore
+              return a.name.localeCompare(b.name)
+            }),
         }
       : null
 

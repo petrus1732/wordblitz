@@ -5,7 +5,7 @@ import path from 'node:path';
 const FB_APP_PLAY_URL =
   'https://www.facebook.com/gaming/play/2211386328877300/';
 const OUTPUT_JSON = path.resolve('./event_rankings.json');
-const NOW = new Date();
+const NOW = new Date(Date.now()) // current UTC in ms
 const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
 const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
 const STORAGE_PATHS = ['./storage_state.json', './storage_state2.json'];
@@ -48,10 +48,10 @@ const MONTH_INDEX = {
 };
 
 function formatDate(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
+  const yyyy = date.getUTCFullYear()
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0')
+  const dd = String(date.getUTCDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
 }
 
 function normaliseWhitespace(value) {
@@ -121,16 +121,61 @@ async function readExistingEvents(filePath) {
 }
 
 function mergeEventsByDate(existing, updates) {
-  const orderedMap = new Map();
-  const addEvent = event => {
-    if (!event || typeof event !== 'object') return;
-    const eventDate = event.date ?? 'unknown';
-    orderedMap.set(eventDate, event);
-  };
+  const eventsByDate = new Map();
 
-  existing.forEach(addEvent);
-  updates.forEach(addEvent);
-  return Array.from(orderedMap.values());
+  existing.forEach((event) => {
+    if (!event || typeof event !== 'object') return
+    const eventDate = event.date ?? 'unknown'
+    eventsByDate.set(eventDate, event)
+  })
+
+  updates.forEach((event) => {
+    if (!event || typeof event !== 'object') return
+    const eventDate = event.date ?? 'unknown'
+    const existingEvent = eventsByDate.get(eventDate)
+    if (!existingEvent) {
+      eventsByDate.set(eventDate, event)
+      return
+    }
+    const mergedRankings = mergeRankings(existingEvent.rankings, event.rankings)
+    eventsByDate.set(eventDate, {
+      ...existingEvent,
+      rankings: mergedRankings,
+    })
+  })
+
+  return Array.from(eventsByDate.values())
+}
+
+function mergeRankings(listA = [], listB = []) {
+  const merged = [...(listA ?? []), ...(listB ?? [])]
+  const seen = new Set()
+  const deduped = []
+
+  merged.forEach((entry) => {
+    if (!entry || typeof entry !== 'object') return
+    const playerId = entry.playerId || `name:${entry.name || 'Unknown'}`
+    const key = `${playerId}:${entry.points ?? ''}:${entry.rank ?? ''}`
+    if (seen.has(key)) return
+    seen.add(key)
+    deduped.push({ ...entry })
+  })
+
+  deduped.sort((a, b) => {
+    const scoreA = Number(a.points ?? 0)
+    const scoreB = Number(b.points ?? 0)
+    if (scoreB !== scoreA) return scoreB - scoreA
+    const rankA = Number(a.rank ?? Infinity)
+    const rankB = Number(b.rank ?? Infinity)
+    if (rankA !== rankB) return rankA - rankB
+    return (a.name || '').localeCompare(b.name || '')
+  })
+
+  deduped.forEach((entry, index) => {
+    entry.rank = index + 1
+  })
+
+  return deduped
 }
 
 function isEventClosed(metadata, isoDate) {
@@ -287,6 +332,11 @@ async function runForStorage(storagePath) {
     await frame.waitForTimeout(1000);
 
     const rankings = await extractLeaderboard(frame);
+    console.log(
+      `  → captured ${rankings.length} player(s) for ${
+        title || 'Unknown'
+      } (${eventDate})`,
+    );
     events.push({
       date: eventDate,
       name: title, 
