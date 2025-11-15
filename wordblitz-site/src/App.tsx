@@ -17,6 +17,7 @@ import {
   type PlayerPoints as PlayerPointsRow,
   type EventBreakdownMonth,
   type DailyBreakdownMonth,
+  lastUpdateByMonth,
 } from './data'
 import { Link, useRouter } from './router'
 
@@ -28,7 +29,14 @@ type Route =
   | { kind: 'not-found'; message?: string }
 
 const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const EVENT_COLORS = ['event-a', 'event-b', 'event-c', 'event-d', 'event-e']
+const EVENT_COLORS = [
+  'event-a',
+  'event-b',
+  'event-c',
+  'event-d',
+  'event-e',
+  'event-f',
+]
 const eventColorMap = new Map<string, string>()
 
 export default function App() {
@@ -111,6 +119,10 @@ function MonthView({ monthKey }: { monthKey: string }) {
   const monthPoints = playerPointsByMonth.get(monthKey) ?? []
   const eventMatrix = eventBreakdownByMonth.get(monthKey)
   const dailyMatrix = dailyBreakdownByMonth.get(monthKey)
+  const lastUpdateDate = lastUpdateByMonth.get(monthKey)
+  const lastUpdateDescription = lastUpdateDate
+    ? `Last update: ${lastUpdateDate}`
+    : 'Last update: Unknown'
 
   return (
     <>
@@ -130,7 +142,7 @@ function MonthView({ monthKey }: { monthKey: string }) {
       <CollapsiblePanel
         title="Season standings"
         eyebrow="Total leaderboard"
-        description="Calculated via calculate_points.mjs and refreshed from points.json."
+        description={lastUpdateDescription}
       >
         <PointsTable rows={monthPoints} />
       </CollapsiblePanel>
@@ -139,7 +151,7 @@ function MonthView({ monthKey }: { monthKey: string }) {
         <CollapsiblePanel
           title="Daily standings"
           eyebrow="Daily breakdown"
-          description="Each cell displays rank, raw score, and custom points for that day."
+          description={lastUpdateDescription}
         >
           <DailyMatrixTable matrix={dailyMatrix} />
         </CollapsiblePanel>
@@ -149,7 +161,7 @@ function MonthView({ monthKey }: { monthKey: string }) {
         <CollapsiblePanel
           title="Event standings"
           eyebrow="Event breakdown"
-          description="Each cell displays rank, raw score, and custom points for that event week."
+          description={lastUpdateDescription}
         >
           <EventMatrixTable matrix={eventMatrix} />
         </CollapsiblePanel>
@@ -449,11 +461,15 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
 
   return (
     <div className="table-wrapper">
-      <table className="data-table">
+      <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2}>#</th>
-            <th rowSpan={2}>Player</th>
+            <th rowSpan={2} className="rank-column">
+              #
+            </th>
+            <th rowSpan={2} className="player-column">
+              Player
+            </th>
             <th rowSpan={2}>Total</th>
             <th rowSpan={2}>Daily</th>
             <th rowSpan={2}>Event</th>
@@ -478,7 +494,7 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
         <tbody>
           {rows.map((player, index) => (
             <tr key={player.playerId}>
-              <td>{index + 1}</td>
+              <td className="rank-column">{index + 1}</td>
               <td className="player-cell">
                 {player.avatar ? (
                   <img
@@ -547,15 +563,15 @@ function RankingTable({ rows }: { rows: RankingRow[] }) {
       <table className="data-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Player</th>
+            <th className="rank-column">#</th>
+            <th className="player-column">Player</th>
             <th>Points</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.playerId}>
-              <td>{row.rank}</td>
+              <td className="rank-column">{row.rank}</td>
               <td className="player-cell">
                 {row.avatarUrl ? (
                   <img
@@ -717,11 +733,15 @@ function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
 
   return (
     <div className="table-wrapper">
-      <table className="data-table">
+      <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2}>#</th>
-            <th rowSpan={2}>Player</th>
+            <th rowSpan={2} className="rank-column">
+              #
+            </th>
+            <th rowSpan={2} className="player-column">
+              Player
+            </th>
             <th rowSpan={2}>Total</th>
             {events.map((event) => (
               <th key={event.id} colSpan={3}>
@@ -746,7 +766,7 @@ function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
         <tbody>
           {players.map((player, index) => (
             <tr key={player.playerId}>
-              <td>{index + 1}</td>
+              <td className="rank-column">{index + 1}</td>
               <td className="player-cell">
                 {player.avatar ? (
                   <img
@@ -802,11 +822,15 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
 
   return (
     <div className="table-wrapper">
-      <table className="data-table">
+      <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2}>#</th>
-            <th rowSpan={2}>Player</th>
+            <th rowSpan={2} className="rank-column">
+              #
+            </th>
+            <th rowSpan={2} className="player-column">
+              Player
+            </th>
             <th rowSpan={2}>Total</th>
             {days.map((day) => (
               <th key={day.date} colSpan={3}>
@@ -831,7 +855,7 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
         <tbody>
           {players.map((player, index) => (
             <tr key={player.playerId}>
-              <td>{index + 1}</td>
+              <td className="rank-column">{index + 1}</td>
               <td className="player-cell">
                 {player.avatar ? (
                   <img

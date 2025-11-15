@@ -213,6 +213,17 @@ const eventDetails = eventDetailsJson as RawEventDetail[]
 const eventRankings = eventRankingsJson as RawEventRanking[]
 const rawEventBreakdown = eventBreakdownJson as RawEventBreakdown
 const rawDailyBreakdown = dailyBreakdownJson as RawDailyBreakdown
+const monthLastUpdated = new Map<string, string>()
+
+function recordMonthActivity(date?: string | null) {
+  if (!date || typeof date !== 'string' || date.length !== 10) return
+  const monthKey = date.slice(0, 7)
+  if (!monthKey) return
+  const current = monthLastUpdated.get(monthKey)
+  if (!current || date.localeCompare(current) > 0) {
+    monthLastUpdated.set(monthKey, date)
+  }
+}
 
 export const playerPointsByMonth = new Map(
   Object.entries(rawPointsByMonth).map(([month, rows]) => [
@@ -275,6 +286,7 @@ export const dailyGames: DailyGame[] = allDailyDates
   .sort((a, b) => b.date.localeCompare(a.date))
 
 export const dailyGameByDate = new Map(dailyGames.map((game) => [game.date, game]))
+dailyGames.forEach((game) => recordMonthActivity(game.date))
 
 const eventDetailsWithMeta: RawEventDetailWithMeta[] = eventDetails.map(
   (detail) => {
@@ -323,6 +335,10 @@ export const events: EventDetails[] = eventRankings
   .sort((a, b) => b.finalDate.localeCompare(a.finalDate))
 
 export const eventById = new Map(events.map((event) => [event.id, event]))
+events.forEach((event) => {
+  recordMonthActivity(event.finalDate)
+  event.coveredDates.forEach((date) => recordMonthActivity(date))
+})
 
 export const eventDatesLookup = events.reduce<Map<string, EventDetails[]>>(
   (acc, event) => {
@@ -384,6 +400,8 @@ dailyBreakdownByMonth.forEach((_, month) => monthSet.add(month))
 export const availableMonths = Array.from(monthSet).sort((a, b) =>
   b.localeCompare(a),
 )
+
+export const lastUpdateByMonth = monthLastUpdated
 
 export function formatMonthLabel(monthKey: string) {
   const [year, month] = monthKey.split('-').map(Number)

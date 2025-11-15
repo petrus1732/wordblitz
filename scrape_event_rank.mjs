@@ -96,9 +96,10 @@ function parseRelativeDate(raw, base = NOW) {
     const monthIndex =
       MONTH_INDEX[monthLower] ?? MONTH_INDEX[monthKey];
     const day = Number.parseInt(dayText, 10);
-    const year = yearText ? Number.parseInt(yearText, 10) : base.getFullYear();
+    const year =
+      yearText ? Number.parseInt(yearText, 10) : base.getUTCFullYear();
     if (monthIndex !== undefined && !Number.isNaN(day) && !Number.isNaN(year)) {
-      const resolved = new Date(year, monthIndex, day);
+      const resolved = new Date(Date.UTC(year, monthIndex, day));
       if (!Number.isNaN(resolved.valueOf())) return formatDate(resolved);
     }
   }
@@ -204,9 +205,8 @@ function isEventClosed(metadata, isoDate) {
 async function extractLeaderboard(frame) {
   return frame.$$eval(
     '.rank-list-item',
-    (items, { discardId, renameId, renameName }) =>
-      items
-      .map(el => {
+    (items, { discardId, renameId, renameName }) => {
+      const rows = items.map((el) => {
         const rankText = el.querySelector('.number')?.innerText ?? '';
         const parsedRank = Number.parseInt(rankText.replace(/\D+/g, ''), 10);
 
@@ -230,8 +230,18 @@ async function extractLeaderboard(frame) {
           normalizedName === 'all arenas' ? 0 : Number.isNaN(parsedRank) ? null : parsedRank;
         if (rank === null) return null;
         return { rank, name, points, playerId, avatar };
+      }).filter(Boolean)
+
+      const seen = new Set()
+      const deduped = []
+      rows.forEach((entry) => {
+        const key = entry.playerId || `name:${entry.name}`
+        if (!key || seen.has(key)) return
+        seen.add(key)
+        deduped.push(entry)
       })
-        .filter(Boolean),
+      return deduped
+    },
     {
       discardId: PLAYER_DISCARD_ID,
       renameId: PLAYER_RENAME_ID,
