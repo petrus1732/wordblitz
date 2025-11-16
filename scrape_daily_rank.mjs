@@ -144,15 +144,26 @@ async function runForStorage(storage_path) {
         if (b.points !== a.points) return b.points - a.points;
         return a.name.localeCompare(b.name);
       });
-      let rankCounter = 1;
+      let currentRank = 0;
+      let previousPoints = null;
       for (const entry of group) {
         if (entry.name === 'All arenas') {
           entry.rank = '';
-        } else {
-          entry.rank = String(rankCounter++);
+          continue;
         }
+        if (previousPoints === null || entry.points !== previousPoints) {
+          currentRank += 1;
+          previousPoints = entry.points;
+        }
+        entry.rank = String(currentRank);
         finalRows.push(entry);
       }
+      // Ensure "All arenas" rows (if any) still persist at end for date
+      const arenas = group.filter((entry) => entry.name === 'All arenas');
+      arenas.forEach((entry) => {
+        entry.rank = '';
+        finalRows.push(entry);
+      });
     }
 
     const header = 'dailyDate,rank,playerId,name,points,avatarUrl\n';

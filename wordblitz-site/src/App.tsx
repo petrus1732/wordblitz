@@ -77,6 +77,7 @@ export default function App() {
             Browse daily boards, follow week-long events, and celebrate every
             point.
           </p>
+          <p className='update-note'>New change: Rankings are changed to dense ranks (ties keep the same rank, next position increments by 1)</p>
         </div>
         <nav className="primary-nav">
           <Link to="/">Home</Link>

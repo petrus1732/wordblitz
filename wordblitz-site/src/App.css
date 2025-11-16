@@ -36,6 +36,12 @@
   max-width: 45ch;
 }
 
+.update-note {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #fbbf24;
+}
+
 .primary-nav a {
   color: #cbd5f5;
   font-weight: 600;

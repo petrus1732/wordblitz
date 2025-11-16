@@ -240,7 +240,35 @@ async function extractLeaderboard(frame) {
         seen.add(key)
         deduped.push(entry)
       })
-      return deduped
+
+      const arenas = []
+      const others = []
+      deduped.forEach((entry) => {
+        const normalized = entry.name.trim().toLowerCase()
+        if (normalized === 'all arenas') {
+          entry.rank = 0
+          arenas.push(entry)
+        } else {
+          others.push(entry)
+        }
+      })
+
+      others.sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points
+        return a.name.localeCompare(b.name)
+      })
+
+      let currentRank = 0
+      let previousPoints = null
+      others.forEach((entry) => {
+        if (previousPoints === null || entry.points !== previousPoints) {
+          currentRank += 1
+          previousPoints = entry.points
+        }
+        entry.rank = currentRank
+      })
+
+      return [...others, ...arenas]
     },
     {
       discardId: PLAYER_DISCARD_ID,
