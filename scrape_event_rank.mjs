@@ -80,7 +80,7 @@ function parseRelativeDate(raw, base = NOW) {
         : Number.parseInt(quantityText, 10);
     const unitMs = UNIT_IN_MS[unit];
     if (!Number.isNaN(quantity) && unitMs) {
-      const adjustedQuantity = quantity + 1; // in-game daily summaries lag by one day
+      const adjustedQuantity = quantity ; // in-game daily summaries lag by one day
       const target = new Date(base.getTime() - adjustedQuantity * unitMs);
       return formatDate(target);
     }
@@ -153,10 +153,15 @@ function mergeRankings(listA = [], listB = []) {
   const seen = new Set()
   const deduped = []
 
+  let allArenasEntry = null
   merged.forEach((entry) => {
     if (!entry || typeof entry !== 'object') return
     const playerId = entry.playerId || `name:${entry.name || 'Unknown'}`
-    const key = `${playerId}:${entry.points ?? ''}:${entry.rank ?? ''}`
+    const key = `${playerId}:${entry.points ?? ''}`
+    if (entry.name === 'All arenas') {
+      allArenasEntry = entry
+      return
+    }
     if (seen.has(key)) return
     seen.add(key)
     deduped.push({ ...entry })
@@ -176,6 +181,9 @@ function mergeRankings(listA = [], listB = []) {
     entry.rank = index + 1
   })
 
+  allArenasEntry.rank = 0;
+  deduped.unshift(allArenasEntry);
+  console.log(deduped)
   return deduped
 }
 
