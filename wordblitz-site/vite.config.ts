@@ -9,7 +9,7 @@ const workspaceRoot = resolve(__dirname, '..')
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/wordblitz/',
+  base: './',
   plugins: [react()],
   server: {
     fs: {
