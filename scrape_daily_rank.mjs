@@ -270,7 +270,9 @@ async function runForStorage(storage_path) {
       await card.click().catch(() => console.warn('⚠️ 點擊 Daily 失敗，嘗試繼續。'));
 
       // 點擊 All arenas（若有）
-      const allArenasBtn = await frame.$('.btn:has-text("All arenas")');
+      const allArenasBtn = await frame.$(
+        '.btn:has-text("All players"), .btn:has-text("All arenas")',
+      );
       if (allArenasBtn) {
         console.log('🎮 點擊 All arenas...');
         await allArenasBtn.click().catch(() => console.warn('⚠️ 點擊 All arenas 失敗'));

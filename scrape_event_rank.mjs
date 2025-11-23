@@ -368,7 +368,9 @@ async function runForStorage(storagePath) {
       continue;
     }
 
-    const allArenasBtn = await frame.$('.btn:has-text("All arenas")');
+    const allArenasBtn = await frame.$(
+      '.btn:has-text("All players"), .btn:has-text("All arenas")',
+    );
     if (allArenasBtn) {
       await allArenasBtn.click().catch(() => {});
       await frame.waitForTimeout(2000);
