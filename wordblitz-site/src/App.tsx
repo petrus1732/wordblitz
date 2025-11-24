@@ -17,6 +17,8 @@ import {
   type PlayerPoints as PlayerPointsRow,
   type EventBreakdownMonth,
   type DailyBreakdownMonth,
+  type EventBreakdownPlayer,
+  type DailyBreakdownPlayer,
   lastUpdateByMonth,
 } from './data'
 import { Link, useRouter } from './router'
@@ -455,7 +457,110 @@ function CalendarView({
   )
 }
 
+type PointsSortKey =
+  | 'rank'
+  | 'name'
+  | 'totalPoints'
+  | 'dailyPoints'
+  | 'eventPoints'
+  | 'averageDailyRank'
+  | 'averageDailyScore'
+  | 'averageEventRank'
+  | 'averageEventScore'
+  | 'dailyGamesPlayed'
+  | 'goldCount'
+  | 'silverCount'
+  | 'bronzeCount'
+  | 'medalCount'
+  | 'medalBonus'
+  | 'streakBonus'
+  | 'longestTop10Streak'
+
+const POINTS_ASC_SORT_KEYS: ReadonlySet<PointsSortKey> = new Set([
+  'rank',
+  'name',
+  'averageDailyRank',
+  'averageEventRank',
+])
+
+function getPointsSortValue(
+  player: PlayerPointsRow,
+  key: PointsSortKey,
+  rankLookup: Map<string, number>,
+) {
+  switch (key) {
+    case 'rank':
+      return rankLookup.get(player.playerId) ?? null
+    case 'name':
+      return player.name.toLocaleLowerCase()
+    case 'totalPoints':
+      return player.totalPoints
+    case 'dailyPoints':
+      return player.dailyPoints
+    case 'eventPoints':
+      return player.eventPoints
+    case 'averageDailyRank':
+      return player.dailyGamesPlayed > 0 ? player.averageDailyRank : null
+    case 'averageDailyScore':
+      return player.dailyGamesPlayed > 0 ? player.averageDailyScore : null
+    case 'averageEventRank':
+      return player.eventGamesPlayed > 0 ? player.averageEventRank : null
+    case 'averageEventScore':
+      return player.eventGamesPlayed > 0 ? player.averageEventScore : null
+    case 'dailyGamesPlayed':
+      return player.dailyGamesPlayed
+    case 'goldCount':
+      return player.goldCount
+    case 'silverCount':
+      return player.silverCount
+    case 'bronzeCount':
+      return player.bronzeCount
+    case 'medalCount':
+      return player.medalCount
+    case 'medalBonus':
+      return player.medalBonus
+    case 'streakBonus':
+      return player.streakBonus
+    case 'longestTop10Streak':
+      return player.longestTop10Streak
+    default:
+      return null
+  }
+}
+
 function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
+  const [sortState, setSortState] = useState<SortState<PointsSortKey>>({
+    key: 'totalPoints',
+    direction: 'desc',
+  })
+
+  const rankLookup = useMemo(
+    () => new Map(rows.map((player, index) => [player.playerId, index + 1])),
+    [rows],
+  )
+
+  const sortedRows = useMemo(() => {
+    const next = rows.slice()
+    next.sort((a, b) => {
+      const aValue = getPointsSortValue(a, sortState.key, rankLookup)
+      const bValue = getPointsSortValue(b, sortState.key, rankLookup)
+      return compareValues(aValue, bValue, sortState.direction)
+    })
+    return next
+  }, [rows, sortState, rankLookup])
+
+  const handleSort = (key: PointsSortKey) => {
+    setSortState((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+      }
+      return {
+        key,
+        direction: POINTS_ASC_SORT_KEYS.has(key) ? 'asc' : 'desc',
+      }
+    })
+  }
+
   if (rows.length === 0) {
     return <p className="subtle">No player points have been recorded.</p>
   }
@@ -465,81 +570,189 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
       <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2} className="rank-column">
-              #
-            </th>
-            <th rowSpan={2} className="player-column">
-              Player
-            </th>
-            <th rowSpan={2}>Total</th>
-            <th rowSpan={2}>Daily</th>
-            <th rowSpan={2}>Event</th>
+            <SortableHeader
+              label="#"
+              sortKey="rank"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="rank-column"
+              align="center"
+            />
+            <SortableHeader
+              label="Player"
+              sortKey="name"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="player-column"
+            />
+            <SortableHeader
+              label="Total"
+              sortKey="totalPoints"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Daily"
+              sortKey="dailyPoints"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Event"
+              sortKey="eventPoints"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
             <th colSpan={2}>Daily avg</th>
             <th colSpan={2}>Event avg</th>
-            <th rowSpan={2}>Daily plays</th>
-            <th rowSpan={2}>Gold</th>
-            <th rowSpan={2}>Silver</th>
-            <th rowSpan={2}>Bronze</th>
-            <th rowSpan={2}>Medals</th>
-            <th rowSpan={2}>Medal bonus</th>
-            <th rowSpan={2}>Streak bonus</th>
-            <th rowSpan={2}>Top 10 streak</th>
+            <SortableHeader
+              label="Daily plays"
+              sortKey="dailyGamesPlayed"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Gold"
+              sortKey="goldCount"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Silver"
+              sortKey="silverCount"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Bronze"
+              sortKey="bronzeCount"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Medals"
+              sortKey="medalCount"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Medal bonus"
+              sortKey="medalBonus"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Streak bonus"
+              sortKey="streakBonus"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
+            <SortableHeader
+              label="Top 10 streak"
+              sortKey="longestTop10Streak"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
           </tr>
           <tr>
-            <th className="matrix-subhead">Rank</th>
-            <th className="matrix-subhead">Score</th>
-            <th className="matrix-subhead">Rank</th>
-            <th className="matrix-subhead">Score</th>
+            <SortableHeader
+              label="Rank"
+              sortKey="averageDailyRank"
+              sortState={sortState}
+              onSort={handleSort}
+              className="matrix-subhead"
+              align="center"
+            />
+            <SortableHeader
+              label="Score"
+              sortKey="averageDailyScore"
+              sortState={sortState}
+              onSort={handleSort}
+              className="matrix-subhead"
+              align="center"
+            />
+            <SortableHeader
+              label="Rank"
+              sortKey="averageEventRank"
+              sortState={sortState}
+              onSort={handleSort}
+              className="matrix-subhead"
+              align="center"
+            />
+            <SortableHeader
+              label="Score"
+              sortKey="averageEventScore"
+              sortState={sortState}
+              onSort={handleSort}
+              className="matrix-subhead"
+              align="center"
+            />
           </tr>
         </thead>
         <tbody>
-          {rows.map((player, index) => (
-            <tr key={player.playerId}>
-              <td className="rank-column">{index + 1}</td>
-              <td className="player-cell">
-                {player.avatar ? (
-                  <img
-                    src={player.avatar}
-                    alt=""
-                    className="player-avatar"
-                    loading="lazy"
-                  />
-                ) : null}
-                <span>{player.name}</span>
-              </td>
-              <td>{player.totalPoints.toLocaleString()}</td>
-              <td>{player.dailyPoints.toLocaleString()}</td>
-              <td>{player.eventPoints.toLocaleString()}</td>
-              <td className="matrix-cell">
-                {player.dailyGamesPlayed > 0
-                  ? player.averageDailyRank.toFixed(2)
-                  : '—'}
-              </td>
-              <td className="matrix-cell">
-                {player.dailyGamesPlayed > 0
-                  ? player.averageDailyScore.toFixed(2)
-                  : '—'}
-              </td>
-              <td className="matrix-cell">
-                {player.eventGamesPlayed > 0
-                  ? player.averageEventRank.toFixed(2)
-                  : '—'}
-              </td>
-              <td className="matrix-cell">
-                {player.eventGamesPlayed > 0
-                  ? player.averageEventScore.toFixed(2)
-                  : '—'}
-              </td>
-              <td>{player.dailyGamesPlayed}</td>
-              <td>{player.goldCount}</td>
-              <td>{player.silverCount}</td>
-              <td>{player.bronzeCount}</td>
-              <td>{player.medalCount}</td>
-              <td>{player.medalBonus.toLocaleString()}</td>
-              <td>{player.streakBonus.toLocaleString()}</td>
-              <td>{player.longestTop10Streak}</td>
-            </tr>
-          ))}
+          {sortedRows.map((player) => {
+            const originalRank = rankLookup.get(player.playerId)
+            return (
+              <tr key={player.playerId}>
+                <td className="rank-column">{originalRank ?? '—'}</td>
+                <td className="player-cell">
+                  {player.avatar ? (
+                    <img
+                      src={player.avatar}
+                      alt=""
+                      className="player-avatar"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <span>{player.name}</span>
+                </td>
+                <td>{player.totalPoints.toLocaleString()}</td>
+                <td>{player.dailyPoints.toLocaleString()}</td>
+                <td>{player.eventPoints.toLocaleString()}</td>
+                <td className="matrix-cell">
+                  {player.dailyGamesPlayed > 0
+                    ? player.averageDailyRank.toFixed(2)
+                    : '—'}
+                </td>
+                <td className="matrix-cell">
+                  {player.dailyGamesPlayed > 0
+                    ? player.averageDailyScore.toFixed(2)
+                    : '—'}
+                </td>
+                <td className="matrix-cell">
+                  {player.eventGamesPlayed > 0
+                    ? player.averageEventRank.toFixed(2)
+                    : '—'}
+                </td>
+                <td className="matrix-cell">
+                  {player.eventGamesPlayed > 0
+                    ? player.averageEventScore.toFixed(2)
+                    : '—'}
+                </td>
+                <td>{player.dailyGamesPlayed}</td>
+                <td>{player.goldCount}</td>
+                <td>{player.silverCount}</td>
+                <td>{player.bronzeCount}</td>
+                <td>{player.medalCount}</td>
+                <td>{player.medalBonus.toLocaleString()}</td>
+                <td>{player.streakBonus.toLocaleString()}</td>
+                <td>{player.longestTop10Streak}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
@@ -554,7 +767,132 @@ type RankingRow = {
   playerId: string
 }
 
+type RankingSortKey = 'rank' | 'name' | 'points'
+
+const RANKING_ASC_SORT_KEYS: ReadonlySet<RankingSortKey> = new Set([
+  'rank',
+  'name',
+])
+
+function getRankingSortValue(row: RankingRow, key: RankingSortKey) {
+  switch (key) {
+    case 'rank':
+      return row.rank
+    case 'name':
+      return row.name.toLocaleLowerCase()
+    case 'points':
+      return row.points
+    default:
+      return null
+  }
+}
+
+type SortDirection = 'asc' | 'desc'
+
+type SortState<K extends string> = {
+  key: K
+  direction: SortDirection
+}
+
+function SortableHeader<K extends string>({
+  label,
+  sortKey,
+  sortState,
+  onSort,
+  className = '',
+  colSpan,
+  rowSpan,
+  align = 'left',
+}: {
+  label: string
+  sortKey: K
+  sortState: SortState<K>
+  onSort: (key: K) => void
+  className?: string
+  colSpan?: number
+  rowSpan?: number
+  align?: 'left' | 'center' | 'right'
+}) {
+  const isActive = sortState.key === sortKey
+  const indicator = isActive
+    ? sortState.direction === 'asc'
+      ? '▲'
+      : '▼'
+    : '↕'
+
+  return (
+    <th
+      className={`${className} sortable-header`.trim()}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      aria-sort={
+        isActive
+          ? sortState.direction === 'asc'
+            ? 'ascending'
+            : 'descending'
+          : 'none'
+      }
+    >
+      <button
+        type="button"
+        className={`sort-button sort-button--${align} ${
+          isActive ? 'is-active' : ''
+        }`.trim()}
+        onClick={() => onSort(sortKey)}
+        title={`Sort by ${label}`}
+      >
+        <span>{label}</span>
+        <span className="sort-indicator" aria-hidden="true">
+          {indicator}
+        </span>
+      </button>
+    </th>
+  )
+}
+
+function compareValues(
+  a: number | string | null | undefined,
+  b: number | string | null | undefined,
+  direction: SortDirection,
+) {
+  if (a === b) return 0
+  if (a === null || a === undefined) return 1
+  if (b === null || b === undefined) return -1
+  if (typeof a === 'string' || typeof b === 'string') {
+    const result = String(a).localeCompare(String(b), undefined, {
+      sensitivity: 'base',
+    })
+    return direction === 'asc' ? result : -result
+  }
+  const result = Number(a) - Number(b)
+  return direction === 'asc' ? result : -result
+}
+
 function RankingTable({ rows }: { rows: RankingRow[] }) {
+  const [sortState, setSortState] = useState<SortState<RankingSortKey>>({
+    key: 'rank',
+    direction: 'asc',
+  })
+
+  const sortedRows = useMemo(() => {
+    const next = rows.slice()
+    next.sort((a, b) => {
+      const aValue = getRankingSortValue(a, sortState.key)
+      const bValue = getRankingSortValue(b, sortState.key)
+      return compareValues(aValue, bValue, sortState.direction)
+    })
+    return next
+  }, [rows, sortState])
+
+  const handleSort = (key: RankingSortKey) => {
+    setSortState((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+      }
+      return { key, direction: RANKING_ASC_SORT_KEYS.has(key) ? 'asc' : 'desc' }
+    })
+  }
+
   if (rows.length === 0) {
     return <p className="subtle">No rankings have been captured.</p>
   }
@@ -564,13 +902,31 @@ function RankingTable({ rows }: { rows: RankingRow[] }) {
       <table className="data-table">
         <thead>
           <tr>
-            <th className="rank-column">#</th>
-            <th className="player-column">Player</th>
-            <th>Points</th>
+            <SortableHeader
+              label="#"
+              sortKey="rank"
+              sortState={sortState}
+              onSort={handleSort}
+              className="rank-column"
+              align="center"
+            />
+            <SortableHeader
+              label="Player"
+              sortKey="name"
+              sortState={sortState}
+              onSort={handleSort}
+              className="player-column"
+            />
+            <SortableHeader
+              label="Points"
+              sortKey="points"
+              sortState={sortState}
+              onSort={handleSort}
+            />
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+          {sortedRows.map((row) => (
             <tr key={row.playerId}>
               <td className="rank-column">{row.rank}</td>
               <td className="player-cell">
@@ -724,6 +1080,39 @@ function CollapsiblePanel({
   )
 }
 
+type EventMatrixSortKey =
+  | 'rank'
+  | 'name'
+  | 'total'
+  | `event:${string}:rank`
+  | `event:${string}:score`
+  | `event:${string}:points`
+
+function getEventMatrixSortValue(
+  player: EventBreakdownPlayer,
+  key: EventMatrixSortKey,
+  rankLookup: Map<string, number>,
+) {
+  if (key === 'rank') {
+    return rankLookup.get(player.playerId) ?? null
+  }
+  if (key === 'name') {
+    return player.name.toLocaleLowerCase()
+  }
+  if (key === 'total') {
+    return player.total
+  }
+  if (key.startsWith('event:')) {
+    const [, eventId, metric] = key.split(':')
+    const cell = player.scores[eventId]
+    if (!cell) return null
+    if (metric === 'rank') return cell.rank
+    if (metric === 'score') return cell.score
+    if (metric === 'points') return cell.points
+  }
+  return null
+}
+
 function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
   if (!matrix.events.length || !matrix.players.length) {
     return <p className="subtle">No event data is available for this month.</p>
@@ -731,19 +1120,66 @@ function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
 
   const events = matrix.events
   const players = matrix.players
+  const [sortState, setSortState] = useState<SortState<EventMatrixSortKey>>({
+    key: 'total',
+    direction: 'desc',
+  })
+
+  const rankLookup = useMemo(
+    () => new Map(players.map((player, index) => [player.playerId, index + 1])),
+    [players],
+  )
+
+  const sortedPlayers = useMemo(() => {
+    const next = players.slice()
+    next.sort((a, b) => {
+      const aValue = getEventMatrixSortValue(a, sortState.key, rankLookup)
+      const bValue = getEventMatrixSortValue(b, sortState.key, rankLookup)
+      return compareValues(aValue, bValue, sortState.direction)
+    })
+    return next
+  }, [players, sortState, rankLookup])
+
+  const handleSort = (key: EventMatrixSortKey) => {
+    setSortState((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+      }
+      const isAscending =
+        key === 'rank' || key === 'name' || key.endsWith(':rank')
+      return { key, direction: isAscending ? 'asc' : 'desc' }
+    })
+  }
 
   return (
     <div className="table-wrapper">
       <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2} className="rank-column">
-              #
-            </th>
-            <th rowSpan={2} className="player-column">
-              Player
-            </th>
-            <th rowSpan={2}>Total</th>
+            <SortableHeader
+              label="#"
+              sortKey="rank"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="rank-column"
+              align="center"
+            />
+            <SortableHeader
+              label="Player"
+              sortKey="name"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="player-column"
+            />
+            <SortableHeader
+              label="Total"
+              sortKey="total"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
             {events.map((event) => (
               <th key={event.id} colSpan={3}>
                 {event.name}
@@ -751,57 +1187,125 @@ function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
             ))}
           </tr>
           <tr>
-            {events.flatMap((event) => [
-              <th className="matrix-subhead" key={`${event.id}-rank`}>
-                Rank
-              </th>,
-              <th className="matrix-subhead" key={`${event.id}-score`}>
-                Score
-              </th>,
-              <th className="matrix-subhead" key={`${event.id}-points`}>
-                Points
-              </th>,
-            ])}
+            {events.flatMap((event) => {
+              const rankKey = `event:${event.id}:rank` as EventMatrixSortKey
+              const scoreKey = `event:${event.id}:score` as EventMatrixSortKey
+              const pointsKey = `event:${event.id}:points` as EventMatrixSortKey
+              return [
+                <SortableHeader
+                  key={rankKey}
+                  label="Rank"
+                  sortKey={rankKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+                <SortableHeader
+                  key={scoreKey}
+                  label="Score"
+                  sortKey={scoreKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+                <SortableHeader
+                  key={pointsKey}
+                  label="Points"
+                  sortKey={pointsKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+              ]
+            })}
           </tr>
         </thead>
         <tbody>
-          {players.map((player, index) => (
-            <tr key={player.playerId}>
-              <td className="rank-column">{index + 1}</td>
-              <td className="player-cell">
-                {player.avatar ? (
-                  <img
-                    src={player.avatar}
-                    alt=""
-                    className="player-avatar"
-                    loading="lazy"
-                  />
-                ) : null}
-                <span>{player.name}</span>
-              </td>
-              <td>{player.total.toLocaleString()}</td>
-              {events.flatMap((event) => {
-                const score = player.scores[event.id]
-                return [
-                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-rank`}>
-                    {score?.rank ?? '—'}
-                  </td>,
-                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-score`}>
-                    {score?.score !== null && score?.score !== undefined
-                      ? score.score.toLocaleString()
-                      : '—'}
-                  </td>,
-                  <td className="matrix-cell" key={`${player.playerId}-${event.id}-points`}>
-                    {score ? score.points.toLocaleString() : '—'}
-                  </td>,
-                ]
-              })}
-            </tr>
-          ))}
+          {sortedPlayers.map((player) => {
+            const originalRank = rankLookup.get(player.playerId)
+            return (
+              <tr key={player.playerId}>
+                <td className="rank-column">{originalRank ?? '—'}</td>
+                <td className="player-cell">
+                  {player.avatar ? (
+                    <img
+                      src={player.avatar}
+                      alt=""
+                      className="player-avatar"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <span>{player.name}</span>
+                </td>
+                <td>{player.total.toLocaleString()}</td>
+                {events.flatMap((event) => {
+                  const score = player.scores[event.id]
+                  return [
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${event.id}-rank`}
+                    >
+                      {score?.rank ?? '—'}
+                    </td>,
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${event.id}-score`}
+                    >
+                      {score?.score !== null && score?.score !== undefined
+                        ? score.score.toLocaleString()
+                        : '—'}
+                    </td>,
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${event.id}-points`}
+                    >
+                      {score ? score.points.toLocaleString() : '—'}
+                    </td>,
+                  ]
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
   )
+}
+
+type DailyMatrixSortKey =
+  | 'rank'
+  | 'name'
+  | 'total'
+  | `day:${string}:rank`
+  | `day:${string}:score`
+  | `day:${string}:points`
+
+function getDailyMatrixSortValue(
+  player: DailyBreakdownPlayer,
+  key: DailyMatrixSortKey,
+  rankLookup: Map<string, number>,
+) {
+  if (key === 'rank') {
+    return rankLookup.get(player.playerId) ?? null
+  }
+  if (key === 'name') {
+    return player.name.toLocaleLowerCase()
+  }
+  if (key === 'total') {
+    return player.total
+  }
+  if (key.startsWith('day:')) {
+    const [, day, metric] = key.split(':')
+    const cell = player.scores[day]
+    if (!cell) return null
+    if (metric === 'rank') return cell.rank
+    if (metric === 'score') return cell.score
+    if (metric === 'points') return cell.points
+  }
+  return null
 }
 
 function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
@@ -811,6 +1315,36 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
 
   const days = matrix.days
   const players = matrix.players
+  const [sortState, setSortState] = useState<SortState<DailyMatrixSortKey>>({
+    key: 'total',
+    direction: 'desc',
+  })
+
+  const rankLookup = useMemo(
+    () => new Map(players.map((player, index) => [player.playerId, index + 1])),
+    [players],
+  )
+
+  const sortedPlayers = useMemo(() => {
+    const next = players.slice()
+    next.sort((a, b) => {
+      const aValue = getDailyMatrixSortValue(a, sortState.key, rankLookup)
+      const bValue = getDailyMatrixSortValue(b, sortState.key, rankLookup)
+      return compareValues(aValue, bValue, sortState.direction)
+    })
+    return next
+  }, [players, sortState, rankLookup])
+
+  const handleSort = (key: DailyMatrixSortKey) => {
+    setSortState((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+      }
+      const isAscending =
+        key === 'rank' || key === 'name' || key.endsWith(':rank')
+      return { key, direction: isAscending ? 'asc' : 'desc' }
+    })
+  }
 
   const formatDayLabel = (iso: string) => {
     const date = new Date(iso)
@@ -826,13 +1360,30 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
       <table className="data-table data-table--stacked">
         <thead>
           <tr>
-            <th rowSpan={2} className="rank-column">
-              #
-            </th>
-            <th rowSpan={2} className="player-column">
-              Player
-            </th>
-            <th rowSpan={2}>Total</th>
+            <SortableHeader
+              label="#"
+              sortKey="rank"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="rank-column"
+              align="center"
+            />
+            <SortableHeader
+              label="Player"
+              sortKey="name"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+              className="player-column"
+            />
+            <SortableHeader
+              label="Total"
+              sortKey="total"
+              sortState={sortState}
+              onSort={handleSort}
+              rowSpan={2}
+            />
             {days.map((day) => (
               <th key={day.date} colSpan={3}>
                 {formatDayLabel(day.date)}
@@ -840,53 +1391,88 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
             ))}
           </tr>
           <tr>
-            {days.flatMap((day) => [
-              <th className="matrix-subhead" key={`${day.date}-rank`}>
-                Rank
-              </th>,
-              <th className="matrix-subhead" key={`${day.date}-score`}>
-                Score
-              </th>,
-              <th className="matrix-subhead" key={`${day.date}-points`}>
-                Points
-              </th>,
-            ])}
+            {days.flatMap((day) => {
+              const rankKey = `day:${day.date}:rank` as DailyMatrixSortKey
+              const scoreKey = `day:${day.date}:score` as DailyMatrixSortKey
+              const pointsKey = `day:${day.date}:points` as DailyMatrixSortKey
+              return [
+                <SortableHeader
+                  key={rankKey}
+                  label="Rank"
+                  sortKey={rankKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+                <SortableHeader
+                  key={scoreKey}
+                  label="Score"
+                  sortKey={scoreKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+                <SortableHeader
+                  key={pointsKey}
+                  label="Points"
+                  sortKey={pointsKey}
+                  sortState={sortState}
+                  onSort={handleSort}
+                  className="matrix-subhead"
+                  align="center"
+                />,
+              ]
+            })}
           </tr>
         </thead>
         <tbody>
-          {players.map((player, index) => (
-            <tr key={player.playerId}>
-              <td className="rank-column">{index + 1}</td>
-              <td className="player-cell">
-                {player.avatar ? (
-                  <img
-                    src={player.avatar}
-                    alt=""
-                    className="player-avatar"
-                    loading="lazy"
-                  />
-                ) : null}
-                <span>{player.name}</span>
-              </td>
-              <td>{player.total.toLocaleString()}</td>
-              {days.flatMap((day) => {
-                const score = player.scores[day.date]
-                return [
-                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-rank`}>
-                    {score?.rank ?? '—'}
-                  </td>,
-                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-score`}>
-                    {score?.score !== null && score?.score !== undefined
-                      ? score.score.toLocaleString()
-                      : '—'}
-                  </td>,
-                  <td className="matrix-cell" key={`${player.playerId}-${day.date}-points`}>
-                    {score ? score.points.toLocaleString() : '—'}
-                  </td>,
-                ]
-              })}
-            </tr>
-          ))}
+          {sortedPlayers.map((player) => {
+            const originalRank = rankLookup.get(player.playerId)
+            return (
+              <tr key={player.playerId}>
+                <td className="rank-column">{originalRank ?? '—'}</td>
+                <td className="player-cell">
+                  {player.avatar ? (
+                    <img
+                      src={player.avatar}
+                      alt=""
+                      className="player-avatar"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <span>{player.name}</span>
+                </td>
+                <td>{player.total.toLocaleString()}</td>
+                {days.flatMap((day) => {
+                  const score = player.scores[day.date]
+                  return [
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${day.date}-rank`}
+                    >
+                      {score?.rank ?? '—'}
+                    </td>,
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${day.date}-score`}
+                    >
+                      {score?.score !== null && score?.score !== undefined
+                        ? score.score.toLocaleString()
+                        : '—'}
+                    </td>,
+                    <td
+                      className="matrix-cell"
+                      key={`${player.playerId}-${day.date}-points`}
+                    >
+                      {score ? score.points.toLocaleString() : '—'}
+                    </td>,
+                  ]
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

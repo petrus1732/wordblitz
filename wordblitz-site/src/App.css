@@ -312,6 +312,54 @@
   padding-bottom: 0.35rem;
 }
 
+.sortable-header {
+  padding: 0 !important;
+}
+
+.sort-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.sort-button--center {
+  justify-content: center;
+}
+
+.sort-button--right {
+  justify-content: flex-end;
+}
+
+.sort-button:focus-visible {
+  outline: 2px solid rgba(129, 140, 248, 0.6);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.sort-button:hover,
+.sort-button:focus-visible {
+  color: #e2e8f0;
+}
+
+.sort-indicator {
+  font-size: 0.75rem;
+  color: #818cf8;
+  opacity: 0.55;
+}
+
+.sort-button.is-active .sort-indicator {
+  opacity: 1;
+  color: #c4b5fd;
+}
+
 .data-table th.rank-column,
 .data-table td.rank-column {
   width: var(--rank-column-width);
