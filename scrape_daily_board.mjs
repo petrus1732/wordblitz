@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state3.json');
+const STORAGE = path.resolve('./storage_state2.json');
 const JSON_PATH = path.resolve('./daily_details.json');
 
 // 寫入 JSON
