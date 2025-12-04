@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 import path from 'node:path';
 import readline from 'node:readline/promises';
 
-const STORAGE = path.resolve('./storage_state3.json');
+const STORAGE = path.resolve('./storage_state2.json');
 
 (async () => {
   const browser = await chromium.launch({ headless: false });
