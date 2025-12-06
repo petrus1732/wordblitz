@@ -8541,6 +8541,9 @@
       },
       {
         "date": "2025-12-04"
+      },
+      {
+        "date": "2025-12-05"
       }
     ],
     "players": [
@@ -8568,10 +8571,15 @@
             "rank": 1,
             "score": 2339,
             "points": 19
+          },
+          "2025-12-05": {
+            "rank": 1,
+            "score": 2465,
+            "points": 19
           }
         },
-        "total": 76,
-        "totalScore": 11103
+        "total": 95,
+        "totalScore": 13568
       },
       {
         "playerId": "f33247461c13011c6c8465f7aed94ddc",
@@ -8597,10 +8605,15 @@
             "rank": 5,
             "score": 1877,
             "points": 6
+          },
+          "2025-12-05": {
+            "rank": 2,
+            "score": 2356,
+            "points": 15
           }
         },
-        "total": 51,
-        "totalScore": 9849
+        "total": 66,
+        "totalScore": 12205
       },
       {
         "playerId": "3b0f13b4cba146f2372524ff3b19c6fe",
@@ -8626,10 +8639,15 @@
             "rank": 4,
             "score": 1878,
             "points": 7
+          },
+          "2025-12-05": {
+            "rank": 3,
+            "score": 2111,
+            "points": 11
           }
         },
-        "total": 36,
-        "totalScore": 9042
+        "total": 47,
+        "totalScore": 11153
       },
       {
         "playerId": "d920213885f59abd9b181514e8ed0231",
@@ -8655,10 +8673,15 @@
             "rank": 3,
             "score": 1958,
             "points": 11
+          },
+          "2025-12-05": {
+            "rank": 6,
+            "score": 1923,
+            "points": 5
           }
         },
-        "total": 26,
-        "totalScore": 8495
+        "total": 31,
+        "totalScore": 10418
       },
       {
         "playerId": "676c8b8d1048a9b6f7dbb24b8c80b30c",
@@ -8684,10 +8707,15 @@
             "rank": 2,
             "score": 2033,
             "points": 15
+          },
+          "2025-12-05": {
+            "rank": 7,
+            "score": 1890,
+            "points": 4
           }
         },
-        "total": 24,
-        "totalScore": 8469
+        "total": 28,
+        "totalScore": 10359
       },
       {
         "playerId": "f5b76a1207cd52e580007eb2d7fcc6fa",
@@ -8713,10 +8741,49 @@
             "rank": 6,
             "score": 1808,
             "points": 5
+          },
+          "2025-12-05": {
+            "rank": 5,
+            "score": 1962,
+            "points": 6
           }
         },
-        "total": 21,
-        "totalScore": 8323
+        "total": 27,
+        "totalScore": 10285
+      },
+      {
+        "playerId": "98610e86acb0a629da17f0993ec0fd50",
+        "name": "奕安",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
+        "scores": {
+          "2025-12-01": {
+            "rank": 9,
+            "score": 1750,
+            "points": 2
+          },
+          "2025-12-02": {
+            "rank": 2,
+            "score": 2796,
+            "points": 15
+          },
+          "2025-12-03": {
+            "rank": 16,
+            "score": 1783,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 11,
+            "score": 1652,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 4,
+            "score": 2012,
+            "points": 7
+          }
+        },
+        "total": 24,
+        "totalScore": 9993
       },
       {
         "playerId": "a0055187308a6831e6d914375d961273",
@@ -8748,49 +8815,6 @@
         "totalScore": 8287
       },
       {
-        "playerId": "98610e86acb0a629da17f0993ec0fd50",
-        "name": "奕安",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
-        "scores": {
-          "2025-12-01": {
-            "rank": 9,
-            "score": 1750,
-            "points": 2
-          },
-          "2025-12-02": {
-            "rank": 2,
-            "score": 2796,
-            "points": 15
-          },
-          "2025-12-03": {
-            "rank": 16,
-            "score": 1783,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 11,
-            "score": 1652,
-            "points": 0
-          }
-        },
-        "total": 17,
-        "totalScore": 7981
-      },
-      {
-        "playerId": "87748a7dc543b6e9a10e2d7a6184aa3e",
-        "name": "Jeremy",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/111415247-87748a7dc543b6e9a10e2d7a6184aa3e",
-        "scores": {
-          "2025-12-01": {
-            "rank": 2,
-            "score": 2205,
-            "points": 15
-          }
-        },
-        "total": 15,
-        "totalScore": 2205
-      },
-      {
         "playerId": "0f7455b7ea9925a9a50a2fa90060756d",
         "name": "柏堯",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/21610652-0f7455b7ea9925a9a50a2fa90060756d",
@@ -8814,10 +8838,29 @@
             "rank": 7,
             "score": 1779,
             "points": 4
+          },
+          "2025-12-05": {
+            "rank": 9,
+            "score": 1808,
+            "points": 2
           }
         },
-        "total": 13,
-        "totalScore": 7924
+        "total": 15,
+        "totalScore": 9732
+      },
+      {
+        "playerId": "87748a7dc543b6e9a10e2d7a6184aa3e",
+        "name": "Jeremy",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/111415247-87748a7dc543b6e9a10e2d7a6184aa3e",
+        "scores": {
+          "2025-12-01": {
+            "rank": 2,
+            "score": 2205,
+            "points": 15
+          }
+        },
+        "total": 15,
+        "totalScore": 2205
       },
       {
         "playerId": "4c4b0872dc5e9964b8715ff68a609854",
@@ -8843,10 +8886,15 @@
             "rank": 20,
             "score": 1377,
             "points": 0
+          },
+          "2025-12-05": {
+            "rank": 8,
+            "score": 1860,
+            "points": 3
           }
         },
-        "total": 5,
-        "totalScore": 7228
+        "total": 8,
+        "totalScore": 9088
       },
       {
         "playerId": "0bcd00972615fab8942206546aff4662",
@@ -8872,10 +8920,49 @@
             "rank": 9,
             "score": 1723,
             "points": 2
+          },
+          "2025-12-05": {
+            "rank": 19,
+            "score": 1511,
+            "points": 0
           }
         },
         "total": 2,
-        "totalScore": 7574
+        "totalScore": 9085
+      },
+      {
+        "playerId": "630645abeeda490b1745d81ca6fa7850",
+        "name": "文宏",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/96424326-630645abeeda490b1745d81ca6fa7850",
+        "scores": {
+          "2025-12-01": {
+            "rank": 19,
+            "score": 1548,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 10,
+            "score": 2321,
+            "points": 1
+          },
+          "2025-12-03": {
+            "rank": 25,
+            "score": 1419,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 26,
+            "score": 1274,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 10,
+            "score": 1746,
+            "points": 1
+          }
+        },
+        "total": 2,
+        "totalScore": 8308
       },
       {
         "playerId": "dfec62ed27ec3e559347ee123c0c7a5a",
@@ -8891,10 +8978,49 @@
             "rank": 9,
             "score": 1857,
             "points": 2
+          },
+          "2025-12-05": {
+            "rank": 15,
+            "score": 1595,
+            "points": 0
           }
         },
         "total": 2,
-        "totalScore": 3255
+        "totalScore": 4850
+      },
+      {
+        "playerId": "82d7d89cdfdc4bd0f359b894e998cf98",
+        "name": "Barry",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/118842798-82d7d89cdfdc4bd0f359b894e998cf98",
+        "scores": {
+          "2025-12-01": {
+            "rank": 10,
+            "score": 1727,
+            "points": 1
+          },
+          "2025-12-02": {
+            "rank": 16,
+            "score": 2106,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 11,
+            "score": 1842,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 24,
+            "score": 1278,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 16,
+            "score": 1575,
+            "points": 0
+          }
+        },
+        "total": 1,
+        "totalScore": 8528
       },
       {
         "playerId": "7c725404ee3b78ec4dbf4c9aa7232e1a",
@@ -8920,10 +9046,15 @@
             "rank": 10,
             "score": 1656,
             "points": 1
+          },
+          "2025-12-05": {
+            "rank": 17,
+            "score": 1560,
+            "points": 0
           }
         },
         "total": 1,
-        "totalScore": 6863
+        "totalScore": 8423
       },
       {
         "playerId": "6db5d348a7fe7079e871fd8af0c91347",
@@ -8946,66 +9077,256 @@
             "points": 1
           },
           "2025-12-04": {
-            "rank": 28,
+            "rank": 30,
             "score": 1168,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 11,
+            "score": 1650,
             "points": 0
           }
         },
         "total": 1,
-        "totalScore": 6703
+        "totalScore": 8353
       },
       {
-        "playerId": "630645abeeda490b1745d81ca6fa7850",
-        "name": "文宏",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/96424326-630645abeeda490b1745d81ca6fa7850",
+        "playerId": "525364925f8a9aee6c56c03886cdb6d2",
+        "name": "Paula",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/52758524-525364925f8a9aee6c56c03886cdb6d2",
         "scores": {
           "2025-12-01": {
-            "rank": 19,
-            "score": 1548,
+            "rank": 23,
+            "score": 1441,
             "points": 0
           },
           "2025-12-02": {
-            "rank": 10,
-            "score": 2321,
-            "points": 1
+            "rank": 13,
+            "score": 2194,
+            "points": 0
           },
           "2025-12-03": {
-            "rank": 25,
-            "score": 1419,
+            "rank": 13,
+            "score": 1806,
             "points": 0
           },
           "2025-12-04": {
-            "rank": 25,
-            "score": 1274,
+            "rank": 12,
+            "score": 1636,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 18,
+            "score": 1547,
             "points": 0
           }
         },
-        "total": 1,
-        "totalScore": 6562
+        "total": 0,
+        "totalScore": 8624
       },
       {
-        "playerId": "82d7d89cdfdc4bd0f359b894e998cf98",
-        "name": "Barry",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/118842798-82d7d89cdfdc4bd0f359b894e998cf98",
+        "playerId": "5df0880cd272cf42f773100b2182e09e",
+        "name": "Daniel",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/58718633-5df0880cd272cf42f773100b2182e09e",
         "scores": {
           "2025-12-01": {
-            "rank": 10,
-            "score": 1727,
-            "points": 1
+            "rank": 21,
+            "score": 1514,
+            "points": 0
           },
           "2025-12-02": {
-            "rank": 16,
-            "score": 2106,
+            "rank": 15,
+            "score": 2167,
             "points": 0
           },
           "2025-12-03": {
-            "rank": 11,
-            "score": 1842,
+            "rank": 18,
+            "score": 1753,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 17,
+            "score": 1430,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 14,
+            "score": 1603,
             "points": 0
           }
         },
-        "total": 1,
-        "totalScore": 5675
+        "total": 0,
+        "totalScore": 8467
+      },
+      {
+        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "name": "Michael",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "scores": {
+          "2025-12-01": {
+            "rank": 17,
+            "score": 1599,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 22,
+            "score": 1910,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 15,
+            "score": 1795,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 14,
+            "score": 1500,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 12,
+            "score": 1611,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 8415
+      },
+      {
+        "playerId": "51c6f6019317c84ce59b2f83962da383",
+        "name": "Sharon",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/70319088-51c6f6019317c84ce59b2f83962da383",
+        "scores": {
+          "2025-12-01": {
+            "rank": 14,
+            "score": 1634,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 12,
+            "score": 2260,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 23,
+            "score": 1441,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 16,
+            "score": 1452,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 26,
+            "score": 1423,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 8210
+      },
+      {
+        "playerId": "d247b8ebeefb0f030bcd0bc582720e9c",
+        "name": "Lizette",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/44629197-d247b8ebeefb0f030bcd0bc582720e9c",
+        "scores": {
+          "2025-12-01": {
+            "rank": 20,
+            "score": 1534,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 17,
+            "score": 2092,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 20,
+            "score": 1659,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 18,
+            "score": 1429,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 25,
+            "score": 1436,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 8150
+      },
+      {
+        "playerId": "e5d324b4eca1b03fc70c44746de537a7",
+        "name": "Benjamin",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/65513248-e5d324b4eca1b03fc70c44746de537a7",
+        "scores": {
+          "2025-12-01": {
+            "rank": 26,
+            "score": 1395,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 25,
+            "score": 1781,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 24,
+            "score": 1434,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 21,
+            "score": 1354,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 21,
+            "score": 1467,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 7431
+      },
+      {
+        "playerId": "f2cf7eb43583e04a62054c79299839aa",
+        "name": "James",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/14894378-f2cf7eb43583e04a62054c79299839aa",
+        "scores": {
+          "2025-12-01": {
+            "rank": 24,
+            "score": 1428,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 29,
+            "score": 1615,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 21,
+            "score": 1562,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 29,
+            "score": 1228,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 23,
+            "score": 1454,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 7287
       },
       {
         "playerId": "2923a7c3990777f6e12bacee960e1d72",
@@ -9037,209 +9358,6 @@
         "totalScore": 7181
       },
       {
-        "playerId": "525364925f8a9aee6c56c03886cdb6d2",
-        "name": "Paula",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/52758524-525364925f8a9aee6c56c03886cdb6d2",
-        "scores": {
-          "2025-12-01": {
-            "rank": 23,
-            "score": 1441,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 13,
-            "score": 2194,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 13,
-            "score": 1806,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 12,
-            "score": 1636,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 7077
-      },
-      {
-        "playerId": "5df0880cd272cf42f773100b2182e09e",
-        "name": "Daniel",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/58718633-5df0880cd272cf42f773100b2182e09e",
-        "scores": {
-          "2025-12-01": {
-            "rank": 21,
-            "score": 1514,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 15,
-            "score": 2167,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 18,
-            "score": 1753,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 17,
-            "score": 1430,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6864
-      },
-      {
-        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "name": "Michael",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "scores": {
-          "2025-12-01": {
-            "rank": 17,
-            "score": 1599,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 22,
-            "score": 1910,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 15,
-            "score": 1795,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 14,
-            "score": 1500,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6804
-      },
-      {
-        "playerId": "51c6f6019317c84ce59b2f83962da383",
-        "name": "Sharon",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/70319088-51c6f6019317c84ce59b2f83962da383",
-        "scores": {
-          "2025-12-01": {
-            "rank": 14,
-            "score": 1634,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 12,
-            "score": 2260,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 23,
-            "score": 1441,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 16,
-            "score": 1452,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6787
-      },
-      {
-        "playerId": "d247b8ebeefb0f030bcd0bc582720e9c",
-        "name": "Lizette",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/44629197-d247b8ebeefb0f030bcd0bc582720e9c",
-        "scores": {
-          "2025-12-01": {
-            "rank": 20,
-            "score": 1534,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 17,
-            "score": 2092,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 20,
-            "score": 1659,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 18,
-            "score": 1429,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6714
-      },
-      {
-        "playerId": "e5d324b4eca1b03fc70c44746de537a7",
-        "name": "Benjamin",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/65513248-e5d324b4eca1b03fc70c44746de537a7",
-        "scores": {
-          "2025-12-01": {
-            "rank": 26,
-            "score": 1395,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 25,
-            "score": 1781,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 24,
-            "score": 1434,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 21,
-            "score": 1354,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5964
-      },
-      {
-        "playerId": "f2cf7eb43583e04a62054c79299839aa",
-        "name": "James",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/14894378-f2cf7eb43583e04a62054c79299839aa",
-        "scores": {
-          "2025-12-01": {
-            "rank": 24,
-            "score": 1428,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 29,
-            "score": 1615,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 21,
-            "score": 1562,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 27,
-            "score": 1228,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5833
-      },
-      {
         "playerId": "800eca46a100354927f4d80b577a8f0e",
         "name": "Kaleb",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/19940464-800eca46a100354927f4d80b577a8f0e",
@@ -9263,10 +9381,49 @@
             "rank": 15,
             "score": 1459,
             "points": 0
+          },
+          "2025-12-05": {
+            "rank": 24,
+            "score": 1451,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 5718
+        "totalScore": 7169
+      },
+      {
+        "playerId": "b0f6d84ebda898825703576571519899",
+        "name": "Shikari",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/50546747-b0f6d84ebda898825703576571519899",
+        "scores": {
+          "2025-12-01": {
+            "rank": 22,
+            "score": 1470,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 34,
+            "score": 1493,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 25,
+            "score": 1419,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 27,
+            "score": 1250,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 32,
+            "score": 1214,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6846
       },
       {
         "playerId": "e455e647ad1de9774a8d728de7dd8c2c",
@@ -9292,39 +9449,15 @@
             "rank": 23,
             "score": 1305,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5511
-      },
-      {
-        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
-        "name": "Winston",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
-        "scores": {
-          "2025-12-01": {
-            "rank": 40,
-            "score": 959,
-            "points": 0
           },
-          "2025-12-02": {
-            "rank": 23,
-            "score": 1840,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 30,
-            "score": 1228,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 30,
-            "score": 1144,
+          "2025-12-05": {
+            "rank": 37,
+            "score": 1130,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 5171
+        "totalScore": 6641
       },
       {
         "playerId": "824f5426a0957ecb26741b1c7a713662",
@@ -9347,13 +9480,52 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 26,
+            "rank": 28,
             "score": 1247,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 20,
+            "score": 1468,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 5154
+        "totalScore": 6622
+      },
+      {
+        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
+        "name": "Winston",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
+        "scores": {
+          "2025-12-01": {
+            "rank": 40,
+            "score": 959,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 23,
+            "score": 1840,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 30,
+            "score": 1228,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 32,
+            "score": 1144,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 29,
+            "score": 1334,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6505
       },
       {
         "playerId": "72fa75a07f88a9fd77ee2af82e33efd3",
@@ -9376,13 +9548,115 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 33,
+            "rank": 36,
             "score": 940,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 27,
+            "score": 1400,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4728
+        "totalScore": 6128
+      },
+      {
+        "playerId": "edc4cd3d70a7aa2b117f386b8b30aa1c",
+        "name": "Lisa",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/67488182-edc4cd3d70a7aa2b117f386b8b30aa1c",
+        "scores": {
+          "2025-12-01": {
+            "rank": 33,
+            "score": 1152,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 31,
+            "score": 1532,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 31,
+            "score": 1221,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 33,
+            "score": 1103,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 39,
+            "score": 1110,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6118
+      },
+      {
+        "playerId": "11452a2c81832acabfceb6c0acf41140",
+        "name": "David",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19835678-11452a2c81832acabfceb6c0acf41140",
+        "scores": {
+          "2025-12-01": {
+            "rank": 37,
+            "score": 1062,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 23,
+            "score": 1840,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 35,
+            "score": 1094,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 38,
+            "score": 921,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 38,
+            "score": 1114,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6031
+      },
+      {
+        "playerId": "5c80a7e6da6632de5ad933a9838670c2",
+        "name": "Celestine Ebuka",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20083424-5c80a7e6da6632de5ad933a9838670c2",
+        "scores": {
+          "2025-12-02": {
+            "rank": 33,
+            "score": 1495,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 19,
+            "score": 1682,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 22,
+            "score": 1321,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 28,
+            "score": 1364,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 5862
       },
       {
         "playerId": "91c00e853e43dadbd6a5fedf16181d7c",
@@ -9405,90 +9679,18 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 31,
+            "rank": 34,
             "score": 1044,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 4656
-      },
-      {
-        "playerId": "5c80a7e6da6632de5ad933a9838670c2",
-        "name": "Celestine Ebuka",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20083424-5c80a7e6da6632de5ad933a9838670c2",
-        "scores": {
-          "2025-12-02": {
-            "rank": 33,
-            "score": 1495,
-            "points": 0
           },
-          "2025-12-03": {
-            "rank": 19,
-            "score": 1682,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 22,
-            "score": 1321,
+          "2025-12-05": {
+            "rank": 43,
+            "score": 973,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4498
-      },
-      {
-        "playerId": "b0f6d84ebda898825703576571519899",
-        "name": "Shikari",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/50546747-b0f6d84ebda898825703576571519899",
-        "scores": {
-          "2025-12-01": {
-            "rank": 22,
-            "score": 1470,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 34,
-            "score": 1493,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 25,
-            "score": 1419,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 4382
-      },
-      {
-        "playerId": "2b62dce6836b6ea135f9ec8c621fa807",
-        "name": "Amy",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/49328782-2b62dce6836b6ea135f9ec8c621fa807",
-        "scores": {
-          "2025-12-01": {
-            "rank": 36,
-            "score": 1068,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 32,
-            "score": 1498,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 36,
-            "score": 1087,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 41,
-            "score": 642,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 4295
+        "totalScore": 5629
       },
       {
         "playerId": "21fb3dd134ef7f254e1bb700b1cc4267",
@@ -9506,13 +9708,18 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 27,
+            "rank": 29,
             "score": 1228,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 33,
+            "score": 1203,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4254
+        "totalScore": 5457
       },
       {
         "playerId": "647e8c20fea4d1577b88d3316f85c5a0",
@@ -9535,66 +9742,52 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 32,
+            "rank": 35,
             "score": 1023,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 42,
+            "score": 990,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4230
+        "totalScore": 5220
       },
       {
-        "playerId": "eb5e54a7a10dd032d4ade0133fe8d161",
-        "name": "Barbara",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/64029402-eb5e54a7a10dd032d4ade0133fe8d161",
+        "playerId": "2b62dce6836b6ea135f9ec8c621fa807",
+        "name": "Amy",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/49328782-2b62dce6836b6ea135f9ec8c621fa807",
         "scores": {
           "2025-12-01": {
-            "rank": 44,
-            "score": 885,
+            "rank": 36,
+            "score": 1068,
             "points": 0
           },
           "2025-12-02": {
-            "rank": 41,
-            "score": 1212,
+            "rank": 32,
+            "score": 1498,
             "points": 0
           },
           "2025-12-03": {
-            "rank": 29,
-            "score": 1238,
+            "rank": 36,
+            "score": 1087,
             "points": 0
           },
           "2025-12-04": {
-            "rank": 39,
-            "score": 823,
+            "rank": 45,
+            "score": 642,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 45,
+            "score": 899,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4158
-      },
-      {
-        "playerId": "11452a2c81832acabfceb6c0acf41140",
-        "name": "David",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19835678-11452a2c81832acabfceb6c0acf41140",
-        "scores": {
-          "2025-12-01": {
-            "rank": 37,
-            "score": 1062,
-            "points": 0
-          },
-          "2025-12-02": {
-            "rank": 23,
-            "score": 1840,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 35,
-            "score": 1094,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 3996
+        "totalScore": 5194
       },
       {
         "playerId": "5d8dc7a4eb1cbd9cd99ec2fd8c57f759",
@@ -9617,37 +9810,18 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 36,
+            "rank": 40,
             "score": 918,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 3925
-      },
-      {
-        "playerId": "edc4cd3d70a7aa2b117f386b8b30aa1c",
-        "name": "Lisa",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/67488182-edc4cd3d70a7aa2b117f386b8b30aa1c",
-        "scores": {
-          "2025-12-01": {
-            "rank": 33,
-            "score": 1152,
-            "points": 0
           },
-          "2025-12-02": {
-            "rank": 31,
-            "score": 1532,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 31,
-            "score": 1221,
+          "2025-12-05": {
+            "rank": 41,
+            "score": 1034,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 3905
+        "totalScore": 4959
       },
       {
         "playerId": "bff40345e4f34845181b5b7da29be234",
@@ -9670,13 +9844,148 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 40,
+            "rank": 44,
             "score": 804,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 44,
+            "score": 926,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 3824
+        "totalScore": 4750
+      },
+      {
+        "playerId": "b0a560a0d1c794ed435fa0eb72e4c085",
+        "name": "Frank",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20210115-b0a560a0d1c794ed435fa0eb72e4c085",
+        "scores": {
+          "2025-12-02": {
+            "rank": 37,
+            "score": 1446,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 32,
+            "score": 1178,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 39,
+            "score": 920,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 35,
+            "score": 1139,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4683
+      },
+      {
+        "playerId": "c5c566db8c7fc2945582a24a02851082",
+        "name": "Kevin JD",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/58066677-c5c566db8c7fc2945582a24a02851082",
+        "scores": {
+          "2025-12-02": {
+            "rank": 21,
+            "score": 1917,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 19,
+            "score": 1416,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 31,
+            "score": 1221,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4554
+      },
+      {
+        "playerId": "f4e0a39a3dad42ccd54bbe7b9fba1488",
+        "name": "Emmanuel",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/51337713-f4e0a39a3dad42ccd54bbe7b9fba1488",
+        "scores": {
+          "2025-12-01": {
+            "rank": 28,
+            "score": 1285,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 25,
+            "score": 1276,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 13,
+            "score": 1605,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4166
+      },
+      {
+        "playerId": "eb5e54a7a10dd032d4ade0133fe8d161",
+        "name": "Barbara",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/64029402-eb5e54a7a10dd032d4ade0133fe8d161",
+        "scores": {
+          "2025-12-01": {
+            "rank": 44,
+            "score": 885,
+            "points": 0
+          },
+          "2025-12-02": {
+            "rank": 41,
+            "score": 1212,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 29,
+            "score": 1238,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 43,
+            "score": 823,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4158
+      },
+      {
+        "playerId": "801b2f89bbbc2722fc9a1c772736caee",
+        "name": "Norman",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94280027-801b2f89bbbc2722fc9a1c772736caee",
+        "scores": {
+          "2025-12-01": {
+            "rank": 31,
+            "score": 1190,
+            "points": 0
+          },
+          "2025-12-03": {
+            "rank": 27,
+            "score": 1314,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 22,
+            "score": 1456,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 3960
       },
       {
         "playerId": "47438349afbcbd9d2fc4390df71617f7",
@@ -9699,94 +10008,13 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 34,
+            "rank": 37,
             "score": 938,
             "points": 0
           }
         },
         "total": 0,
         "totalScore": 3581
-      },
-      {
-        "playerId": "b0a560a0d1c794ed435fa0eb72e4c085",
-        "name": "Frank",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20210115-b0a560a0d1c794ed435fa0eb72e4c085",
-        "scores": {
-          "2025-12-02": {
-            "rank": 37,
-            "score": 1446,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 32,
-            "score": 1178,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 35,
-            "score": 920,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 3544
-      },
-      {
-        "playerId": "c5c566db8c7fc2945582a24a02851082",
-        "name": "Kevin JD",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/58066677-c5c566db8c7fc2945582a24a02851082",
-        "scores": {
-          "2025-12-02": {
-            "rank": 21,
-            "score": 1917,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 19,
-            "score": 1416,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 3333
-      },
-      {
-        "playerId": "f4e0a39a3dad42ccd54bbe7b9fba1488",
-        "name": "Emmanuel",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/51337713-f4e0a39a3dad42ccd54bbe7b9fba1488",
-        "scores": {
-          "2025-12-01": {
-            "rank": 28,
-            "score": 1285,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 24,
-            "score": 1276,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 2561
-      },
-      {
-        "playerId": "801b2f89bbbc2722fc9a1c772736caee",
-        "name": "Norman",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94280027-801b2f89bbbc2722fc9a1c772736caee",
-        "scores": {
-          "2025-12-01": {
-            "rank": 31,
-            "score": 1190,
-            "points": 0
-          },
-          "2025-12-03": {
-            "rank": 27,
-            "score": 1314,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 2504
       },
       {
         "playerId": "4757422a2716f32237990119a8f839c8",
@@ -9799,13 +10027,66 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 29,
+            "rank": 31,
             "score": 1159,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 36,
+            "score": 1137,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 2391
+        "totalScore": 3528
+      },
+      {
+        "playerId": "6c1dcb42648b016f4ebb87a627757cc2",
+        "name": "Emmanuel",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/46571486-6c1dcb42648b016f4ebb87a627757cc2",
+        "scores": {
+          "2025-12-03": {
+            "rank": 38,
+            "score": 1035,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 42,
+            "score": 896,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 34,
+            "score": 1157,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 3088
+      },
+      {
+        "playerId": "6c7c3649b1dbfe3c89438b138986d789",
+        "name": "Alfred",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/62274970-6c7c3649b1dbfe3c89438b138986d789",
+        "scores": {
+          "2025-12-01": {
+            "rank": 42,
+            "score": 938,
+            "points": 0
+          },
+          "2025-12-04": {
+            "rank": 41,
+            "score": 906,
+            "points": 0
+          },
+          "2025-12-05": {
+            "rank": 40,
+            "score": 1087,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 2931
       },
       {
         "playerId": "48274afae7cea4d80557100174a63739",
@@ -9823,7 +10104,7 @@
             "points": 0
           },
           "2025-12-04": {
-            "rank": 43,
+            "rank": 47,
             "score": 0,
             "points": 0
           }
@@ -9860,44 +10141,6 @@
         "totalScore": 1947
       },
       {
-        "playerId": "6c1dcb42648b016f4ebb87a627757cc2",
-        "name": "Emmanuel",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/46571486-6c1dcb42648b016f4ebb87a627757cc2",
-        "scores": {
-          "2025-12-03": {
-            "rank": 38,
-            "score": 1035,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 38,
-            "score": 896,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 1931
-      },
-      {
-        "playerId": "6c7c3649b1dbfe3c89438b138986d789",
-        "name": "Alfred",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/62274970-6c7c3649b1dbfe3c89438b138986d789",
-        "scores": {
-          "2025-12-01": {
-            "rank": 42,
-            "score": 938,
-            "points": 0
-          },
-          "2025-12-04": {
-            "rank": 37,
-            "score": 906,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 1844
-      },
-      {
         "playerId": "74fcbe08f5d329ae394d1b4482b25341",
         "name": "Loretta",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/19730361-74fcbe08f5d329ae394d1b4482b25341",
@@ -9910,6 +10153,20 @@
         },
         "total": 0,
         "totalScore": 1465
+      },
+      {
+        "playerId": "fdaa2e4e18937706b6ed39b8f806cb86",
+        "name": "Ck",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20259757-fdaa2e4e18937706b6ed39b8f806cb86",
+        "scores": {
+          "2025-12-05": {
+            "rank": 30,
+            "score": 1260,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 1260
       },
       {
         "playerId": "092d0a8a0d1176ae891def5606e993c1",
