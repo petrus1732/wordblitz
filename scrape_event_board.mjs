@@ -104,7 +104,7 @@ const data = {
     }
 
     // 額外等待進入遊戲
-    await frame.waitForTimeout(3000);
+    await frame.waitForTimeout(8000);
 
   } catch (error) {
     console.warn('⚠️ 自動進入賽事流程失敗 (可能無 "hour" 賽事或介面改變):', error.message);
@@ -124,9 +124,10 @@ const data = {
     const date = getDateNDaysAgo(7 - i);
     console.log(`📅 目標日期：${date}`);
 
-    const playBtn = await frame.$('.btn:has-text("Play")');
-    if (playBtn) {
-      await playBtn.click().catch(() => { });
+    // 使用更精確的 footer selector 避免 layout offset 點到別處 (如 All Players 標籤)
+    const playBtn = frame.locator('.screen-component-footer .button-primary:has-text("Play")');
+    if (await playBtn.count() > 0) {
+      await playBtn.click({ force: true }).catch(() => { });
       console.log('🎮 已點擊「Play」。等待遊戲進行中 (91 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
