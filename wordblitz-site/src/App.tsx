@@ -79,7 +79,7 @@ export default function App() {
             Browse daily boards, follow week-long events, and celebrate every
             point.
           </p>
-          <p className='update-note'>New change: Rankings are changed to dense ranks (ties keep the same rank, next position increments by 1)</p>
+          <p className='update-note'>Due to wordblitz interface changes, 4+ Words (Dec 2 - Dec 8) event's rankings was lost.</p>
         </div>
         <nav className="primary-nav">
           <Link to="/">Home</Link>
