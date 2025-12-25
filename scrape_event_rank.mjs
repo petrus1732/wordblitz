@@ -80,7 +80,7 @@ function parseRelativeDate(raw, base = NOW) {
         : Number.parseInt(quantityText, 10);
     const unitMs = UNIT_IN_MS[unit];
     if (!Number.isNaN(quantity) && unitMs) {
-      const adjustedQuantity = quantity +1; // in-game daily summaries lag by one day
+      const adjustedQuantity = quantity; // in-game daily summaries lag by one day
       const target = new Date(base.getTime() - adjustedQuantity * unitMs);
       return formatDate(target);
     }
