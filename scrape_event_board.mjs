@@ -128,11 +128,11 @@ const data = {
     const playBtn = frame.locator('.screen-component-footer .button-primary:has-text("Play")');
     if (await playBtn.count() > 0) {
       await playBtn.click({ force: true }).catch(() => { });
-      console.log('🎮 已點擊「Play」。等待遊戲進行中 (91 秒)...');
+      console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
-      await frame.waitForTimeout(91000);
-      console.log('⏰ 91 秒已到，展開後續自動化操作...');
+      await frame.waitForTimeout(95000);
+      console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
       console.log('⏳ 檢查是否有分享對話/廣告...');
