@@ -96,6 +96,7 @@ const data = {
     } catch (err) {
       console.warn('⚠️ 等待 "開始玩" 按鈕超時，嘗試最後手段 (getByText)...');
       try {
+        await frame.waitForTimeout(2000);
         await page.getByText('開始玩').click({ timeout: 5000 });
         console.log('👆 已點擊 "開始玩" (最後手段成功)');
       } catch (e2) {
@@ -131,7 +132,7 @@ const data = {
       console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
-      await frame.waitForTimeout(95000);
+      await frame.waitForTimeout(40000);
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
