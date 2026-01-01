@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state3.json');
 const JSON_PATH = path.resolve('./event_details.json');
 
 // 寫入 JSON
@@ -132,7 +132,7 @@ const data = {
       console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
-      await frame.waitForTimeout(40000);
+      await frame.waitForTimeout(95000);
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
@@ -145,7 +145,7 @@ const data = {
         if (await closeSharingBtn.isVisible()) {
           await closeSharingBtn.click({ force: true });
           console.log('✨ 已自動關閉分享對話。');
-          await frame.waitForTimeout(1000);
+          await frame.waitForTimeout(5000);
         }
 
         // 嘗試關閉廣告 (如果有)
@@ -247,3 +247,219 @@ const data = {
   console.log('✅ 全部七天擷取完成！視窗將保持開啟，請自行檢查。');
   await new Promise(() => { }); // 永遠不 resolve，保持視窗開啟
 })();
+
+// {
+//   "date": "2025-12-31",
+//   "wordCount": 127,
+//   "board": [
+//     {
+//       "letter": "P",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "G",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "O",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "G",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "L",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "I",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "B",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "G",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "I",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "N",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "O",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "M",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "D",
+//       "bonus": "",
+//       "active": true
+//     },
+//     {
+//       "letter": "L",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "R",
+//       "bonus": "",
+//       "active": false
+//     },
+//     {
+//       "letter": "T",
+//       "bonus": "",
+//       "active": false
+//     }
+//   ],
+//   "words": [
+//     "GOBIID",
+//     "OBOLI",
+//     "ROBIN",
+//     "TONDI",
+//     "BINDI",
+//     "GOMBO",
+//     "PINOT",
+//     "LOGOI",
+//     "INRO",
+//     "GORM",
+//     "ROIN",
+//     "ROIL",
+//     "GOBI",
+//     "PILI",
+//     "TOLD",
+//     "GOBO",
+//     "BIND",
+//     "DINO",
+//     "LOBI",
+//     "BOIL",
+//     "LOBO",
+//     "LION",
+//     "MORT",
+//     "BIOG",
+//     "GOLD",
+//     "NOGG",
+//     "BORT",
+//     "BORN",
+//     "BORM",
+//     "MOIL",
+//     "TOMB",
+//     "MORN",
+//     "NOIL",
+//     "LOGO",
+//     "NORM",
+//     "BOLD",
+//     "OLID",
+//     "GLIB",
+//     "PION",
+//     "MOLD",
+//     "LOIN",
+//     "TORN",
+//     "LIND",
+//     "OBOL",
+//     "LORN",
+//     "BOND",
+//     "LINO",
+//     "GLID",
+//     "LILO",
+//     "TROG",
+//     "GOGO",
+//     "TOIL",
+//     "TRON",
+//     "OLD",
+//     "LOB",
+//     "LOG",
+//     "TOG",
+//     "LOR",
+//     "LOT",
+//     "TON",
+//     "TOM",
+//     "TOR",
+//     "GOB",
+//     "LIB",
+//     "LID",
+//     "GON",
+//     "DIN",
+//     "GOR",
+//     "LIG",
+//     "GOT",
+//     "PIG",
+//     "LIN",
+//     "LIP",
+//     "PIN",
+//     "BOG",
+//     "BOI",
+//     "NOB",
+//     "GIB",
+//     "ROB",
+//     "BOR",
+//     "BOT",
+//     "NOG",
+//     "GIO",
+//     "NOM",
+//     "GIN",
+//     "GIP",
+//     "NOR",
+//     "ROM",
+//     "NOT",
+//     "OIL",
+//     "ROT",
+//     "ORT",
+//     "OBI",
+//     "OBO",
+//     "MOB",
+//     "BIG",
+//     "MOG",
+//     "MOI",
+//     "NIB",
+//     "BIN",
+//     "NID",
+//     "BIO",
+//     "ION",
+//     "MOL",
+//     "MON",
+//     "NIL",
+//     "MOR",
+//     "MOT",
+//     "NIP",
+//     "ID",
+//     "IN",
+//     "IO",
+//     "BI",
+//     "BO",
+//     "TO",
+//     "LI",
+//     "LO",
+//     "MO",
+//     "NO",
+//     "OB",
+//     "OI",
+//     "OM",
+//     "ON",
+//     "GI",
+//     "OR",
+//     "GO",
+//     "PI"
+//   ]
+// }
