@@ -38,6 +38,15 @@ const data = {
   console.log('🚀 開啟 Word Blitz 遊戲頁...');
   await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
+  // 等待幾秒確保畫面穩定並偵測推播通知要求的 overlay
+  await page.waitForTimeout(5000);
+  const notifyBtn = page.locator('div[role="alertdialog"][aria-label="推播通知要求"] button:has-text("關閉")');
+  if (await notifyBtn.isVisible()) {
+    await notifyBtn.click();
+    console.log('✨ 已自動關閉推播通知要求。');
+    await page.waitForTimeout(1000);
+  }
+
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
   const frame = await iframeHandle.contentFrame();
   console.log('✅ 已附著到遊戲 iframe。');

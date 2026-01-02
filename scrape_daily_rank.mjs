@@ -19,8 +19,8 @@ async function readDailyCardMetadata(card) {
       (value ?? '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
     const title = clean(
       el.querySelector('.cell-title')?.textContent ??
-        el.querySelector('.cell-body .title')?.textContent ??
-        '',
+      el.querySelector('.cell-body .title')?.textContent ??
+      '',
     );
     const relativeTime = clean(
       el.querySelector('.cell-time .time-since')?.textContent ?? '',
@@ -218,10 +218,17 @@ async function runForStorage(storage_path) {
     const day = await frame.$eval('.day', el => el.innerText.trim()).catch(() => '');
     console.log(`📅 偵測到 Monthly label: ${month} ${day}`);
     if (month && day) {
-      const year = new Date().getFullYear();
-      const d = new Date(`${month} ${day}, ${year}`);
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      let d = new Date(`${month} ${day}, ${currentYear}`);
+
+      // 若計算出的日期在未來（例如現在是 1 月，標籤是 12/31），則表示是去年的
+      if (!isNaN(+d) && d > now) {
+        d.setFullYear(currentYear - 1);
+        console.log(`🔄 日期在未來，調整年份為 ${d.getFullYear()}`);
+      }
+
       if (!isNaN(+d)) {
-        // 回傳本地時間格式 yyyy-mm-dd，不經過 UTC 轉換
         const yyyy = d.getFullYear();
         const mm = String(d.getMonth() + 1).padStart(2, '0');
         const dd = String(d.getDate()).padStart(2, '0');
@@ -236,81 +243,89 @@ async function runForStorage(storage_path) {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
   const page = await context.newPage();
-    console.log('🚀 開啟 Word Blitz 主畫面…');
-    await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
+  console.log('🚀 開啟 Word Blitz 主畫面…');
+  await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
-    const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-    const frame = await iframeHandle.contentFrame();
-    console.log('✅ 已附著到遊戲 iframe。');
+  // 等待幾秒確保畫面穩定並偵測推播通知要求的 overlay
+  await page.waitForTimeout(5000);
+  const notifyBtn = page.locator('div[role="alertdialog"][aria-label="推播通知要求"] button:has-text("關閉")');
+  if (await notifyBtn.isVisible()) {
+    await notifyBtn.click();
+    console.log('✨ 已自動關閉推播通知要求。');
+    await page.waitForTimeout(1000);
+  }
 
-    // 等待主畫面載入
-    console.log('⏳ 等待 Daily Game 區塊載入…');
-    await frame.waitForSelector('.cell-daily', { timeout: 90000 });
-    console.log('✅ 主畫面載入完成。');
+  const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
+  const frame = await iframeHandle.contentFrame();
+  console.log('✅ 已附著到遊戲 iframe。');
 
-    // 取得所有 Daily cards（通常是 5–6 個）
-    const dailyCards = await frame.$$('.cell-daily');
-    console.log(`📅 偵測到 ${dailyCards.length} 個 Daily Game。`);
+  // 等待主畫面載入
+  console.log('⏳ 等待 Daily Game 區塊載入…');
+  await frame.waitForSelector('.cell-daily', { timeout: 90000 });
+  console.log('✅ 主畫面載入完成。');
 
-    for (let i = 0; i < dailyCards.length; i++) {
-      console.log(`\n▶️ 正在處理第 ${i + 1}/${dailyCards.length} 個 Daily…`);
-      const card = dailyCards[i];
+  // 取得所有 Daily cards（通常是 5–6 個）
+  const dailyCards = await frame.$$('.cell-daily');
+  console.log(`📅 偵測到 ${dailyCards.length} 個 Daily Game。`);
 
-      const metadata = await readDailyCardMetadata(card).catch(() => null);
-      if (!metadata || !isDailyClosed(metadata)) {
-        console.log(
-          `Skipping open daily ${i + 1}/${dailyCards.length}: ${
-            metadata?.title || 'Unknown'
-          } (${metadata?.relativeTime || 'unknown'})`,
-        );
-        continue;
-      }
+  for (let i = 0; i < dailyCards.length; i++) {
+    console.log(`\n▶️ 正在處理第 ${i + 1}/${dailyCards.length} 個 Daily…`);
+    const card = dailyCards[i];
 
-      await card.scrollIntoViewIfNeeded().catch(() => {});
-      await card.click().catch(() => console.warn('⚠️ 點擊 Daily 失敗，嘗試繼續。'));
-
-      // 點擊 All arenas（若有）
-      const allArenasBtn = await frame.$(
-        '.btn:has-text("All players"), .btn:has-text("All arenas")',
+    const metadata = await readDailyCardMetadata(card).catch(() => null);
+    if (!metadata || !isDailyClosed(metadata)) {
+      console.log(
+        `Skipping open daily ${i + 1}/${dailyCards.length}: ${metadata?.title || 'Unknown'
+        } (${metadata?.relativeTime || 'unknown'})`,
       );
-      if (allArenasBtn) {
-        console.log('🎮 點擊 All arenas...');
-        await allArenasBtn.click().catch(() => console.warn('⚠️ 點擊 All arenas 失敗'));
-        await frame.waitForTimeout(3000);
-      }
-
-      // 等排行榜載入
-      await frame.waitForSelector('.rank-list-item', { timeout: 60000 });
-      await frame.waitForTimeout(1000);
-
-      const dailyDate = await detectDailyDate(frame);
-      console.log(`📆 當前 Daily 日期：${dailyDate}`);
-
-      const data = await extractLeaderboard(frame);
-      console.table(data.slice(0, 5));
-      await ensureCsvHeader();
-      await appendCsv(data, dailyDate);
-
-      // 回前頁
-      const backBtn = await frame.$('.icon.icon-back');
-      if (backBtn) {
-        console.log('↩️ 返回主畫面…');
-        await backBtn.click();
-        await frame.waitForSelector('.cell-daily', { timeout: 60000 });
-        await frame.waitForTimeout(1500);
-      } else {
-        console.warn('⚠️ 找不到返回按鈕，嘗試刷新 Daily 列表');
-        await page.reload({ waitUntil: 'domcontentloaded' });
-        const newIframe = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-        const newFrame = await newIframe.contentFrame();
-        await newFrame.waitForSelector('.cell-daily', { timeout: 60000 });
-      }
+      continue;
     }
-    console.log('🎉 所有 Daily Game 已處理完畢！');
-    await browser.close();
+
+    await card.scrollIntoViewIfNeeded().catch(() => { });
+    await card.click().catch(() => console.warn('⚠️ 點擊 Daily 失敗，嘗試繼續。'));
+
+    // 點擊 All arenas（若有）
+    const allArenasBtn = await frame.$(
+      '.btn:has-text("All players"), .btn:has-text("All arenas")',
+    );
+    if (allArenasBtn) {
+      console.log('🎮 點擊 All arenas...');
+      await allArenasBtn.click().catch(() => console.warn('⚠️ 點擊 All arenas 失敗'));
+      await frame.waitForTimeout(3000);
+    }
+
+    // 等排行榜載入
+    await frame.waitForSelector('.rank-list-item', { timeout: 60000 });
+    await frame.waitForTimeout(1000);
+
+    const dailyDate = await detectDailyDate(frame);
+    console.log(`📆 當前 Daily 日期：${dailyDate}`);
+
+    const data = await extractLeaderboard(frame);
+    console.table(data.slice(0, 5));
+    await ensureCsvHeader();
+    await appendCsv(data, dailyDate);
+
+    // 回前頁
+    const backBtn = await frame.$('.icon.icon-back');
+    if (backBtn) {
+      console.log('↩️ 返回主畫面…');
+      await backBtn.click();
+      await frame.waitForSelector('.cell-daily', { timeout: 60000 });
+      await frame.waitForTimeout(1500);
+    } else {
+      console.warn('⚠️ 找不到返回按鈕，嘗試刷新 Daily 列表');
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      const newIframe = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
+      const newFrame = await newIframe.contentFrame();
+      await newFrame.waitForSelector('.cell-daily', { timeout: 60000 });
+    }
+  }
+  console.log('🎉 所有 Daily Game 已處理完畢！');
+  await browser.close();
 }
 
-;(async () => {
+; (async () => {
   for (const storagePath of storage_paths) {
     try {
       await runForStorage(storagePath);

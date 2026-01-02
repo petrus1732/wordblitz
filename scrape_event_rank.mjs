@@ -96,10 +96,17 @@ function parseRelativeDate(raw, base = NOW) {
     const monthIndex =
       MONTH_INDEX[monthLower] ?? MONTH_INDEX[monthKey];
     const day = Number.parseInt(dayText, 10);
-    const year =
+    let year =
       yearText ? Number.parseInt(yearText, 10) : base.getUTCFullYear();
     if (monthIndex !== undefined && !Number.isNaN(day) && !Number.isNaN(year)) {
-      const resolved = new Date(Date.UTC(year, monthIndex, day));
+      let resolved = new Date(Date.UTC(year, monthIndex, day));
+
+      // 若解析出的日期在未來（例如現在是 1 月，標籤是 12/31），則表示是去年的
+      if (!yearText && !Number.isNaN(resolved.valueOf()) && resolved > base) {
+        year -= 1;
+        resolved = new Date(Date.UTC(year, monthIndex, day));
+      }
+
       if (!Number.isNaN(resolved.valueOf())) return formatDate(resolved);
     }
   }
@@ -313,6 +320,15 @@ async function runForStorage(storagePath) {
     timeout: 120000,
   });
 
+  // 等待幾秒確保畫面穩定並偵測推播通知要求的 overlay
+  await page.waitForTimeout(5000);
+  const notifyBtn = page.locator('div[role="alertdialog"][aria-label="推播通知要求"] button:has-text("關閉")');
+  if (await notifyBtn.isVisible()) {
+    await notifyBtn.click();
+    console.log('✨ 已自動關閉推播通知要求。');
+    await page.waitForTimeout(1000);
+  }
+
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', {
     timeout: 60000,
   });
@@ -343,8 +359,7 @@ async function runForStorage(storagePath) {
 
     if (!closed) {
       console.log(
-        `Skipping open event ${index + 1}/${cards.length}: ${
-          title || 'Unknown'
+        `Skipping open event ${index + 1}/${cards.length}: ${title || 'Unknown'
         }`
       );
       index++;
@@ -355,7 +370,7 @@ async function runForStorage(storagePath) {
       `Processing event ${index + 1}/${cards.length}: ${title || 'Unknown'} (${eventDate})`
     );
 
-    await card.scrollIntoViewIfNeeded().catch(() => {});
+    await card.scrollIntoViewIfNeeded().catch(() => { });
     const clickSucceeded = await card
       .click()
       .then(() => true)
@@ -372,7 +387,7 @@ async function runForStorage(storagePath) {
       '.btn:has-text("All players"), .btn:has-text("All arenas")',
     );
     if (allArenasBtn) {
-      await allArenasBtn.click().catch(() => {});
+      await allArenasBtn.click().catch(() => { });
       await frame.waitForTimeout(2000);
     }
 
@@ -381,13 +396,12 @@ async function runForStorage(storagePath) {
 
     const rankings = await extractLeaderboard(frame);
     console.log(
-      `  → captured ${rankings.length} player(s) for ${
-        title || 'Unknown'
+      `  → captured ${rankings.length} player(s) for ${title || 'Unknown'
       } (${eventDate})`,
     );
     events.push({
       date: eventDate,
-      name: title, 
+      name: title,
       rankings,
     });
 

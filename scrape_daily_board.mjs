@@ -25,6 +25,15 @@ async function saveJson(data) {
   console.log('🚀 開啟 Word Blitz 遊戲頁...');
   await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
+  // 等待幾秒確保畫面穩定並偵測推播通知要求的 overlay
+  await page.waitForTimeout(5000);
+  const notifyBtn = page.locator('div[role="alertdialog"][aria-label="推播通知要求"] button:has-text("關閉")');
+  if (await notifyBtn.isVisible()) {
+    await notifyBtn.click();
+    console.log('✨ 已自動關閉推播通知要求。');
+    await page.waitForTimeout(1000);
+  }
+
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
   const frame = await iframeHandle.contentFrame();
   console.log('✅ 已附著到遊戲 iframe。');
@@ -41,7 +50,7 @@ async function saveJson(data) {
     // 點擊 All words（確保顯示完整清單）
     const allWordsBtn = await frame.$('.btn:has-text("All words")');
     if (allWordsBtn) {
-      await allWordsBtn.click().catch(() => {});
+      await allWordsBtn.click().catch(() => { });
       console.log('📝 已點擊「All words」。等待字詞列表載入...');
       await frame.waitForTimeout(1500);
     }
@@ -57,7 +66,7 @@ async function saveJson(data) {
       const firstWord = await frame.$('.duel-result-row .word span');
       if (firstWord) {
         console.log(`🔠 點擊第一個單字 "${await firstWord.evaluate(e => e.innerText)}" 以顯示棋盤...`);
-        await firstWord.click().catch(() => {});
+        await firstWord.click().catch(() => { });
         await frame.waitForSelector('.letter-grid .core-letter-cell', { timeout: 10000 });
         await frame.waitForTimeout(1500);
       }
