@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state3.json');
+const STORAGE = path.resolve('./storage_state2.json');
 const JSON_PATH = path.resolve('./event_details.json');
 
 // 寫入 JSON
@@ -76,7 +76,7 @@ const data = {
     const letsGoBtn = frame.locator('.button-primary', { hasText: 'Let’s go!' });
     await letsGoBtn.waitFor({ state: 'visible', timeout: 10000 });
     // 增加一點延遲確保動畫完成
-    await frame.waitForTimeout(1000);
+    await frame.waitForTimeout(2000);
     await letsGoBtn.click({ force: true });
     console.log('👆 已點擊 "Let’s go!" (Force + Delay)。');
 
