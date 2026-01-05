@@ -302,6 +302,18 @@ async function runForStorage(storage_path) {
     console.log(`📆 當前 Daily 日期：${dailyDate}`);
 
     const data = await extractLeaderboard(frame);
+    // add Kitniti's score on Jan 3rd manually
+    if (dailyDate === '2026-01-03') {
+      data.push({
+        rank: '',
+        name: 'Kitniti',
+        points: 1847,
+        playerId: 'f33247461c13011c6c8465f7aed94ddc',
+        avatar: 'https://storage.googleapis.com/wbuserimages/prod/24453968-f33247461c13011c6c8465f7aed94ddc',
+      });
+      console.log('➕ 已手動加入 Kitniti 的分數。');
+    }
+
     console.table(data.slice(0, 5));
     await ensureCsvHeader();
     await appendCsv(data, dailyDate);
