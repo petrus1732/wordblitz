@@ -95,6 +95,7 @@ const data = {
       ]);
 
       console.log(`🎯 在 [${location}] 找到 "開始玩" 按鈕！`);
+      await frame.waitForTimeout(2000);
 
       if (location === 'Page') {
         await startPlayInPage.click({ force: true });
