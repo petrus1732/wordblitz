@@ -167,25 +167,25 @@ function parseEventRows(jsonPath) {
   data.forEach((event, eventIdx) => {
     const eventDate = event?.date
     if (!eventDate || eventDate.length !== 10) return
-    ;(event.rankings || []).forEach((entry, idx) => {
-      const rank = Number(entry?.rank)
-      if (!Number.isFinite(rank) || rank < 1) return
-      const rawPoints = Number(
-        typeof entry?.points === 'string'
-          ? entry.points.replace(/,/g, '')
-          : entry?.points,
-      )
-      rows.push({
-        date: eventDate,
-        month: eventDate.slice(0, 7),
-        rank,
-        playerId: entry?.playerId || `name:${entry?.name || 'Unknown'}`,
-        name: entry?.name || 'Unknown',
-        avatar: entry?.avatar || '',
-        score: Number.isFinite(rawPoints) ? rawPoints : null,
-        rawIndex: eventIdx * 1000 + idx,
+      ; (event.rankings || []).forEach((entry, idx) => {
+        const rank = Number(entry?.rank)
+        if (!Number.isFinite(rank) || rank < 1) return
+        const rawPoints = Number(
+          typeof entry?.points === 'string'
+            ? entry.points.replace(/,/g, '')
+            : entry?.points,
+        )
+        rows.push({
+          date: eventDate,
+          month: eventDate.slice(0, 7),
+          rank,
+          playerId: entry?.playerId || `name:${entry?.name || 'Unknown'}`,
+          name: entry?.name || 'Unknown',
+          avatar: entry?.avatar || '',
+          score: Number.isFinite(rawPoints) ? rawPoints : null,
+          rawIndex: eventIdx * 1000 + idx,
+        })
       })
-    })
   })
 
   rows.sort((a, b) => {
@@ -393,19 +393,27 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
     }
   })
 
-  medalCompletions
-    .sort((a, b) => {
-      if (a.date !== b.date) return a.date.localeCompare(b.date)
-      return a.rawIndex - b.rawIndex
-    })
-    .slice(0, MEDAL_SET_BONUS.length)
-    .forEach((entry, idx) => {
-      const player = players.get(entry.playerId)
-      if (!player) return
-      const bonus = MEDAL_SET_BONUS[idx]
-      player.medalBonus += bonus
-      player.medalSetRank = idx + 1
-    })
+  // 使用 Dense Rank 處理 Medal Bonus：同一天完成的人獲得相同積分
+  const completionsByDate = new Map();
+  medalCompletions.forEach(entry => {
+    if (!completionsByDate.has(entry.date)) {
+      completionsByDate.set(entry.date, []);
+    }
+    completionsByDate.get(entry.date).push(entry.playerId);
+  });
+
+  const sortedDates = Array.from(completionsByDate.keys()).sort();
+  sortedDates.slice(0, MEDAL_SET_BONUS.length).forEach((date, idx) => {
+    const playerIds = completionsByDate.get(date);
+    const bonus = MEDAL_SET_BONUS[idx];
+    playerIds.forEach(playerId => {
+      const player = players.get(playerId);
+      if (player) {
+        player.medalBonus += bonus;
+        player.medalSetRank = idx + 1;
+      }
+    });
+  });
 
   filteredEvents.forEach((row) => {
     const player = getPlayer(row.playerId, row.name, row.avatar)
@@ -515,65 +523,65 @@ function computeMonthData(month, dailyRows, eventRows, rawEvents, throughDate) {
   const dailyMatrix =
     dailyDays.length && dailyMatrixPlayers.size
       ? {
-          days: dailyDays.map((date) => ({ date })),
-          players: Array.from(dailyMatrixPlayers.values())
-            .map((player) => {
-              const total = dailyDays.reduce(
-                (sum, date) => sum + (player.scores[date]?.points ?? 0),
-                0,
-              )
-              const totalScore = dailyDays.reduce(
-                (sum, date) => sum + (player.scores[date]?.score ?? 0),
-                0,
-              )
-              return {
-                ...player,
-                total,
-                totalScore,
-              }
-            })
-            .sort((a, b) => {
-              if (b.total !== a.total) return b.total - a.total
-              const aScore = a.totalScore ?? 0
-              const bScore = b.totalScore ?? 0
-              if (bScore !== aScore) return bScore - aScore
-              return a.name.localeCompare(b.name)
-            }),
-        }
+        days: dailyDays.map((date) => ({ date })),
+        players: Array.from(dailyMatrixPlayers.values())
+          .map((player) => {
+            const total = dailyDays.reduce(
+              (sum, date) => sum + (player.scores[date]?.points ?? 0),
+              0,
+            )
+            const totalScore = dailyDays.reduce(
+              (sum, date) => sum + (player.scores[date]?.score ?? 0),
+              0,
+            )
+            return {
+              ...player,
+              total,
+              totalScore,
+            }
+          })
+          .sort((a, b) => {
+            if (b.total !== a.total) return b.total - a.total
+            const aScore = a.totalScore ?? 0
+            const bScore = b.totalScore ?? 0
+            if (bScore !== aScore) return bScore - aScore
+            return a.name.localeCompare(b.name)
+          }),
+      }
       : null
 
   const eventMatrix =
     sortedEvents.length && eventMatrixPlayers.size
       ? {
-          events: sortedEvents.map((event) => ({
-            id: `${slugify(event.name)}-${event.date}`,
-            name: event.name,
-            date: event.date,
-          })),
-          players: Array.from(eventMatrixPlayers.values())
-            .map((player) => {
-              const total = sortedEvents.reduce((sum, event) => {
-                const eventId = `${slugify(event.name)}-${event.date}`
-                return sum + (player.scores[eventId]?.points ?? 0)
-              }, 0)
-              const totalScore = sortedEvents.reduce((sum, event) => {
-                const eventId = `${slugify(event.name)}-${event.date}`
-                return sum + (player.scores[eventId]?.score ?? 0)
-              }, 0)
-              return {
-                ...player,
-                total,
-                totalScore,
-              }
-            })
-            .sort((a, b) => {
-              if (b.total !== a.total) return b.total - a.total
-              const aScore = a.totalScore ?? 0
-              const bScore = b.totalScore ?? 0
-              if (bScore !== aScore) return bScore - aScore
-              return a.name.localeCompare(b.name)
-            }),
-        }
+        events: sortedEvents.map((event) => ({
+          id: `${slugify(event.name)}-${event.date}`,
+          name: event.name,
+          date: event.date,
+        })),
+        players: Array.from(eventMatrixPlayers.values())
+          .map((player) => {
+            const total = sortedEvents.reduce((sum, event) => {
+              const eventId = `${slugify(event.name)}-${event.date}`
+              return sum + (player.scores[eventId]?.points ?? 0)
+            }, 0)
+            const totalScore = sortedEvents.reduce((sum, event) => {
+              const eventId = `${slugify(event.name)}-${event.date}`
+              return sum + (player.scores[eventId]?.score ?? 0)
+            }, 0)
+            return {
+              ...player,
+              total,
+              totalScore,
+            }
+          })
+          .sort((a, b) => {
+            if (b.total !== a.total) return b.total - a.total
+            const aScore = a.totalScore ?? 0
+            const bScore = b.totalScore ?? 0
+            if (bScore !== aScore) return bScore - aScore
+            return a.name.localeCompare(b.name)
+          }),
+      }
       : null
 
   return { leaderboard, dailyMatrix, eventMatrix }
@@ -659,8 +667,7 @@ function main() {
     )
     const monthList = Object.keys(pointsResults)
     console.log(
-      `Calculated leaderboards for ${
-        monthList.length
+      `Calculated leaderboards for ${monthList.length
       } month(s): ${monthList.join(', ')} -> ${outputPath}`,
     )
   } catch (error) {
