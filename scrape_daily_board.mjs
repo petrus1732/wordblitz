@@ -38,40 +38,67 @@ async function saveJson(data) {
   const frame = await iframeHandle.contentFrame();
   console.log('✅ 已附著到遊戲 iframe。');
 
-  while (true) {
+  // --- 自動進入每日挑戰 ---
+  console.log('🔍 正在尋找每日挑戰 (Daily Game)...');
+  try {
+    const dailyGrid = frame.locator('.cell-daily.clickable').first();
+    await dailyGrid.waitFor({ state: 'visible', timeout: 15000 });
 
-    // 等待使用者按 Enter 繼續
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-    await rl.question('⏸️ 請手動關掉廣告，確認畫面準備好後按 Enter 繼續...');
-    rl.close();
-    // 點擊 All words（確保顯示完整清單）
-    const allWordsBtn = await frame.$('.btn:has-text("All words")');
-    if (allWordsBtn) {
-      await allWordsBtn.click().catch(() => { });
-      console.log('📝 已點擊「All words」。等待字詞列表載入...');
-      await frame.waitForTimeout(1500);
+    // 點擊每日挑戰內部的 Go 按鈕 (button-round)
+    const goBtn = dailyGrid.locator('.btn-go .button-round.clickable');
+    await goBtn.click();
+    console.log('👆 已點擊「Daily Game」Go 按鈕。');
+
+    // 點擊 "Play" 按鈕 (使用 footer selector 確保精確)
+    const playBtn = frame.locator('.screen-component-footer .button-primary:has-text("Play")');
+    await playBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await frame.waitForTimeout(2000); // 確保動畫穩定
+    await playBtn.click({ force: true });
+    console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
+
+    // 1. 等待遊戲結束 (95秒預留緩衝)
+    await frame.waitForTimeout(95000);
+    console.log('⏰ 95 秒已到，展開後續自動化操作...');
+
+    // 2. 自動關閉分享對話 (Facebook 覆蓋層)
+    const closeSharingBtn = page.locator('div[aria-label="關閉淘汰賽對話"]');
+    const closeAdBtn = page.locator('div[aria-label="關閉廣告"]');
+
+    if (await closeSharingBtn.isVisible()) {
+      await closeSharingBtn.click({ force: true });
+      console.log('✨ 已自動關閉分享對話。');
+      await frame.waitForTimeout(1000);
     }
 
-    // 擷取所有字詞（無論有沒有滑過）
+    if (await closeAdBtn.isVisible()) {
+      await closeAdBtn.click({ force: true });
+      console.log('✨ 已自動關閉廣告。');
+      await frame.waitForTimeout(1000);
+    }
+
+    // 3. 點擊 All words（確保顯示完整清單）
+    const allWordsBtn = frame.locator('.btn', { hasText: 'All words' });
+    if (await allWordsBtn.isVisible()) {
+      await allWordsBtn.click({ force: true });
+      console.log('📝 已點擊「All words」。等待字詞列表載入...');
+      await frame.waitForTimeout(2000);
+    }
+
+    // 擷取所有字詞
     const words = await frame.$$eval('.duel-result-row .word span', els =>
       els.map(e => e.innerText.trim()).filter(Boolean)
     );
     console.log(`✅ 擷取到 ${words.length} 個單字。`);
 
-    // 點擊任意字詞以打開棋盤（例如第一個）
+    // 點擊任意字詞以打開棋盤
     if (words.length > 0) {
       const firstWord = await frame.$('.duel-result-row .word span');
       if (firstWord) {
-        console.log(`🔠 點擊第一個單字 "${await firstWord.evaluate(e => e.innerText)}" 以顯示棋盤...`);
+        console.log(`🔠 點擊第一個單字以顯示棋盤...`);
         await firstWord.click().catch(() => { });
         await frame.waitForSelector('.letter-grid .core-letter-cell', { timeout: 10000 });
         await frame.waitForTimeout(1500);
       }
-    } else {
-      console.warn('⚠️ 沒有偵測到任何單字，略過棋盤擷取。');
     }
 
     // 擷取棋盤盤面
@@ -87,8 +114,7 @@ async function saveJson(data) {
     );
 
     const date = new Date().toISOString().slice(0, 10);
-
-    const data = {
+    const resultData = {
       date,
       wordCount: words.length,
       board: board.length ? board : 'not found',
@@ -96,6 +122,15 @@ async function saveJson(data) {
     };
 
     console.log(`📦 完成擷取！共 ${words.length} 字詞，棋盤格數 ${board.length}`);
-    await saveJson(data);
+    await saveJson(resultData);
+
+  } catch (err) {
+    console.error('⚠️ 自動化流程發生錯誤:', err.message);
+    try {
+      await page.screenshot({ path: 'debug_daily_board_fail.png' });
+    } catch (e) { }
+  } finally {
+    console.log('🏁 任務結束。');
+    await browser.close();
   }
 })();
