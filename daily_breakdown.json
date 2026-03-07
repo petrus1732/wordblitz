@@ -30212,6 +30212,9 @@
       },
       {
         "date": "2026-03-05"
+      },
+      {
+        "date": "2026-03-06"
       }
     ],
     "players": [
@@ -30244,10 +30247,15 @@
             "rank": 1,
             "score": 1906,
             "points": 19
+          },
+          "2026-03-06": {
+            "rank": 6,
+            "score": 1208,
+            "points": 5
           }
         },
-        "total": 91,
-        "totalScore": 9445
+        "total": 96,
+        "totalScore": 10653
       },
       {
         "playerId": "f33247461c13011c6c8465f7aed94ddc",
@@ -30278,78 +30286,15 @@
             "rank": 2,
             "score": 1856,
             "points": 15
+          },
+          "2026-03-06": {
+            "rank": 1,
+            "score": 1414,
+            "points": 19
           }
         },
-        "total": 62,
-        "totalScore": 8891
-      },
-      {
-        "playerId": "f5b76a1207cd52e580007eb2d7fcc6fa",
-        "name": "Kevin",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/70351000-f5b76a1207cd52e580007eb2d7fcc6fa",
-        "scores": {
-          "2026-03-01": {
-            "rank": 5,
-            "score": 1860,
-            "points": 6
-          },
-          "2026-03-02": {
-            "rank": 2,
-            "score": 2041,
-            "points": 15
-          },
-          "2026-03-03": {
-            "rank": 5,
-            "score": 1596,
-            "points": 6
-          },
-          "2026-03-04": {
-            "rank": 8,
-            "score": 1047,
-            "points": 3
-          },
-          "2026-03-05": {
-            "rank": 5,
-            "score": 1592,
-            "points": 6
-          }
-        },
-        "total": 36,
-        "totalScore": 8136
-      },
-      {
-        "playerId": "d920213885f59abd9b181514e8ed0231",
-        "name": "Lewis",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94334483-d920213885f59abd9b181514e8ed0231",
-        "scores": {
-          "2026-03-01": {
-            "rank": 7,
-            "score": 1766,
-            "points": 4
-          },
-          "2026-03-02": {
-            "rank": 13,
-            "score": 1560,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 3,
-            "score": 1688,
-            "points": 11
-          },
-          "2026-03-04": {
-            "rank": 3,
-            "score": 1190,
-            "points": 11
-          },
-          "2026-03-05": {
-            "rank": 4,
-            "score": 1612,
-            "points": 7
-          }
-        },
-        "total": 33,
-        "totalScore": 7816
+        "total": 81,
+        "totalScore": 10305
       },
       {
         "playerId": "676c8b8d1048a9b6f7dbb24b8c80b30c",
@@ -30380,10 +30325,93 @@
             "rank": 6,
             "score": 1566,
             "points": 5
+          },
+          "2026-03-06": {
+            "rank": 2,
+            "score": 1380,
+            "points": 15
           }
         },
-        "total": 32,
-        "totalScore": 7976
+        "total": 47,
+        "totalScore": 9356
+      },
+      {
+        "playerId": "d920213885f59abd9b181514e8ed0231",
+        "name": "Lewis",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94334483-d920213885f59abd9b181514e8ed0231",
+        "scores": {
+          "2026-03-01": {
+            "rank": 7,
+            "score": 1766,
+            "points": 4
+          },
+          "2026-03-02": {
+            "rank": 13,
+            "score": 1560,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 3,
+            "score": 1688,
+            "points": 11
+          },
+          "2026-03-04": {
+            "rank": 3,
+            "score": 1190,
+            "points": 11
+          },
+          "2026-03-05": {
+            "rank": 4,
+            "score": 1612,
+            "points": 7
+          },
+          "2026-03-06": {
+            "rank": 3,
+            "score": 1356,
+            "points": 11
+          }
+        },
+        "total": 44,
+        "totalScore": 9172
+      },
+      {
+        "playerId": "f5b76a1207cd52e580007eb2d7fcc6fa",
+        "name": "Kevin",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/70351000-f5b76a1207cd52e580007eb2d7fcc6fa",
+        "scores": {
+          "2026-03-01": {
+            "rank": 5,
+            "score": 1860,
+            "points": 6
+          },
+          "2026-03-02": {
+            "rank": 2,
+            "score": 2041,
+            "points": 15
+          },
+          "2026-03-03": {
+            "rank": 5,
+            "score": 1596,
+            "points": 6
+          },
+          "2026-03-04": {
+            "rank": 8,
+            "score": 1047,
+            "points": 3
+          },
+          "2026-03-05": {
+            "rank": 5,
+            "score": 1592,
+            "points": 6
+          },
+          "2026-03-06": {
+            "rank": 4,
+            "score": 1313,
+            "points": 7
+          }
+        },
+        "total": 43,
+        "totalScore": 9449
       },
       {
         "playerId": "3b0f13b4cba146f2372524ff3b19c6fe",
@@ -30414,10 +30442,15 @@
             "rank": 3,
             "score": 1789,
             "points": 11
+          },
+          "2026-03-06": {
+            "rank": 9,
+            "score": 1161,
+            "points": 2
           }
         },
-        "total": 30,
-        "totalScore": 8054
+        "total": 32,
+        "totalScore": 9215
       },
       {
         "playerId": "a0055187308a6831e6d914375d961273",
@@ -30448,10 +30481,15 @@
             "rank": 7,
             "score": 1543,
             "points": 4
+          },
+          "2026-03-06": {
+            "rank": 7,
+            "score": 1172,
+            "points": 4
           }
         },
-        "total": 19,
-        "totalScore": 7556
+        "total": 23,
+        "totalScore": 8728
       },
       {
         "playerId": "98610e86acb0a629da17f0993ec0fd50",
@@ -30482,10 +30520,15 @@
             "rank": 17,
             "score": 1358,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 10,
+            "score": 1142,
+            "points": 1
           }
         },
-        "total": 16,
-        "totalScore": 7027
+        "total": 17,
+        "totalScore": 8169
       },
       {
         "playerId": "2923a7c3990777f6e12bacee960e1d72",
@@ -30550,78 +30593,15 @@
             "rank": 8,
             "score": 1523,
             "points": 3
+          },
+          "2026-03-06": {
+            "rank": 11,
+            "score": 1141,
+            "points": 0
           }
         },
         "total": 9,
-        "totalScore": 6986
-      },
-      {
-        "playerId": "4c4b0872dc5e9964b8715ff68a609854",
-        "name": "Esuabom",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/21596664-4c4b0872dc5e9964b8715ff68a609854",
-        "scores": {
-          "2026-03-01": {
-            "rank": 9,
-            "score": 1761,
-            "points": 2
-          },
-          "2026-03-02": {
-            "rank": 9,
-            "score": 1688,
-            "points": 2
-          },
-          "2026-03-03": {
-            "rank": 11,
-            "score": 1442,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 7,
-            "score": 1066,
-            "points": 4
-          },
-          "2026-03-05": {
-            "rank": 15,
-            "score": 1423,
-            "points": 0
-          }
-        },
-        "total": 8,
-        "totalScore": 7380
-      },
-      {
-        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "name": "Michael",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "scores": {
-          "2026-03-01": {
-            "rank": 21,
-            "score": 1487,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 6,
-            "score": 1811,
-            "points": 5
-          },
-          "2026-03-03": {
-            "rank": 14,
-            "score": 1342,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 13,
-            "score": 985,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 10,
-            "score": 1469,
-            "points": 1
-          }
-        },
-        "total": 6,
-        "totalScore": 7094
+        "totalScore": 8127
       },
       {
         "playerId": "0f7455b7ea9925a9a50a2fa90060756d",
@@ -30652,10 +30632,132 @@
             "rank": 12,
             "score": 1465,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 5,
+            "score": 1209,
+            "points": 6
+          }
+        },
+        "total": 9,
+        "totalScore": 8108
+      },
+      {
+        "playerId": "4c4b0872dc5e9964b8715ff68a609854",
+        "name": "Esuabom",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/21596664-4c4b0872dc5e9964b8715ff68a609854",
+        "scores": {
+          "2026-03-01": {
+            "rank": 9,
+            "score": 1761,
+            "points": 2
+          },
+          "2026-03-02": {
+            "rank": 9,
+            "score": 1688,
+            "points": 2
+          },
+          "2026-03-03": {
+            "rank": 11,
+            "score": 1442,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 7,
+            "score": 1066,
+            "points": 4
+          },
+          "2026-03-05": {
+            "rank": 15,
+            "score": 1423,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 24,
+            "score": 886,
+            "points": 0
+          }
+        },
+        "total": 8,
+        "totalScore": 8266
+      },
+      {
+        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "name": "Michael",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "scores": {
+          "2026-03-01": {
+            "rank": 21,
+            "score": 1487,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 6,
+            "score": 1811,
+            "points": 5
+          },
+          "2026-03-03": {
+            "rank": 14,
+            "score": 1342,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 13,
+            "score": 985,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 10,
+            "score": 1469,
+            "points": 1
+          },
+          "2026-03-06": {
+            "rank": 13,
+            "score": 1083,
+            "points": 0
+          }
+        },
+        "total": 6,
+        "totalScore": 8177
+      },
+      {
+        "playerId": "80a6071ed909d18dc4615b03b50adcc6",
+        "name": "Jeannie",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19740246-80a6071ed909d18dc4615b03b50adcc6",
+        "scores": {
+          "2026-03-01": {
+            "rank": 22,
+            "score": 1477,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 15,
+            "score": 1546,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 14,
+            "score": 1342,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 22,
+            "score": 840,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 21,
+            "score": 1269,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 8,
+            "score": 1166,
+            "points": 3
           }
         },
         "total": 3,
-        "totalScore": 6899
+        "totalScore": 7640
       },
       {
         "playerId": "9a9734e85ad7f1c18cec931dc022f401",
@@ -30700,10 +30802,15 @@
             "rank": 9,
             "score": 1500,
             "points": 2
+          },
+          "2026-03-06": {
+            "rank": 27,
+            "score": 876,
+            "points": 0
           }
         },
         "total": 2,
-        "totalScore": 6336
+        "totalScore": 7212
       },
       {
         "playerId": "630645abeeda490b1745d81ca6fa7850",
@@ -30734,10 +30841,15 @@
             "rank": 19,
             "score": 1285,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 14,
+            "score": 1079,
+            "points": 0
           }
         },
         "total": 1,
-        "totalScore": 6743
+        "totalScore": 7822
       },
       {
         "playerId": "51c6f6019317c84ce59b2f83962da383",
@@ -30768,10 +30880,15 @@
             "rank": 13,
             "score": 1449,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 12,
+            "score": 1103,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 6754
+        "totalScore": 7857
       },
       {
         "playerId": "82d7d89cdfdc4bd0f359b894e998cf98",
@@ -30802,10 +30919,15 @@
             "rank": 11,
             "score": 1467,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 17,
+            "score": 1021,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 6586
+        "totalScore": 7607
       },
       {
         "playerId": "d247b8ebeefb0f030bcd0bc582720e9c",
@@ -30836,10 +30958,15 @@
             "rank": 16,
             "score": 1397,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 15,
+            "score": 1036,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 6527
+        "totalScore": 7563
       },
       {
         "playerId": "525364925f8a9aee6c56c03886cdb6d2",
@@ -30870,78 +30997,15 @@
             "rank": 34,
             "score": 1044,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6507
-      },
-      {
-        "playerId": "80a6071ed909d18dc4615b03b50adcc6",
-        "name": "Jeannie",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19740246-80a6071ed909d18dc4615b03b50adcc6",
-        "scores": {
-          "2026-03-01": {
-            "rank": 22,
-            "score": 1477,
-            "points": 0
           },
-          "2026-03-02": {
-            "rank": 15,
-            "score": 1546,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 14,
-            "score": 1342,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 22,
-            "score": 840,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 21,
-            "score": 1269,
+          "2026-03-06": {
+            "rank": 16,
+            "score": 1024,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 6474
-      },
-      {
-        "playerId": "7c725404ee3b78ec4dbf4c9aa7232e1a",
-        "name": "Jay",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/17339371-7c725404ee3b78ec4dbf4c9aa7232e1a",
-        "scores": {
-          "2026-03-01": {
-            "rank": 20,
-            "score": 1502,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 21,
-            "score": 1468,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 18,
-            "score": 1234,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 20,
-            "score": 848,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 25,
-            "score": 1196,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6248
+        "totalScore": 7531
       },
       {
         "playerId": "e5d324b4eca1b03fc70c44746de537a7",
@@ -30972,10 +31036,93 @@
             "rank": 14,
             "score": 1444,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 21,
+            "score": 953,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 6123
+        "totalScore": 7076
+      },
+      {
+        "playerId": "7c725404ee3b78ec4dbf4c9aa7232e1a",
+        "name": "Jay",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/17339371-7c725404ee3b78ec4dbf4c9aa7232e1a",
+        "scores": {
+          "2026-03-01": {
+            "rank": 20,
+            "score": 1502,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 21,
+            "score": 1468,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 18,
+            "score": 1234,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 20,
+            "score": 848,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 25,
+            "score": 1196,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 30,
+            "score": 828,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 7076
+      },
+      {
+        "playerId": "800eca46a100354927f4d80b577a8f0e",
+        "name": "Kaleb",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19940464-800eca46a100354927f4d80b577a8f0e",
+        "scores": {
+          "2026-03-01": {
+            "rank": 31,
+            "score": 1287,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 23,
+            "score": 1411,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 28,
+            "score": 1087,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 24,
+            "score": 801,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 32,
+            "score": 1081,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 18,
+            "score": 1017,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6684
       },
       {
         "playerId": "f2cf7eb43583e04a62054c79299839aa",
@@ -31006,10 +31153,205 @@
             "rank": 24,
             "score": 1208,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 25,
+            "score": 885,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 5687
+        "totalScore": 6572
+      },
+      {
+        "playerId": "dfec62ed27ec3e559347ee123c0c7a5a",
+        "name": "Louie James",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/51042361-dfec62ed27ec3e559347ee123c0c7a5a",
+        "scores": {
+          "2026-03-01": {
+            "rank": 13,
+            "score": 1581,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 28,
+            "score": 1309,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 16,
+            "score": 1309,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 23,
+            "score": 1246,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 19,
+            "score": 987,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6432
+      },
+      {
+        "playerId": "824f5426a0957ecb26741b1c7a713662",
+        "name": "Fred",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/48619607-824f5426a0957ecb26741b1c7a713662",
+        "scores": {
+          "2026-03-01": {
+            "rank": 24,
+            "score": 1379,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 30,
+            "score": 1290,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 35,
+            "score": 917,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 27,
+            "score": 756,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 29,
+            "score": 1175,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 31,
+            "score": 826,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6343
+      },
+      {
+        "playerId": "801b2f89bbbc2722fc9a1c772736caee",
+        "name": "Norman",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94280027-801b2f89bbbc2722fc9a1c772736caee",
+        "scores": {
+          "2026-03-01": {
+            "rank": 28,
+            "score": 1326,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 42,
+            "score": 999,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 23,
+            "score": 1101,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 26,
+            "score": 762,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 28,
+            "score": 1177,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 22,
+            "score": 935,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6300
+      },
+      {
+        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
+        "name": "Winston",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
+        "scores": {
+          "2026-03-01": {
+            "rank": 35,
+            "score": 1114,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 32,
+            "score": 1231,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 22,
+            "score": 1131,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 25,
+            "score": 783,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 36,
+            "score": 1035,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 29,
+            "score": 847,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6141
+      },
+      {
+        "playerId": "e455e647ad1de9774a8d728de7dd8c2c",
+        "name": "Debi",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/37122610-e455e647ad1de9774a8d728de7dd8c2c",
+        "scores": {
+          "2026-03-01": {
+            "rank": 25,
+            "score": 1366,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 39,
+            "score": 1036,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 32,
+            "score": 989,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 36,
+            "score": 676,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 26,
+            "score": 1190,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 28,
+            "score": 865,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 6122
       },
       {
         "playerId": "72fa75a07f88a9fd77ee2af82e33efd3",
@@ -31046,205 +31388,6 @@
         "totalScore": 5679
       },
       {
-        "playerId": "800eca46a100354927f4d80b577a8f0e",
-        "name": "Kaleb",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19940464-800eca46a100354927f4d80b577a8f0e",
-        "scores": {
-          "2026-03-01": {
-            "rank": 31,
-            "score": 1287,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 23,
-            "score": 1411,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 28,
-            "score": 1087,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 24,
-            "score": 801,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 32,
-            "score": 1081,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5667
-      },
-      {
-        "playerId": "824f5426a0957ecb26741b1c7a713662",
-        "name": "Fred",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/48619607-824f5426a0957ecb26741b1c7a713662",
-        "scores": {
-          "2026-03-01": {
-            "rank": 24,
-            "score": 1379,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 30,
-            "score": 1290,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 35,
-            "score": 917,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 27,
-            "score": 756,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 29,
-            "score": 1175,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5517
-      },
-      {
-        "playerId": "dfec62ed27ec3e559347ee123c0c7a5a",
-        "name": "Louie James",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/51042361-dfec62ed27ec3e559347ee123c0c7a5a",
-        "scores": {
-          "2026-03-01": {
-            "rank": 13,
-            "score": 1581,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 28,
-            "score": 1309,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 16,
-            "score": 1309,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 23,
-            "score": 1246,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5445
-      },
-      {
-        "playerId": "801b2f89bbbc2722fc9a1c772736caee",
-        "name": "Norman",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94280027-801b2f89bbbc2722fc9a1c772736caee",
-        "scores": {
-          "2026-03-01": {
-            "rank": 28,
-            "score": 1326,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 42,
-            "score": 999,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 23,
-            "score": 1101,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 26,
-            "score": 762,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 28,
-            "score": 1177,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5365
-      },
-      {
-        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
-        "name": "Winston",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
-        "scores": {
-          "2026-03-01": {
-            "rank": 35,
-            "score": 1114,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 32,
-            "score": 1231,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 22,
-            "score": 1131,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 25,
-            "score": 783,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 36,
-            "score": 1035,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5294
-      },
-      {
-        "playerId": "e455e647ad1de9774a8d728de7dd8c2c",
-        "name": "Debi",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/37122610-e455e647ad1de9774a8d728de7dd8c2c",
-        "scores": {
-          "2026-03-01": {
-            "rank": 25,
-            "score": 1366,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 39,
-            "score": 1036,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 32,
-            "score": 989,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 36,
-            "score": 676,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 26,
-            "score": 1190,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 5257
-      },
-      {
         "playerId": "91c00e853e43dadbd6a5fedf16181d7c",
         "name": "Heather",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/19953664-91c00e853e43dadbd6a5fedf16181d7c",
@@ -31273,10 +31416,15 @@
             "rank": 37,
             "score": 1026,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 36,
+            "score": 729,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4791
+        "totalScore": 5520
       },
       {
         "playerId": "5d8dc7a4eb1cbd9cd99ec2fd8c57f759",
@@ -31307,10 +31455,15 @@
             "rank": 38,
             "score": 966,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 33,
+            "score": 780,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4735
+        "totalScore": 5515
       },
       {
         "playerId": "5df0880cd272cf42f773100b2182e09e",
@@ -31336,10 +31489,15 @@
             "rank": 22,
             "score": 1260,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 20,
+            "score": 979,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4467
+        "totalScore": 5446
       },
       {
         "playerId": "6c7c3649b1dbfe3c89438b138986d789",
@@ -31365,10 +31523,54 @@
             "rank": 30,
             "score": 1109,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 37,
+            "score": 684,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 4453
+        "totalScore": 5137
+      },
+      {
+        "playerId": "bff40345e4f34845181b5b7da29be234",
+        "name": "Laurie",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19495912-bff40345e4f34845181b5b7da29be234",
+        "scores": {
+          "2026-03-01": {
+            "rank": 42,
+            "score": 920,
+            "points": 0
+          },
+          "2026-03-02": {
+            "rank": 43,
+            "score": 796,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 36,
+            "score": 913,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 40,
+            "score": 557,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 40,
+            "score": 839,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 40,
+            "score": 579,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4604
       },
       {
         "playerId": "b0f6d84ebda898825703576571519899",
@@ -31400,6 +31602,35 @@
         "totalScore": 4398
       },
       {
+        "playerId": "21fb3dd134ef7f254e1bb700b1cc4267",
+        "name": "Tongret",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/48879919-21fb3dd134ef7f254e1bb700b1cc4267",
+        "scores": {
+          "2026-03-02": {
+            "rank": 22,
+            "score": 1431,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 19,
+            "score": 860,
+            "points": 0
+          },
+          "2026-03-05": {
+            "rank": 27,
+            "score": 1186,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 23,
+            "score": 917,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4394
+      },
+      {
         "playerId": "fdaa2e4e18937706b6ed39b8f806cb86",
         "name": "Ck",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/20259757-fdaa2e4e18937706b6ed39b8f806cb86",
@@ -31429,64 +31660,6 @@
         "totalScore": 4288
       },
       {
-        "playerId": "bff40345e4f34845181b5b7da29be234",
-        "name": "Laurie",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19495912-bff40345e4f34845181b5b7da29be234",
-        "scores": {
-          "2026-03-01": {
-            "rank": 42,
-            "score": 920,
-            "points": 0
-          },
-          "2026-03-02": {
-            "rank": 43,
-            "score": 796,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 36,
-            "score": 913,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 40,
-            "score": 557,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 40,
-            "score": 839,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 4025
-      },
-      {
-        "playerId": "21fb3dd134ef7f254e1bb700b1cc4267",
-        "name": "Tongret",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/48879919-21fb3dd134ef7f254e1bb700b1cc4267",
-        "scores": {
-          "2026-03-02": {
-            "rank": 22,
-            "score": 1431,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 19,
-            "score": 860,
-            "points": 0
-          },
-          "2026-03-05": {
-            "rank": 27,
-            "score": 1186,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 3477
-      },
-      {
         "playerId": "eb5e54a7a10dd032d4ade0133fe8d161",
         "name": "Barbara",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/64029402-eb5e54a7a10dd032d4ade0133fe8d161",
@@ -31510,10 +31683,15 @@
             "rank": 31,
             "score": 1105,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 38,
+            "score": 677,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 3424
+        "totalScore": 4101
       },
       {
         "playerId": "18422e7b12955f7ea7ee508c946d0668",
@@ -31544,10 +31722,44 @@
             "rank": 41,
             "score": 772,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 41,
+            "score": 456,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 3138
+        "totalScore": 3594
+      },
+      {
+        "playerId": "092d0a8a0d1176ae891def5606e993c1",
+        "name": "Stephen",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19942300-092d0a8a0d1176ae891def5606e993c1",
+        "scores": {
+          "2026-03-02": {
+            "rank": 35,
+            "score": 1116,
+            "points": 0
+          },
+          "2026-03-03": {
+            "rank": 30,
+            "score": 1016,
+            "points": 0
+          },
+          "2026-03-04": {
+            "rank": 37,
+            "score": 652,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 39,
+            "score": 641,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 3425
       },
       {
         "playerId": "4757422a2716f32237990119a8f839c8",
@@ -31572,30 +31784,6 @@
         },
         "total": 0,
         "totalScore": 3034
-      },
-      {
-        "playerId": "092d0a8a0d1176ae891def5606e993c1",
-        "name": "Stephen",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19942300-092d0a8a0d1176ae891def5606e993c1",
-        "scores": {
-          "2026-03-02": {
-            "rank": 35,
-            "score": 1116,
-            "points": 0
-          },
-          "2026-03-03": {
-            "rank": 30,
-            "score": 1016,
-            "points": 0
-          },
-          "2026-03-04": {
-            "rank": 37,
-            "score": 652,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 2784
       },
       {
         "playerId": "647e8c20fea4d1577b88d3316f85c5a0",
@@ -31635,10 +31823,53 @@
             "rank": 35,
             "score": 678,
             "points": 0
+          },
+          "2026-03-06": {
+            "rank": 34,
+            "score": 745,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 1813
+        "totalScore": 2558
+      },
+      {
+        "playerId": "5c80a7e6da6632de5ad933a9838670c2",
+        "name": "Celestine Ebuka",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20083424-5c80a7e6da6632de5ad933a9838670c2",
+        "scores": {
+          "2026-03-05": {
+            "rank": 20,
+            "score": 1272,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 26,
+            "score": 883,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 2155
+      },
+      {
+        "playerId": "2b62dce6836b6ea135f9ec8c621fa807",
+        "name": "Amy",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/49328782-2b62dce6836b6ea135f9ec8c621fa807",
+        "scores": {
+          "2026-03-01": {
+            "rank": 38,
+            "score": 1046,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 32,
+            "score": 795,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 1841
       },
       {
         "playerId": "c2fb2c86593c815948595ed295b441e0",
@@ -31679,18 +31910,23 @@
         "totalScore": 1649
       },
       {
-        "playerId": "5c80a7e6da6632de5ad933a9838670c2",
-        "name": "Celestine Ebuka",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/20083424-5c80a7e6da6632de5ad933a9838670c2",
+        "playerId": "d3d807cacfbc3e4f6ac48533b9b9d921",
+        "name": "Siobhan",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/1404665-d3d807cacfbc3e4f6ac48533b9b9d921",
         "scores": {
           "2026-03-05": {
-            "rank": 20,
-            "score": 1272,
+            "rank": 42,
+            "score": 768,
+            "points": 0
+          },
+          "2026-03-06": {
+            "rank": 35,
+            "score": 732,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 1272
+        "totalScore": 1500
       },
       {
         "playerId": "e77ed6831e1122b6cab87ce1d42c2d26",
@@ -31705,20 +31941,6 @@
         },
         "total": 0,
         "totalScore": 1222
-      },
-      {
-        "playerId": "2b62dce6836b6ea135f9ec8c621fa807",
-        "name": "Amy",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/49328782-2b62dce6836b6ea135f9ec8c621fa807",
-        "scores": {
-          "2026-03-01": {
-            "rank": 38,
-            "score": 1046,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 1046
       },
       {
         "playerId": "74fcbe08f5d329ae394d1b4482b25341",
@@ -31747,20 +31969,6 @@
         },
         "total": 0,
         "totalScore": 976
-      },
-      {
-        "playerId": "d3d807cacfbc3e4f6ac48533b9b9d921",
-        "name": "Siobhan",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/1404665-d3d807cacfbc3e4f6ac48533b9b9d921",
-        "scores": {
-          "2026-03-05": {
-            "rank": 42,
-            "score": 768,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 768
       }
     ]
   }
