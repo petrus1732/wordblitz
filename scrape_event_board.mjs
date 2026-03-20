@@ -59,7 +59,7 @@ const data = {
       has: frame.locator('.time-remaining', { hasText: 'hour' })
     }).first();
 
-    await eventLocator.waitFor({ state: 'visible', timeout: 10000 });
+    await eventLocator.waitFor({ state: 'visible', timeout: 30000 });
 
     // 2. 擷取賽事名稱
     const titleEl = eventLocator.locator('.cell-title.truncate');
