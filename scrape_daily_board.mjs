@@ -42,7 +42,7 @@ async function saveJson(data) {
   console.log('🔍 正在尋找每日挑戰 (Daily Game)...');
   try {
     const dailyGrid = frame.locator('.cell-daily.clickable').first();
-    await dailyGrid.waitFor({ state: 'visible', timeout: 15000 });
+    await dailyGrid.waitFor({ state: 'visible', timeout: 50000 });
 
     // 點擊每日挑戰內部的 Go 按鈕 (button-round)
     const goBtn = dailyGrid.locator('.btn-go .button-round.clickable');
