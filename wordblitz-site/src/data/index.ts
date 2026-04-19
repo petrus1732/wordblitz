@@ -8,6 +8,9 @@ import dailyBreakdownJson from '../../../daily_breakdown.json'
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000
 const MAX_EVENT_DETAIL_GAP_MS = 3 * DAY_IN_MS
+const MASKED_PLAYER_MONTHS = new Set([
+  '2026-04:d920213885f59abd9b181514e8ed0231',
+])
 
 type CsvRow = Record<string, string>
 
@@ -198,6 +201,45 @@ type RawPlayerPoints = {
 
 type RawPointsByMonth = Record<string, RawPlayerPoints[]>
 
+function isMaskedPlayerForMonth(monthKey: string, playerId?: string) {
+  if (!monthKey || !playerId) return false
+  return MASKED_PLAYER_MONTHS.has(`${monthKey}:${playerId}`)
+}
+
+function applyVisibleDenseRanks<T extends { rank: number; name: string; points: number }>(
+  rows: T[],
+) {
+  const arenas: T[] = []
+  const others = rows.map((row) => ({ ...row }))
+
+  const visibleRows = others.filter((row) => {
+    const isAllArenas = row.name.trim().toLowerCase() === 'all arenas'
+    if (isAllArenas) arenas.push(row)
+    return !isAllArenas
+  })
+
+  visibleRows.sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points
+    return a.name.localeCompare(b.name)
+  })
+
+  let currentRank = 0
+  let previousPoints: number | null = null
+  visibleRows.forEach((row) => {
+    if (previousPoints === null || row.points !== previousPoints) {
+      currentRank += 1
+      previousPoints = row.points
+    }
+    row.rank = currentRank
+  })
+
+  arenas.forEach((row) => {
+    row.rank = 0
+  })
+
+  return [...visibleRows, ...arenas]
+}
+
 const rawPointsByMonth = pointsJson as RawPointsByMonth
 const parsedDailyScores = parseCsv(dailyScoresCsv)
 const dailyRankings = parsedDailyScores.map((row) => ({
@@ -207,10 +249,17 @@ const dailyRankings = parsedDailyScores.map((row) => ({
   name: row.name ?? '',
   points: toNumber(row.points),
   avatarUrl: row.avatarUrl ?? '',
-}))
+})).filter((row) => !isMaskedPlayerForMonth(row.dailyDate.slice(0, 7), row.playerId))
 const dailyDetails = dailyDetailsJson as RawDailyDetail[]
 const eventDetails = eventDetailsJson as RawEventDetail[]
-const eventRankings = eventRankingsJson as RawEventRanking[]
+const eventRankings = (eventRankingsJson as RawEventRanking[]).map((event) => ({
+  ...event,
+  rankings: applyVisibleDenseRanks(
+    (event.rankings ?? []).filter(
+      (entry) => !isMaskedPlayerForMonth(event.date.slice(0, 7), entry.playerId),
+    ),
+  ),
+}))
 const rawEventBreakdown = eventBreakdownJson as RawEventBreakdown
 const rawDailyBreakdown = dailyBreakdownJson as RawDailyBreakdown
 const monthLastUpdated = new Map<string, string>()
@@ -229,6 +278,7 @@ export const playerPointsByMonth = new Map(
   Object.entries(rawPointsByMonth).map(([month, rows]) => [
     month,
     rows
+      .filter((row) => !isMaskedPlayerForMonth(month, row.playerId))
       .map((row) => ({
         playerId: row.playerId,
         name: row.name,
@@ -280,7 +330,7 @@ export const dailyGames: DailyGame[] = allDailyDates
       wordCount: detail?.wordCount ?? null,
       board: detail?.board ?? [],
       words: detail?.words ?? [],
-      rankings: dailyScoresByDate.get(date) ?? [],
+      rankings: applyVisibleDenseRanks(dailyScoresByDate.get(date) ?? []),
     }
   })
   .sort((a, b) => b.date.localeCompare(a.date))
@@ -364,14 +414,16 @@ export const eventBreakdownByMonth = new Map(
     month,
     {
       events: payload.events ?? [],
-      players: (payload.players ?? []).map((player) => ({
-        playerId: player.playerId,
-        name: player.name,
-        avatar: player.avatar ?? '',
-        scores: mapScoreRecord(player.scores),
-        total: toNumber(player.total),
-        totalScore: toNumber(player.totalScore),
-      })),
+      players: (payload.players ?? [])
+        .filter((player) => !isMaskedPlayerForMonth(month, player.playerId))
+        .map((player) => ({
+          playerId: player.playerId,
+          name: player.name,
+          avatar: player.avatar ?? '',
+          scores: mapScoreRecord(player.scores),
+          total: toNumber(player.total),
+          totalScore: toNumber(player.totalScore),
+        })),
     },
   ]),
 )
@@ -383,14 +435,16 @@ export const dailyBreakdownByMonth = new Map(
     month,
     {
       days: payload.days ?? [],
-      players: (payload.players ?? []).map((player) => ({
-        playerId: player.playerId,
-        name: player.name,
-        avatar: player.avatar ?? '',
-        scores: mapScoreRecord(player.scores),
-        total: toNumber(player.total),
-        totalScore: toNumber(player.totalScore),
-      })),
+      players: (payload.players ?? [])
+        .filter((player) => !isMaskedPlayerForMonth(month, player.playerId))
+        .map((player) => ({
+          playerId: player.playerId,
+          name: player.name,
+          avatar: player.avatar ?? '',
+          scores: mapScoreRecord(player.scores),
+          total: toNumber(player.total),
+          totalScore: toNumber(player.totalScore),
+        })),
     },
   ]),
 )
