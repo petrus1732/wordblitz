@@ -405,7 +405,7 @@ async function runForStorage(storagePath) {
       rankings,
     });
 
-    const backBtn = await frame.$('.icon.icon-back');
+    const backBtn = await frame.$('.icon-back');
     if (backBtn) {
       await backBtn.click();
       await frame.waitForSelector('.cell-event', { timeout: 60000 });

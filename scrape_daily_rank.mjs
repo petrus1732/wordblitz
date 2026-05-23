@@ -319,7 +319,8 @@ async function runForStorage(storage_path) {
     await appendCsv(data, dailyDate);
 
     // 回前頁
-    const backBtn = await frame.$('.icon.icon-back');
+    await frame.waitForTimeout(1500);
+    const backBtn = await frame.$('.icon-back');
     if (backBtn) {
       console.log('↩️ 返回主畫面…');
       await backBtn.click();

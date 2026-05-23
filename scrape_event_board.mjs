@@ -230,7 +230,7 @@ const data = {
     if (i < 7) {
       console.log('🔄 準備進入下一天，執行導航自動化...');
       try {
-        const backBtn = frame.locator('.icon-button .icon-back');
+        const backBtn = frame.locator('.icon-back');
         await backBtn.waitFor({ state: 'visible', timeout: 5000 });
         await backBtn.click();
         console.log('👆 已點擊返回按鈕。');
