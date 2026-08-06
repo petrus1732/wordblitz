@@ -1,0 +1,26 @@
+# Node / Playwright
+node_modules/
+npm-debug.log
+playwright-report/
+test-results/
+trace.zip
+
+# Python virtualenvs
+.venv/
+venv*/
+__pycache__/
+*.pyc
+
+# Env and secrets
+.env
+.env.*
+storage_state*.json
+
+# Scraped data artifacts
+network-log.ndjson
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
