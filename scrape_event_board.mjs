@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state3.json');
 const JSON_PATH = path.resolve('./event_details.json');
 
 // 寫入 JSON
@@ -155,7 +155,7 @@ const data = {
         if (await closeSharingBtn.isVisible()) {
           await closeSharingBtn.click({ force: true });
           console.log('✨ 已自動關閉分享對話。');
-          await frame.waitForTimeout(5000);
+          await frame.waitForTimeout(10000);
         }
 
         // 嘗試關閉廣告 (如果有)
