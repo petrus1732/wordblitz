@@ -35,6 +35,53 @@ function isDailyClosed(metadata) {
   return !text.includes('left');
 }
 
+async function writeDailyDebugArtifacts(page, frame, storagePath) {
+  const accountName = path.basename(storagePath, path.extname(storagePath));
+  const prefix = path.resolve(`debug-daily-${accountName}`);
+  const frameText = await frame.locator('body').innerText().catch(() => '');
+  const frameHtml = await frame.locator('body').innerHTML().catch(() => '');
+  const selectorCounts = {};
+
+  for (const selector of [
+    '.cell-daily',
+    '.cell-event',
+    '.cell-game',
+    '.loader',
+    '[role="dialog"]',
+    '.error-dialog',
+    '.error',
+  ]) {
+    selectorCounts[selector] = await frame.locator(selector).count().catch(() => -1);
+  }
+
+  const summary = {
+    storagePath,
+    pageUrl: page.url(),
+    frameUrl: frame.url(),
+    pageTitle: await page.title().catch(() => ''),
+    selectorCounts,
+    frameText: frameText.slice(0, 10000),
+  };
+
+  await fs.writeFile(`${prefix}.json`, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+  await fs.writeFile(`${prefix}.html`, frameHtml, 'utf8');
+  await page.screenshot({ path: `${prefix}.png`, fullPage: true });
+  console.error(`🧪 Debug artifacts written: ${prefix}.{json,html,png}`);
+  console.error('🧪 Debug summary:', summary);
+}
+
+async function attachToGameFrame(outerFrame) {
+  if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
+  const bundleHandle = await outerFrame.waitForSelector(
+    'iframe[name="game-bundle"]',
+    { timeout: 90000 },
+  );
+  const gameFrame = await bundleHandle.contentFrame();
+  if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
+  console.log('✅ 已附著到遊戲內容 iframe。');
+  return gameFrame;
+}
+
 async function runForStorage(storage_path) {
   const STORAGE = path.resolve(storage_path);
   const CSV = path.resolve('./daily_scores.csv');
@@ -243,6 +290,44 @@ async function runForStorage(storage_path) {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
   const page = await context.newPage();
+
+  page.on('console', (message) => {
+    const text = message.text();
+    if (
+      message.type() === 'warning' &&
+      text.includes('was preloaded using link preload')
+    ) {
+      return;
+    }
+    console.log(`[browser:${message.type()}] ${text}`);
+  });
+
+page.on('pageerror', (error) => {
+  console.error('[pageerror]', error.message);
+});
+
+page.on('requestfailed', (request) => {
+    const requestUrl = request.url();
+    if (
+      requestUrl.includes('google.com/measurement/conversion') ||
+      requestUrl.includes('google.com.tw/ads/ga-audiences') ||
+      requestUrl.includes('analytics.google.com/g/collect')
+    ) {
+      return;
+    }
+  console.error('[requestfailed]', request.url(), request.failure()?.errorText);
+});
+
+page.on('response', (response) => {
+    const responseUrl = response.url();
+    if (
+      responseUrl.includes('wordblitz-api') &&
+      !responseUrl.includes('/user/online')
+    ) {
+      console.log('[api]', response.status(), responseUrl);
+  }
+});
+
   console.log('🚀 開啟 Word Blitz 主畫面…');
   await page.goto(FB_APP_PLAY_URL, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
@@ -256,12 +341,17 @@ async function runForStorage(storage_path) {
   }
 
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-  const frame = await iframeHandle.contentFrame();
-  console.log('✅ 已附著到遊戲 iframe。');
+  let frame = await attachToGameFrame(await iframeHandle.contentFrame());
 
   // 等待主畫面載入
   console.log('⏳ 等待 Daily Game 區塊載入…');
-  await frame.waitForSelector('.cell-daily', { timeout: 90000 });
+  try {
+    await frame.waitForSelector('.cell-daily', { timeout: 90000 });
+  } catch (error) {
+    await writeDailyDebugArtifacts(page, frame, storage_path);
+    await browser.close();
+    throw error;
+  }
   console.log('✅ 主畫面載入完成。');
 
   // 取得所有 Daily cards（通常是 5–6 個）
@@ -330,8 +420,8 @@ async function runForStorage(storage_path) {
       console.warn('⚠️ 找不到返回按鈕，嘗試刷新 Daily 列表');
       await page.reload({ waitUntil: 'domcontentloaded' });
       const newIframe = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-      const newFrame = await newIframe.contentFrame();
-      await newFrame.waitForSelector('.cell-daily', { timeout: 60000 });
+      frame = await attachToGameFrame(await newIframe.contentFrame());
+      await frame.waitForSelector('.cell-daily', { timeout: 60000 });
     }
   }
   console.log('🎉 所有 Daily Game 已處理完畢！');

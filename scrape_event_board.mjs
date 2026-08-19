@@ -30,6 +30,20 @@ const data = {
   boards: []
 };
 
+async function attachToGameFrame(outerFrame) {
+  if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
+  const bundleLocator = outerFrame.locator('iframe[name="game-bundle"]').first();
+  const hasBundle = await bundleLocator
+    .waitFor({ state: 'attached', timeout: 15000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!hasBundle) return outerFrame;
+
+  const gameFrame = await bundleLocator.contentFrame();
+  if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
+  return gameFrame;
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
@@ -48,8 +62,8 @@ const data = {
   }
 
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-  const frame = await iframeHandle.contentFrame();
-  console.log('✅ 已附著到遊戲 iframe。');
+  const frame = await attachToGameFrame(await iframeHandle.contentFrame());
+  console.log('✅ 已附著到遊戲內容 iframe。');
 
   // --- 自動進入即將結束的賽事 ---
   console.log('🔍 正在尋找即將結束的賽事 (剩餘時間包含 "hour")...');

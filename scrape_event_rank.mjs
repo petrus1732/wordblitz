@@ -128,6 +128,20 @@ async function readExistingEvents(filePath) {
   }
 }
 
+async function attachToGameFrame(outerFrame) {
+  if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
+  const bundleLocator = outerFrame.locator('iframe[name="game-bundle"]').first();
+  const hasBundle = await bundleLocator
+    .waitFor({ state: 'attached', timeout: 15000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!hasBundle) return outerFrame;
+
+  const gameFrame = await bundleLocator.contentFrame();
+  if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
+  return gameFrame;
+}
+
 function mergeEventsByDate(existing, updates) {
   const eventsByDate = new Map();
 
@@ -332,8 +346,7 @@ async function runForStorage(storagePath) {
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', {
     timeout: 60000,
   });
-  let frame = await iframeHandle.contentFrame();
-  if (!frame) throw new Error('Unable to resolve game iframe.');
+  let frame = await attachToGameFrame(await iframeHandle.contentFrame());
   console.log('Game iframe ready.');
 
   await frame.waitForSelector('.cell-event', { timeout: 90000 });
@@ -416,8 +429,7 @@ async function runForStorage(storagePath) {
       const newIframeHandle = await page.waitForSelector('iframe#games_iframe_web', {
         timeout: 60000,
       });
-      frame = await newIframeHandle.contentFrame();
-      if (!frame) throw new Error('Unable to reacquire iframe after reload.');
+      frame = await attachToGameFrame(await newIframeHandle.contentFrame());
       await frame.waitForSelector('.cell-event', { timeout: 60000 });
       await frame.waitForTimeout(1000);
     }

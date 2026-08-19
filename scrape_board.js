@@ -1,4 +1,9 @@
 {
+    if (!document.querySelector('.duel-result-row') && document.querySelector('iframe[name="game-bundle"]')) {
+        console.error('請在 DevTools 的 frame 下拉選單切換到 game-bundle iframe 後，再執行此腳本。');
+        return;
+    }
+
     // 1. 擷取字詞
     let wordsElements = Array.from(document.querySelectorAll('.duel-result-row .word span'));
     let words = [];
