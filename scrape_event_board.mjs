@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state3.json');
 const JSON_PATH = path.resolve('./event_details.json');
 
 // 寫入 JSON
@@ -30,16 +30,51 @@ const data = {
   boards: []
 };
 
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function debugMissingEventWords(page, frame, date, dayIndex) {
+  const prefix = `debug-event-words-${date}-day${dayIndex}`;
+  const frameText = await frame.locator('body').innerText().catch(() => '');
+  const frameHtml = await frame.locator('body').innerHTML().catch(() => '');
+  const selectors = [
+    '.duel-result-row',
+    '.duel-result-row .word span',
+    '.letter-grid .core-letter-cell',
+    '.button-primary',
+    '.btn',
+    '.icon-back',
+  ];
+  const selectorCounts = {};
+  for (const selector of selectors) {
+    selectorCounts[selector] = await frame.locator(selector).count().catch(() => -1);
+  }
+
+  const summary = {
+    date,
+    dayIndex,
+    pageUrl: page.url(),
+    frameUrl: frame.url(),
+    selectorCounts,
+    frameText: frameText.slice(0, 12000),
+  };
+
+  await fs.writeFile(`${prefix}.json`, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+  await fs.writeFile(`${prefix}.html`, frameHtml, 'utf8');
+  await page.screenshot({ path: `${prefix}.png`, fullPage: true });
+  console.error(`🧪 Missing-word diagnostics written: ${prefix}.{json,html,png}`);
+  console.error('🧪 Missing-word summary:', summary);
+}
+
 async function attachToGameFrame(outerFrame) {
   if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
-  const bundleLocator = outerFrame.locator('iframe[name="game-bundle"]').first();
-  const hasBundle = await bundleLocator
-    .waitFor({ state: 'attached', timeout: 15000 })
-    .then(() => true)
-    .catch(() => false);
-  if (!hasBundle) return outerFrame;
+  const bundleHandle = await outerFrame
+    .waitForSelector('iframe[name="game-bundle"]', { timeout: 15000 })
+    .catch(() => null);
+  if (!bundleHandle) return outerFrame;
 
-  const gameFrame = await bundleLocator.contentFrame();
+  const gameFrame = await bundleHandle.contentFrame();
   if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
   return gameFrame;
 }
@@ -90,7 +125,7 @@ async function attachToGameFrame(outerFrame) {
     const letsGoBtn = frame.locator('.button-primary', { hasText: 'Let’s go!' });
     await letsGoBtn.waitFor({ state: 'visible', timeout: 10000 });
     // 增加一點延遲確保動畫完成
-    await frame.waitForTimeout(2000);
+    await sleep(2000);
     await letsGoBtn.click({ force: true });
     console.log('👆 已點擊 "Let’s go!" (Force + Delay)。');
 
@@ -109,7 +144,7 @@ async function attachToGameFrame(outerFrame) {
       ]);
 
       console.log(`🎯 在 [${location}] 找到 "開始玩" 按鈕！`);
-      await frame.waitForTimeout(2000);
+      await sleep(2000);
 
       if (location === 'Page') {
         await startPlayInPage.click({ force: true });
@@ -120,7 +155,7 @@ async function attachToGameFrame(outerFrame) {
     } catch (err) {
       console.warn('⚠️ 等待 "開始玩" 按鈕超時，嘗試最後手段 (getByText)...');
       try {
-        await frame.waitForTimeout(2000);
+        await sleep(2000);
         await page.getByText('開始玩').click({ timeout: 5000 });
         console.log('👆 已點擊 "開始玩" (最後手段成功)');
       } catch (e2) {
@@ -129,7 +164,7 @@ async function attachToGameFrame(outerFrame) {
     }
 
     // 額外等待進入遊戲
-    await frame.waitForTimeout(8000);
+    await sleep(8000);
 
   } catch (error) {
     console.warn('⚠️ 自動進入賽事流程失敗 (可能無 "hour" 賽事或介面改變):', error.message);
@@ -156,7 +191,7 @@ async function attachToGameFrame(outerFrame) {
       console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
-      await frame.waitForTimeout(95000);
+      await sleep(95000);
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
@@ -169,14 +204,14 @@ async function attachToGameFrame(outerFrame) {
         if (await closeSharingBtn.isVisible()) {
           await closeSharingBtn.click({ force: true });
           console.log('✨ 已自動關閉分享對話。');
-          await frame.waitForTimeout(10000);
+          await sleep(10000);
         }
 
         // 嘗試關閉廣告 (如果有)
         if (await closeAdBtn.isVisible()) {
           await closeAdBtn.click({ force: true });
           console.log('✨ 已自動關閉廣告。');
-          await frame.waitForTimeout(1000);
+          await sleep(1000);
         }
       } catch (e) {
         console.warn('⚠️ 關閉對話/廣告時發生非預期狀況:', e.message);
@@ -193,10 +228,15 @@ async function attachToGameFrame(outerFrame) {
     if (allWordsBtn) {
       await allWordsBtn.click().catch(() => { });
       console.log('📝 已點擊「All words」。等待字詞列表載入...');
-      await frame.waitForTimeout(1500);
+      await sleep(1500);
     }
 
-    // 擷取所有字詞
+    // 擷取所有字詞; allow the result screen extra time to finish rendering.
+    await frame
+      .locator('.duel-result-row')
+      .first()
+      .waitFor({ state: 'attached', timeout: 30000 })
+      .catch(() => {});
     const words = await frame.$$eval('.duel-result-row .word span', els =>
       els.map(e => e.innerText.trim()).filter(Boolean)
     );
@@ -210,10 +250,14 @@ async function attachToGameFrame(outerFrame) {
         console.log(`🔠 點擊第一個單字 "${wordText}" 以顯示棋盤...`);
         await firstWord.click().catch(() => { });
         await frame.waitForSelector('.letter-grid .core-letter-cell', { timeout: 10000 });
-        await frame.waitForTimeout(1500);
+        await sleep(1500);
       }
     } else {
-      console.warn('⚠️ 沒有偵測到任何單字，略過棋盤擷取。');
+      console.warn('⚠️ 沒有偵測到任何單字，已暫停以便檢查目前畫面。');
+      await debugMissingEventWords(page, frame, date, i);
+      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+      await rl.question('⏸️ 請檢查瀏覽器中的結果畫面；修正或手動切換後按 Enter 繼續：');
+      rl.close();
     }
 
     // 擷取棋盤盤面
@@ -249,14 +293,14 @@ async function attachToGameFrame(outerFrame) {
         await backBtn.click();
         console.log('👆 已點擊返回按鈕。');
 
-        await frame.waitForTimeout(1000);
+        await sleep(1000);
 
         const continueBtn = frame.locator('.button-primary', { hasText: 'Continue' });
         await continueBtn.waitFor({ state: 'visible', timeout: 5000 });
         await continueBtn.click();
         console.log('👆 已點擊「Continue」按鈕。');
 
-        await frame.waitForTimeout(2000); // 等待畫面轉場
+        await sleep(2000); // 等待畫面轉場
       } catch (err) {
         console.warn('⚠️ 自動導航回賽事畫面失敗:', err.message);
         console.log('📸 已儲存導航失敗截圖: debug_nav_fail.png');

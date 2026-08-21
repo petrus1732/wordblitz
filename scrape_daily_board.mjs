@@ -8,6 +8,24 @@ const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/'
 const STORAGE = path.resolve('./storage_state2.json');
 const JSON_PATH = path.resolve('./daily_details.json');
 
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function attachToGameFrame(outerFrame) {
+  if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
+  const bundleLocator = outerFrame.locator('iframe[name="game-bundle"]').first();
+  const hasBundle = await bundleLocator
+    .waitFor({ state: 'attached', timeout: 15000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!hasBundle) return outerFrame;
+
+  const gameFrame = await bundleLocator.contentFrame();
+  if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
+  return gameFrame;
+}
+
 // 寫入 JSON
 async function saveJson(data) {
   const prev = await fs.readFile(JSON_PATH, 'utf8').catch(() => '[]');
@@ -35,8 +53,8 @@ async function saveJson(data) {
   }
 
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-  const frame = await iframeHandle.contentFrame();
-  console.log('✅ 已附著到遊戲 iframe。');
+  const frame = await attachToGameFrame(await iframeHandle.contentFrame());
+  console.log('✅ 已附著到遊戲內容 iframe。');
 
   // --- 自動進入每日挑戰 ---
   console.log('🔍 正在尋找每日挑戰 (Daily Game)...');
@@ -52,12 +70,12 @@ async function saveJson(data) {
     // 點擊 "Play" 按鈕 (使用 footer selector 確保精確)
     const playBtn = frame.locator('.screen-component-footer .button-primary:has-text("Play")');
     await playBtn.waitFor({ state: 'visible', timeout: 10000 });
-    await frame.waitForTimeout(2000); // 確保動畫穩定
+    await sleep(2000); // 確保動畫穩定
     await playBtn.click({ force: true });
     console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
     // 1. 等待遊戲結束 (95秒預留緩衝)
-    await frame.waitForTimeout(95000);
+    await sleep(95000);
     console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
     // 2. 自動關閉分享對話 (Facebook 覆蓋層)
@@ -67,13 +85,13 @@ async function saveJson(data) {
     if (await closeSharingBtn.isVisible()) {
       await closeSharingBtn.click({ force: true });
       console.log('✨ 已自動關閉分享對話。');
-      await frame.waitForTimeout(1000);
+      await sleep(1000);
     }
 
     if (await closeAdBtn.isVisible()) {
       await closeAdBtn.click({ force: true });
       console.log('✨ 已自動關閉廣告。');
-      await frame.waitForTimeout(1000);
+      await sleep(1000);
     }
 
     // 3. 點擊 All words（確保顯示完整清單）
@@ -81,7 +99,7 @@ async function saveJson(data) {
     if (await allWordsBtn.isVisible()) {
       await allWordsBtn.click({ force: true });
       console.log('📝 已點擊「All words」。等待字詞列表載入...');
-      await frame.waitForTimeout(2000);
+      await sleep(2000);
     }
 
     // 擷取所有字詞
@@ -97,7 +115,7 @@ async function saveJson(data) {
         console.log(`🔠 點擊第一個單字以顯示棋盤...`);
         await firstWord.click().catch(() => { });
         await frame.waitForSelector('.letter-grid .core-letter-cell', { timeout: 10000 });
-        await frame.waitForTimeout(1500);
+        await sleep(1500);
       }
     }
 

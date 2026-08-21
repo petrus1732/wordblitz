@@ -130,16 +130,18 @@ async function readExistingEvents(filePath) {
 
 async function attachToGameFrame(outerFrame) {
   if (!outerFrame) throw new Error('Unable to resolve the outer game iframe.');
-  const bundleLocator = outerFrame.locator('iframe[name="game-bundle"]').first();
-  const hasBundle = await bundleLocator
-    .waitFor({ state: 'attached', timeout: 15000 })
-    .then(() => true)
-    .catch(() => false);
-  if (!hasBundle) return outerFrame;
+  const bundleHandle = await outerFrame
+    .waitForSelector('iframe[name="game-bundle"]', { timeout: 15000 })
+    .catch(() => null);
+  if (!bundleHandle) return outerFrame;
 
-  const gameFrame = await bundleLocator.contentFrame();
+  const gameFrame = await bundleHandle.contentFrame();
   if (!gameFrame) throw new Error('Unable to resolve the nested game iframe.');
   return gameFrame;
+}
+
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 function mergeEventsByDate(existing, updates) {
@@ -401,11 +403,11 @@ async function runForStorage(storagePath) {
     );
     if (allArenasBtn) {
       await allArenasBtn.click().catch(() => { });
-      await frame.waitForTimeout(2000);
+      await sleep(2000);
     }
 
     await frame.waitForSelector('.rank-list-item', { timeout: 60000 });
-    await frame.waitForTimeout(1000);
+    await sleep(1000);
 
     const rankings = await extractLeaderboard(frame);
     console.log(
@@ -422,7 +424,7 @@ async function runForStorage(storagePath) {
     if (backBtn) {
       await backBtn.click();
       await frame.waitForSelector('.cell-event', { timeout: 60000 });
-      await frame.waitForTimeout(1000);
+      await sleep(1000);
     } else {
       console.warn('Back button missing; reloading to restore event list.');
       await page.reload({ waitUntil: 'domcontentloaded' });
@@ -431,7 +433,7 @@ async function runForStorage(storagePath) {
       });
       frame = await attachToGameFrame(await newIframeHandle.contentFrame());
       await frame.waitForSelector('.cell-event', { timeout: 60000 });
-      await frame.waitForTimeout(1000);
+      await sleep(1000);
     }
 
     index++;

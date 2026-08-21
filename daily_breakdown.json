@@ -69785,6 +69785,9 @@
       },
       {
         "date": "2026-08-18"
+      },
+      {
+        "date": "2026-08-19"
       }
     ],
     "players": [
@@ -71172,6 +71175,45 @@
         },
         "total": 22,
         "totalScore": 26740
+      },
+      {
+        "playerId": "name:You",
+        "name": "You",
+        "avatar": "https://apps-2211386328877300.apps.fbsbx.com/instant-bundle/1705010946284994/27845815611712346/assets/league_iron-BVHkfscd.png",
+        "scores": {
+          "2026-08-13": {
+            "rank": 35,
+            "score": 0,
+            "points": 0
+          },
+          "2026-08-14": {
+            "rank": 44,
+            "score": 0,
+            "points": 0
+          },
+          "2026-08-15": {
+            "rank": 43,
+            "score": 0,
+            "points": 0
+          },
+          "2026-08-16": {
+            "rank": 37,
+            "score": 0,
+            "points": 0
+          },
+          "2026-08-17": {
+            "rank": 44,
+            "score": 0,
+            "points": 0
+          },
+          "2026-08-19": {
+            "rank": 1,
+            "score": 0,
+            "points": 19
+          }
+        },
+        "total": 19,
+        "totalScore": 0
       },
       {
         "playerId": "7c725404ee3b78ec4dbf4c9aa7232e1a",
@@ -74440,35 +74482,6 @@
         },
         "total": 0,
         "totalScore": 462
-      },
-      {
-        "playerId": "name:You",
-        "name": "You",
-        "avatar": "https://apps-2211386328877300.apps.fbsbx.com/instant-bundle/1705010946284994/27845815611712346/assets/league_iron-BVHkfscd.png",
-        "scores": {
-          "2026-08-13": {
-            "rank": 35,
-            "score": 0,
-            "points": 0
-          },
-          "2026-08-14": {
-            "rank": 44,
-            "score": 0,
-            "points": 0
-          },
-          "2026-08-15": {
-            "rank": 43,
-            "score": 0,
-            "points": 0
-          },
-          "2026-08-16": {
-            "rank": 37,
-            "score": 0,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 0
       }
     ]
   }

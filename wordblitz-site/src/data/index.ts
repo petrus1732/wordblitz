@@ -128,6 +128,8 @@ interface ScoreCell {
   points: number
 }
 
+type RawScoreRecord = Record<string, Partial<ScoreCell> | undefined>
+
 type RawDailyDetail = {
   date: string
   wordCount: number
@@ -157,7 +159,7 @@ type RawEventBreakdown = Record<
     events: EventBreakdownEvent[]
     players: Array<
       Omit<EventBreakdownPlayer, 'scores'> & {
-        scores?: Record<string, Partial<ScoreCell>>
+        scores?: RawScoreRecord
       }
     >
   }
@@ -169,7 +171,7 @@ type RawDailyBreakdown = Record<
     days: DailyBreakdownDay[]
     players: Array<
       Omit<DailyBreakdownPlayer, 'scores'> & {
-        scores?: Record<string, Partial<ScoreCell>>
+        scores?: RawScoreRecord
       }
     >
   }
@@ -537,7 +539,7 @@ function toNumber(value: string | number | null | undefined) {
   return Number.isNaN(parsed) ? 0 : parsed
 }
 
-function mapScoreRecord(record?: Record<string, Partial<ScoreCell>>) {
+function mapScoreRecord(record?: RawScoreRecord) {
   if (!record) return {}
   const entries: Array<[string, ScoreCell]> = []
   Object.entries(record).forEach(([key, value]) => {
