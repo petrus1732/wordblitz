@@ -9,6 +9,9 @@ const NOW = new Date(Date.now()) // current UTC in ms
 const PLAYER_RENAME_ID = '98610e86acb0a629da17f0993ec0fd50';
 const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
 const STORAGE_PATHS = ['./storage_state.json', './storage_state2.json'];
+const PLAYERS_CSV = path.resolve('./players.csv');
+const FIRST_ACCOUNT_STORAGE = path.resolve('./storage_state.json');
+const SELF_PLAYER_NAME = '陳奕安';
 
 const UNIT_IN_MS = {
   second: 1000,
@@ -57,6 +60,113 @@ function formatDate(date) {
 function normaliseWhitespace(value) {
   if (!value) return '';
   return value.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function parseCsvTable(raw) {
+  const table = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+
+  for (let index = 0; index < raw.length; index++) {
+    const character = raw[index];
+    if (character === '"') {
+      if (quoted && raw[index + 1] === '"') {
+        field += '"';
+        index++;
+      } else quoted = !quoted;
+    } else if (character === ',' && !quoted) {
+      row.push(field);
+      field = '';
+    } else if ((character === '\n' || character === '\r') && !quoted) {
+      if (character === '\r' && raw[index + 1] === '\n') index++;
+      row.push(field);
+      if (row.some(value => value.length > 0)) table.push(row);
+      row = [];
+      field = '';
+    } else field += character;
+  }
+  if (field || row.length) {
+    row.push(field);
+    table.push(row);
+  }
+
+  const [header, ...records] = table;
+  if (!header) return [];
+  return records.map(values => Object.fromEntries(
+    header.map((column, index) => [column, values[index] || '']),
+  ));
+}
+
+async function loadPlayerMappings() {
+  const raw = await fs.readFile(PLAYERS_CSV, 'utf8').catch(error => {
+    if (error.code === 'ENOENT') return '';
+    throw error;
+  });
+  const profiles = raw ? parseCsvTable(raw) : [];
+  const aliases = new Map();
+
+  for (const profile of profiles) {
+    if (!profile.playerId) continue;
+    for (const name of [profile.fullName, profile.firstName]) {
+      const key = normaliseWhitespace(name).toLocaleLowerCase();
+      if (!key) continue;
+      const existing = aliases.get(key);
+      if (existing && existing.playerId !== profile.playerId) aliases.set(key, null);
+      else if (existing !== null) {
+        aliases.set(key, {
+          playerId: profile.playerId,
+          avatar: /^https?:\/\//i.test(profile.profilePhoto || '')
+            ? profile.profilePhoto
+            : '',
+        });
+      }
+    }
+  }
+  console.log(`Loaded ${profiles.length} player profiles from ${PLAYERS_CSV}.`);
+  return { aliases, profiles };
+}
+
+function csvCell(value) {
+  return `"${String(value ?? '').replaceAll('"', '""')}"`;
+}
+
+async function savePlayerMappings(playerDirectory) {
+  const header = ['fullName', 'firstName', 'playerId', 'profilePhoto'];
+  const rows = playerDirectory.profiles.map(profile =>
+    header.map(column => csvCell(profile[column])).join(','),
+  );
+  await fs.writeFile(PLAYERS_CSV, `${header.join(',')}\n${rows.join('\n')}\n`, 'utf8');
+}
+
+async function resolveMappedPlayer(observedName, playerDirectory) {
+  const normalizedObserved = normaliseWhitespace(observedName).toLocaleLowerCase();
+  if (!normalizedObserved) return null;
+  const exact = playerDirectory.aliases.get(normalizedObserved);
+  if (exact) return exact;
+
+  const candidates = playerDirectory.profiles.filter(profile => {
+    if (!profile.playerId || profile.fullName) return false;
+    const firstName = normaliseWhitespace(profile.firstName).toLocaleLowerCase();
+    return firstName && (
+      normalizedObserved === firstName ||
+      normalizedObserved.startsWith(`${firstName} `) ||
+      normalizedObserved.endsWith(` ${firstName}`)
+    );
+  });
+  const uniqueIds = [...new Set(candidates.map(profile => profile.playerId))];
+  if (uniqueIds.length !== 1) return null;
+
+  const profile = candidates.find(candidate => candidate.playerId === uniqueIds[0]);
+  profile.fullName = normaliseWhitespace(observedName);
+  const mapped = {
+    playerId: profile.playerId,
+    avatar: /^https?:\/\//i.test(profile.profilePhoto || '') ? profile.profilePhoto : '',
+  };
+  playerDirectory.aliases.set(normalizedObserved, mapped);
+  await savePlayerMappings(playerDirectory);
+  console.log(`Added full-name mapping: "${profile.fullName}" -> ${profile.playerId}`);
+  return mapped;
 }
 
 function parseRelativeDate(raw, base = NOW) {
@@ -140,6 +250,18 @@ async function attachToGameFrame(outerFrame) {
   return gameFrame;
 }
 
+async function dismissJoinRewardPopup(frame, timeout = 10000) {
+  const button = frame.locator('.secondary-button', { hasText: 'Lose rewards' }).first();
+  const appeared = await button.waitFor({ state: 'visible', timeout })
+    .then(() => true)
+    .catch(() => false);
+  if (!appeared) return false;
+  await button.click({ force: true });
+  await button.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
+  console.log('Dismissed the optional join-reward popup via "Lose rewards".');
+  return true;
+}
+
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
@@ -200,12 +322,19 @@ function mergeRankings(listA = [], listB = []) {
     return (a.name || '').localeCompare(b.name || '')
   })
 
-  deduped.forEach((entry, index) => {
-    entry.rank = index + 1
+  let denseRank = 0
+  let previousPoints = null
+  deduped.forEach((entry) => {
+    const points = Number(entry.points ?? 0)
+    if (previousPoints === null || points !== previousPoints) denseRank += 1
+    entry.rank = denseRank
+    previousPoints = points
   })
 
-  allArenasEntry.rank = 0;
-  deduped.unshift(allArenasEntry);
+  if (allArenasEntry) {
+    allArenasEntry.rank = 0;
+    deduped.unshift(allArenasEntry);
+  }
   console.log(deduped)
   return deduped
 }
@@ -233,7 +362,7 @@ function isEventClosed(metadata, isoDate) {
   return false;
 }
 
-async function extractLeaderboard(frame) {
+async function extractLeaderboardLegacy(frame) {
   return frame.$$eval(
     '.rank-list-item',
     (items, { discardId, renameId, renameName }) => {
@@ -309,6 +438,150 @@ async function extractLeaderboard(frame) {
   );
 }
 
+async function extractLeaderboard(
+  frame,
+  { playerDirectory, apiPlayersByName, isFirstAccount },
+) {
+  const items = frame.locator('.rank-list-item');
+  const itemCount = await items.count();
+  const rows = [];
+  let ignoredRows = 0;
+
+  async function readShieldValue(row, template, readValue) {
+    const iframe = row.locator(
+      `iframe[src*="/overlay_views/templates/${template}.xml"]`,
+    ).first();
+    if (await iframe.count() === 0) return '';
+    const shieldFrame = iframe.contentFrame();
+    const deadline = Date.now() + 10000;
+    while (Date.now() < deadline) {
+      const body = shieldFrame.locator('body');
+      if (await body.count()) {
+        const value = await readValue(body).catch(() => '');
+        if (value) return value;
+      }
+      await frame.waitForTimeout(250);
+    }
+    return '';
+  }
+
+  async function readShieldName(row) {
+    return readShieldValue(row, 'profile_name', async body =>
+      normaliseWhitespace(await body.innerText({ timeout: 1000 })),
+    );
+  }
+
+  async function readShieldAvatar(row) {
+    return readShieldValue(row, 'profile_pic', body => body.evaluate(body => {
+      const urls = [];
+      for (const element of [body, ...body.querySelectorAll('*')]) {
+        if (element instanceof HTMLImageElement && element.currentSrc)
+          urls.push(element.currentSrc);
+        const match = getComputedStyle(element).backgroundImage
+          ?.match(/url\(["']?(.*?)["']?\)/);
+        if (match?.[1]) urls.push(match[1]);
+      }
+      return urls.find(url => /[0-9a-f]{32}/i.test(url)) || urls[0] || '';
+    }));
+  }
+
+  for (let index = 0; index < itemCount; index++) {
+    const row = items.nth(index);
+    await row.scrollIntoViewIfNeeded().catch(() => {});
+    await frame.waitForTimeout(300);
+
+    const rankText = await row.locator('.number').innerText().catch(() => '');
+    const parsedRank = Number.parseInt(rankText.replace(/\D+/g, ''), 10);
+    const pointsText = await row.locator('.primary-explaining-text-A')
+      .innerText()
+      .catch(() => '');
+    const pointsMatch = pointsText.match(/([\d,]+)/);
+    const points = pointsMatch ? Number(pointsMatch[1].replace(/,/g, '')) : Number.NaN;
+    const directName = await row.locator('.name-text-a')
+      .innerText({ timeout: 1000 })
+      .catch(() => '');
+    const shieldName = normaliseWhitespace(directName) ? '' : await readShieldName(row);
+    let name = normaliseWhitespace(directName) || shieldName;
+    const initialName = name.toLocaleLowerCase();
+
+    if (initialName === 'invite' && Number.isNaN(points)) {
+      ignoredRows++;
+      console.log(`Ignored invitation control at leaderboard DOM row ${index}.`);
+      continue;
+    }
+    if (initialName === 'you' && points === 0) {
+      ignoredRows++;
+      continue;
+    }
+
+    let mappedPlayer = await resolveMappedPlayer(name, playerDirectory);
+    if (initialName === 'you' && isFirstAccount) {
+      name = SELF_PLAYER_NAME;
+      mappedPlayer = playerDirectory.aliases.get(SELF_PLAYER_NAME.toLocaleLowerCase());
+    }
+    const apiPlayer = apiPlayersByName.get(name.toLocaleLowerCase());
+    const rawAvatar = mappedPlayer || apiPlayer ? '' : await readShieldAvatar(row);
+    const avatarId = rawAvatar.match(/([0-9a-f]{32})/i)?.[1] || '';
+    const playerId = initialName === 'you' && isFirstAccount
+      ? PLAYER_RENAME_ID
+      : avatarId || mappedPlayer?.playerId || apiPlayer?.playerId || '';
+    const avatar = /^https?:\/\//i.test(rawAvatar)
+      ? rawAvatar
+      : mappedPlayer?.avatar || apiPlayer?.avatar || '';
+    if (playerId === PLAYER_DISCARD_ID) {
+      ignoredRows++;
+      continue;
+    }
+    const isSummary = ['all arenas', 'all players'].includes(name.toLocaleLowerCase());
+    const rank = isSummary ? 0 : Number.isNaN(parsedRank) ? null : parsedRank;
+
+    if (rank !== null && name && !Number.isNaN(points)) {
+      rows.push({ rank, name, points, playerId, avatar });
+    } else {
+      console.warn('Skipped leaderboard DOM row:', {
+        index,
+        missing: [rank === null && 'rank', !name && 'name', Number.isNaN(points) && 'points']
+          .filter(Boolean),
+        rankText: normaliseWhitespace(rankText),
+        pointsText: normaliseWhitespace(pointsText),
+        directName: normaliseWhitespace(directName),
+        shieldName,
+        rowText: normaliseWhitespace(
+          await row.innerText({ timeout: 1000 }).catch(() => ''),
+        ),
+      });
+    }
+  }
+
+  const seen = new Set();
+  const deduped = rows.filter(entry => {
+    const key = entry.playerId || `name:${entry.name}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const summaries = deduped.filter(entry =>
+    ['all arenas', 'all players'].includes(entry.name.toLocaleLowerCase()),
+  );
+  const others = deduped.filter(entry => !summaries.includes(entry));
+  others.sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+
+  let currentRank = 0;
+  let previousPoints = null;
+  for (const entry of others) {
+    if (previousPoints === null || entry.points !== previousPoints) currentRank++;
+    previousPoints = entry.points;
+    entry.rank = currentRank;
+  }
+  summaries.forEach(entry => { entry.rank = 0; });
+
+  const expectedRows = itemCount - ignoredRows;
+  console.log(`Extracted ${rows.length}/${expectedRows} leaderboard player rows.`);
+  if (rows.length !== expectedRows)
+    console.warn(`Skipped ${expectedRows - rows.length} player rows.`);
+  return [...others, ...summaries];
+}
+
 async function readEventCardMetadata(card) {
   return card.evaluate(el => {
     const clean = value =>
@@ -327,9 +600,40 @@ async function readEventCardMetadata(card) {
 
 async function runForStorage(storagePath) {
   const STORAGE = path.resolve(storagePath);
+  const isFirstAccount = STORAGE === FIRST_ACCOUNT_STORAGE;
+  const playerDirectory = await loadPlayerMappings();
+  const apiPlayersByName = new Map();
+
+  function indexApiPlayers(value, seen = new Set()) {
+    if (!value || typeof value !== 'object' || seen.has(value)) return;
+    seen.add(value);
+    if (!Array.isArray(value)) {
+      const playerId = [value.playerId, value.userId, value.id]
+        .find(candidate => typeof candidate === 'string' && /^[0-9a-f]{32}$/i.test(candidate));
+      const name = [value.name, value.displayName, value.playerName, value.userName]
+        .find(candidate => typeof candidate === 'string' && candidate.trim());
+      const avatar = [value.avatar, value.avatarUrl, value.image, value.imageUrl,
+        value.picture, value.profilePicture]
+        .find(candidate => typeof candidate === 'string' && /^https?:\/\//i.test(candidate));
+      if (playerId && name) {
+        apiPlayersByName.set(normaliseWhitespace(name).toLocaleLowerCase(), {
+          playerId,
+          avatar: avatar || '',
+        });
+      }
+    }
+    for (const child of Object.values(value)) indexApiPlayers(child, seen);
+  }
+
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
   const page = await context.newPage();
+  page.on('response', response => {
+    const responseUrl = response.url();
+    if (responseUrl.includes('wordblitz-api') && !responseUrl.includes('/user/online')) {
+      response.json().then(indexApiPlayers).catch(() => {});
+    }
+  });
   console.log('Opening Word Blitz lobby…');
   await page.goto(FB_APP_PLAY_URL, {
     waitUntil: 'domcontentloaded',
@@ -349,6 +653,7 @@ async function runForStorage(storagePath) {
     timeout: 60000,
   });
   let frame = await attachToGameFrame(await iframeHandle.contentFrame());
+  await dismissJoinRewardPopup(frame);
   console.log('Game iframe ready.');
 
   await frame.waitForSelector('.cell-event', { timeout: 90000 });
@@ -409,7 +714,11 @@ async function runForStorage(storagePath) {
     await frame.waitForSelector('.rank-list-item', { timeout: 60000 });
     await sleep(1000);
 
-    const rankings = await extractLeaderboard(frame);
+    const rankings = await extractLeaderboard(frame, {
+      playerDirectory,
+      apiPlayersByName,
+      isFirstAccount,
+    });
     console.log(
       `  → captured ${rankings.length} player(s) for ${title || 'Unknown'
       } (${eventDate})`,
@@ -432,6 +741,7 @@ async function runForStorage(storagePath) {
         timeout: 60000,
       });
       frame = await attachToGameFrame(await newIframeHandle.contentFrame());
+      await dismissJoinRewardPopup(frame);
       await frame.waitForSelector('.cell-event', { timeout: 60000 });
       await sleep(1000);
     }

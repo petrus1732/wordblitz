@@ -215,9 +215,10 @@ function applyVisibleDenseRanks<T extends { rank: number; name: string; points: 
   const others = rows.map((row) => ({ ...row }))
 
   const visibleRows = others.filter((row) => {
-    const isAllArenas = row.name.trim().toLowerCase() === 'all arenas'
-    if (isAllArenas) arenas.push(row)
-    return !isAllArenas
+    const normalizedName = row.name.trim().toLowerCase()
+    const isSummary = normalizedName === 'all arenas' || normalizedName === 'all players'
+    if (isSummary) arenas.push(row)
+    return !isSummary
   })
 
   visibleRows.sort((a, b) => {

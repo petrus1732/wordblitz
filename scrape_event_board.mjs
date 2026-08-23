@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state3.json');
+const STORAGE = path.resolve('./storage_state2.json');
 const JSON_PATH = path.resolve('./event_details.json');
 
 // 寫入 JSON
@@ -32,6 +32,92 @@ const data = {
 
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function dismissPostGameOverlays(page) {
+  const shareDialog = page.locator('[role="dialog"]')
+    .filter({ hasText: /Here's where you landed|Share your score|表現很棒|分享.*分數/i })
+    .last();
+  const dialogClose = shareDialog.locator([
+    '[aria-label="關閉"]',
+    '[aria-label="Close"]',
+    '[aria-label*="關閉分享"]',
+    '[aria-label*="Close share"]',
+  ].join(', ')).first();
+  const fallbackShareClose = page.locator([
+    '[aria-label="關閉分享對話方塊"]',
+    '[aria-label="Close share dialog"]',
+  ].join(', ')).first();
+  const adClose = page.locator([
+    '[aria-label="關閉廣告"]',
+    '[aria-label="Close ad"]',
+  ].join(', ')).first();
+
+  for (const closeButton of [dialogClose, fallbackShareClose, adClose]) {
+    if (await closeButton.isVisible().catch(() => false)) {
+      const label = await closeButton.getAttribute('aria-label').catch(() => null);
+      await closeButton.click({ force: true });
+      console.log(`✨ 已關閉 Facebook 覆蓋層${label ? ` (${label})` : ''}。`);
+      await sleep(1000);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+async function waitForPostGameOverlayOrResults(page, frame, timeout = 90000) {
+  const deadline = Date.now() + timeout;
+  console.log('⏳ 等待分享對話或遊戲結果出現...');
+
+  while (Date.now() < deadline) {
+    if (await dismissPostGameOverlays(page)) return;
+
+    const resultReady = await frame.locator('.duel-result-row, .btn')
+      .filter({ hasText: /All words/i })
+      .first()
+      .isVisible()
+      .catch(() => false);
+    if (resultReady) return;
+
+    await sleep(1000);
+  }
+
+  console.log('⏳ 尚未看到分享對話；繼續在結果載入階段監看。');
+}
+
+async function waitForEventWords(page, frame, timeout = 180000) {
+  const deadline = Date.now() + timeout;
+  const allWordsBtn = frame.locator('.btn', { hasText: 'All words' }).first();
+  const wordCells = frame.locator('.duel-result-row .word span');
+  let clickedAllWords = false;
+  let loggedServerWait = false;
+
+  while (Date.now() < deadline) {
+    await dismissPostGameOverlays(page);
+
+    const words = (await wordCells.allInnerTexts().catch(() => []))
+      .map(word => word.trim())
+      .filter(Boolean);
+    if (words.length > 0) return { words, wordCells };
+
+    if (!clickedAllWords && await allWordsBtn.isVisible().catch(() => false)) {
+      const clicked = await allWordsBtn.click({ force: true })
+        .then(() => true)
+        .catch(() => false);
+      if (clicked) {
+        console.log('📝 已點擊「All words」。等待字詞列表載入...');
+        clickedAllWords = true;
+      }
+    } else if (!loggedServerWait && await frame.locator('.loader').isVisible().catch(() => false)) {
+      console.log('⏳ 遊戲已結束，但伺服器仍在載入結果；將繼續等待...');
+      loggedServerWait = true;
+    }
+
+    await sleep(2000);
+  }
+
+  throw new Error(`Timed out after ${Math.round(timeout / 1000)} seconds waiting for event words.`);
 }
 
 async function debugMissingEventWords(page, frame, date, dayIndex) {
@@ -194,6 +280,9 @@ async function attachToGameFrame(outerFrame) {
       await sleep(95000);
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
+      // Facebook may create the share dialog well after the game timer ends.
+      await waitForPostGameOverlayOrResults(page, frame);
+
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
       console.log('⏳ 檢查是否有分享對話/廣告...');
       const closeSharingBtn = page.locator('div[aria-label="關閉淘汰賽對話"]');
@@ -224,32 +313,26 @@ async function attachToGameFrame(outerFrame) {
     // rl.close();
 
     // 點擊 All words
-    const allWordsBtn = await frame.$('.btn:has-text("All words")');
-    if (allWordsBtn) {
-      await allWordsBtn.click().catch(() => { });
-      console.log('📝 已點擊「All words」。等待字詞列表載入...');
-      await sleep(1500);
+    let words;
+    let wordCells;
+    try {
+      ({ words, wordCells } = await waitForEventWords(page, frame));
+    } catch (error) {
+      console.warn(`⚠️ ${error.message}`);
+      await debugMissingEventWords(page, frame, date, i);
+      throw error;
     }
-
-    // 擷取所有字詞; allow the result screen extra time to finish rendering.
-    await frame
-      .locator('.duel-result-row')
-      .first()
-      .waitFor({ state: 'attached', timeout: 30000 })
-      .catch(() => {});
-    const words = await frame.$$eval('.duel-result-row .word span', els =>
-      els.map(e => e.innerText.trim()).filter(Boolean)
-    );
     console.log(`✅ 擷取到 ${words.length} 個單字。`);
 
     // 點擊第一個字詞以顯示棋盤
     if (words.length > 0) {
-      const firstWord = await frame.$('.duel-result-row .word span');
+      const firstWord = wordCells.first();
       if (firstWord) {
-        const wordText = await firstWord.evaluate(e => e.innerText);
+        const wordText = await firstWord.innerText();
         console.log(`🔠 點擊第一個單字 "${wordText}" 以顯示棋盤...`);
         await firstWord.click().catch(() => { });
-        await frame.waitForSelector('.letter-grid .core-letter-cell', { timeout: 10000 });
+        await frame.locator('.letter-grid .core-letter-cell').first()
+          .waitFor({ state: 'visible', timeout: 30000 });
         await sleep(1500);
       }
     } else {

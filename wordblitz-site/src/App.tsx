@@ -200,7 +200,7 @@ function DailyView({ date }: { date: string }) {
 
   const rankings = [...daily.rankings].sort((a, b) => a.rank - b.rank)
   const rankingRows: RankingRow[] = rankings.map((entry) => ({
-    rank: entry.rank,
+    rank: isLeaderboardSummary(entry.name) ? null : entry.rank,
     name: entry.name,
     points: entry.points,
     avatarUrl: entry.avatarUrl,
@@ -261,7 +261,7 @@ function EventView({ eventId }: { eventId: string }) {
     .slice()
     .sort((a, b) => a.rank - b.rank)
     .map((entry) => ({
-      rank: entry.rank,
+      rank: isLeaderboardSummary(entry.name) ? null : entry.rank,
       name: entry.name,
       points: entry.points,
       avatarUrl: entry.avatar,
@@ -760,11 +760,16 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
 }
 
 type RankingRow = {
-  rank: number
+  rank: number | null
   name: string
   points: number
   avatarUrl?: string
   playerId: string
+}
+
+function isLeaderboardSummary(name: string) {
+  const normalizedName = name.trim().toLocaleLowerCase()
+  return normalizedName === 'all players' || normalizedName === 'all arenas'
 }
 
 type RankingSortKey = 'rank' | 'name' | 'points'
@@ -928,7 +933,7 @@ function RankingTable({ rows }: { rows: RankingRow[] }) {
         <tbody>
           {sortedRows.map((row) => (
             <tr key={row.playerId}>
-              <td className="rank-column">{row.rank}</td>
+              <td className="rank-column">{row.rank ?? ''}</td>
               <td className="player-cell">
                 {row.avatarUrl ? (
                   <img
