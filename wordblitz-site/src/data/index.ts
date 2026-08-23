@@ -418,7 +418,11 @@ export const eventBreakdownByMonth = new Map(
     {
       events: payload.events ?? [],
       players: (payload.players ?? [])
-        .filter((player) => !isMaskedPlayerForMonth(month, player.playerId))
+        .filter((player) => {
+          const normalizedName = player.name.trim().toLocaleLowerCase()
+          const isSummary = normalizedName === 'all players' || normalizedName === 'all arenas'
+          return !isSummary && !isMaskedPlayerForMonth(month, player.playerId)
+        })
         .map((player) => ({
           playerId: player.playerId,
           name: player.name,
