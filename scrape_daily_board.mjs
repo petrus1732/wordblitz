@@ -104,10 +104,31 @@ async function saveJson(data) {
 
     // 擷取所有字詞
     const wordCells = frame.locator('.duel-result-row .word span');
-    const words = (await wordCells.allInnerTexts())
+    let words = (await wordCells.allInnerTexts())
       .map(word => word.trim())
       .filter(Boolean);
     console.log(`✅ 擷取到 ${words.length} 個單字。`);
+
+    while (words.length === 0) {
+      console.warn('⚠️ 沒有擷取到任何單字，暫停自動化流程。');
+      console.warn('請在遊戲中手動點擊「All words」，完成後回到此終端機按 Enter。');
+
+      const terminal = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      try {
+        await terminal.question('按 Enter 重新擷取單字...');
+      } finally {
+        terminal.close();
+      }
+
+      await sleep(1000);
+      words = (await wordCells.allInnerTexts())
+        .map(word => word.trim())
+        .filter(Boolean);
+      console.log(`🔄 重新擷取到 ${words.length} 個單字。`);
+    }
 
     // 點擊任意字詞以打開棋盤
     if (words.length > 0) {
