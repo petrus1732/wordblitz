@@ -85,7 +85,7 @@ async function saveJson(data) {
     if (await closeSharingBtn.isVisible()) {
       await closeSharingBtn.click({ force: true });
       console.log('✨ 已自動關閉分享對話。');
-      await sleep(1000);
+      await sleep(4000);
     }
 
     if (await closeAdBtn.isVisible()) {
