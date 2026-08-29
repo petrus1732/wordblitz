@@ -709,14 +709,6 @@ function PointsTable({ rows }: { rows: PlayerPointsRow[] }) {
               <tr key={player.playerId}>
                 <td className="rank-column">{originalRank ?? '—'}</td>
                 <td className="player-cell">
-                  {player.avatar ? (
-                    <img
-                      src={player.avatar}
-                      alt=""
-                      className="player-avatar"
-                      loading="lazy"
-                    />
-                  ) : null}
                   <span>{player.name}</span>
                 </td>
                 <td>{player.totalPoints.toLocaleString()}</td>
@@ -935,14 +927,6 @@ function RankingTable({ rows }: { rows: RankingRow[] }) {
             <tr key={row.playerId}>
               <td className="rank-column">{row.rank ?? ''}</td>
               <td className="player-cell">
-                {row.avatarUrl ? (
-                  <img
-                    src={row.avatarUrl}
-                    alt=""
-                    className="player-avatar"
-                    loading="lazy"
-                  />
-                ) : null}
                 <span>{row.name}</span>
               </td>
               <td>{row.points.toLocaleString()}</td>
@@ -1235,14 +1219,6 @@ function EventMatrixTable({ matrix }: { matrix: EventBreakdownMonth }) {
               <tr key={player.playerId}>
                 <td className="rank-column">{originalRank ?? '—'}</td>
                 <td className="player-cell">
-                  {player.avatar ? (
-                    <img
-                      src={player.avatar}
-                      alt=""
-                      className="player-avatar"
-                      loading="lazy"
-                    />
-                  ) : null}
                   <span>{player.name}</span>
                 </td>
                 <td>{player.total.toLocaleString()}</td>
@@ -1439,14 +1415,6 @@ function DailyMatrixTable({ matrix }: { matrix: DailyBreakdownMonth }) {
               <tr key={player.playerId}>
                 <td className="rank-column">{originalRank ?? '—'}</td>
                 <td className="player-cell">
-                  {player.avatar ? (
-                    <img
-                      src={player.avatar}
-                      alt=""
-                      className="player-avatar"
-                      loading="lazy"
-                    />
-                  ) : null}
                   <span>{player.name}</span>
                 </td>
                 <td>{player.total.toLocaleString()}</td>
