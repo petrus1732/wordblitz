@@ -5,8 +5,9 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state1.json');
 const JSON_PATH = path.resolve('./event_details.json');
+const CHECKPOINT_PATH = path.resolve('./event_details.checkpoint.json');
 
 // 寫入 JSON
 async function saveJson(data) {
@@ -14,7 +15,15 @@ async function saveJson(data) {
   const all = JSON.parse(prev);
   all.push(data);
   await fs.writeFile(JSON_PATH, JSON.stringify(all, null, 2), 'utf8');
+  await fs.unlink(CHECKPOINT_PATH).catch(error => {
+    if (error.code !== 'ENOENT') throw error;
+  });
   console.log(`💾 已寫入 ${JSON_PATH}`);
+}
+
+async function saveCheckpoint(data) {
+  await fs.writeFile(CHECKPOINT_PATH, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  console.log(`Checkpoint saved (${data.boards.length}/7 boards): ${CHECKPOINT_PATH}`);
 }
 
 // UTC 日期計算：取得 n 天前的日期 (YYYY-MM-DD)
@@ -32,6 +41,28 @@ const data = {
 
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+class GameFrameUnavailableError extends Error {
+  constructor(message, cause) {
+    super(message, { cause });
+    this.name = 'GameFrameUnavailableError';
+  }
+}
+
+async function assertGameFrameAvailable(frame) {
+  if (!frame || frame.isDetached()) {
+    throw new GameFrameUnavailableError('The Word Blitz game iframe was detached.');
+  }
+
+  try {
+    await frame.locator('body').count();
+  } catch (error) {
+    throw new GameFrameUnavailableError(
+      'The Word Blitz game iframe execution context is unavailable.',
+      error,
+    );
+  }
 }
 
 async function dismissPostGameOverlays(page) {
@@ -71,6 +102,7 @@ async function waitForPostGameOverlayOrResults(page, frame, timeout = 90000) {
   console.log('⏳ 等待分享對話或遊戲結果出現...');
 
   while (Date.now() < deadline) {
+    await assertGameFrameAvailable(frame);
     if (await dismissPostGameOverlays(page)) return;
 
     const resultReady = await frame.locator('.duel-result-row, .btn')
@@ -94,6 +126,7 @@ async function waitForEventWords(page, frame, timeout = 180000) {
   let loggedServerWait = false;
 
   while (Date.now() < deadline) {
+    await assertGameFrameAvailable(frame);
     await dismissPostGameOverlays(page);
 
     const words = (await wordCells.allInnerTexts().catch(() => []))
@@ -165,6 +198,71 @@ async function attachToGameFrame(outerFrame) {
   return gameFrame;
 }
 
+async function reacquireGameFrame(page, timeout = 30000) {
+  const deadline = Date.now() + timeout;
+  let lastError;
+
+  while (Date.now() < deadline) {
+    try {
+      const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', {
+        timeout: Math.min(5000, Math.max(1, deadline - Date.now())),
+      });
+      const outerFrame = await iframeHandle.contentFrame();
+      const candidate = await attachToGameFrame(outerFrame);
+      await assertGameFrameAvailable(candidate);
+      console.log('Reattached to the Word Blitz game iframe.');
+      return candidate;
+    } catch (error) {
+      lastError = error;
+      await sleep(1000);
+    }
+  }
+
+  throw new GameFrameUnavailableError(
+    `Unable to reacquire the Word Blitz game iframe after ${Math.round(timeout / 1000)} seconds.`,
+    lastError,
+  );
+}
+
+async function reloadAndRestoreEvent(page, eventName) {
+  console.warn('The complete game iframe disappeared; reloading Facebook Gaming...');
+  await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
+  await sleep(5000);
+
+  const restoredFrame = await reacquireGameFrame(page, 60000);
+  const eventLocator = restoredFrame.locator('.cell-event.clickable', {
+    has: restoredFrame.locator('.cell-title.truncate', { hasText: eventName }),
+  }).first();
+
+  if (await eventLocator.isVisible().catch(() => false)) {
+    await eventLocator.click();
+    await sleep(1000);
+  }
+
+  const letsGoButton = restoredFrame.locator('.button-primary', {
+    hasText: /Let's go|Let’s go/i,
+  }).first();
+  if (await letsGoButton.isVisible().catch(() => false)) {
+    await letsGoButton.click({ force: true });
+    await sleep(2000);
+  }
+
+  const facebookStartButton = page.locator('div[role="button"]', {
+    hasText: /開始玩|Play now/i,
+  }).first();
+  if (await facebookStartButton.isVisible().catch(() => false)) {
+    await facebookStartButton.click({ force: true });
+    await sleep(8000);
+  }
+
+  const activeFrame = restoredFrame.isDetached()
+    ? await reacquireGameFrame(page, 60000)
+    : restoredFrame;
+  await assertGameFrameAvailable(activeFrame);
+  console.log('Facebook Gaming reloaded and the event session was restored.');
+  return activeFrame;
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ storageState: STORAGE });
@@ -183,7 +281,32 @@ async function attachToGameFrame(outerFrame) {
   }
 
   const iframeHandle = await page.waitForSelector('iframe#games_iframe_web', { timeout: 60000 });
-  const frame = await attachToGameFrame(await iframeHandle.contentFrame());
+  let frame = await attachToGameFrame(await iframeHandle.contentFrame());
+
+  async function withFrameRecovery(label, operation, maxAttempts = 3) {
+    let lastError;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        await assertGameFrameAvailable(frame);
+        return await operation(frame);
+      } catch (error) {
+        lastError = error;
+        if (!(error instanceof GameFrameUnavailableError) || attempt === maxAttempts) {
+          throw error;
+        }
+        console.warn(
+          `${label}: game iframe became unavailable; reattaching (${attempt}/${maxAttempts - 1})...`,
+        );
+        try {
+          frame = await reacquireGameFrame(page);
+        } catch (reattachError) {
+          console.warn(`Direct iframe reattachment failed: ${reattachError.message}`);
+          frame = await reloadAndRestoreEvent(page, data.eventName);
+        }
+      }
+    }
+    throw lastError;
+  }
   console.log('✅ 已附著到遊戲內容 iframe。');
 
   // --- 自動進入即將結束的賽事 ---
@@ -268,6 +391,10 @@ async function attachToGameFrame(outerFrame) {
   // 循環 7 天（今天到前 6 天）
   for (let i = 1; i <= 7; i++) {
     const date = getDateNDaysAgo(7 - i);
+    await withFrameRecovery(
+      `Preparing day ${i}`,
+      currentFrame => Promise.resolve(currentFrame),
+    );
     console.log(`📅 目標日期：${date}`);
 
     // 使用更精確的 footer selector 避免 layout offset 點到別處 (如 All Players 標籤)
@@ -281,7 +408,10 @@ async function attachToGameFrame(outerFrame) {
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // Facebook may create the share dialog well after the game timer ends.
-      await waitForPostGameOverlayOrResults(page, frame);
+      await withFrameRecovery(
+        'Waiting for post-game results',
+        currentFrame => waitForPostGameOverlayOrResults(page, currentFrame),
+      );
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
       console.log('⏳ 檢查是否有分享對話/廣告...');
@@ -316,7 +446,10 @@ async function attachToGameFrame(outerFrame) {
     let words;
     let wordCells;
     try {
-      ({ words, wordCells } = await waitForEventWords(page, frame));
+      ({ words, wordCells } = await withFrameRecovery(
+        'Waiting for event words',
+        currentFrame => waitForEventWords(page, currentFrame),
+      ));
     } catch (error) {
       console.warn(`⚠️ ${error.message}`);
       await debugMissingEventWords(page, frame, date, i);
@@ -365,6 +498,7 @@ async function attachToGameFrame(outerFrame) {
     };
 
     data.boards.push(payload);
+    await saveCheckpoint(data);
     console.log(`📦 完成擷取 ${date}：共 ${words.length} 字詞，棋盤格數 ${board.length}`);
 
     // --- 自動返回與繼續 (進入下一天) ---
