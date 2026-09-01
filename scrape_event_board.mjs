@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state1.json');
+const STORAGE = path.resolve('./storage_state3.json');
 const JSON_PATH = path.resolve('./event_details.json');
 const CHECKPOINT_PATH = path.resolve('./event_details.checkpoint.json');
 
@@ -21,9 +21,45 @@ async function saveJson(data) {
   console.log(`💾 已寫入 ${JSON_PATH}`);
 }
 
-async function saveCheckpoint(data) {
-  await fs.writeFile(CHECKPOINT_PATH, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+async function saveCheckpoint(data, progress) {
+  const checkpoint = { ...data, ...progress };
+  await fs.writeFile(CHECKPOINT_PATH, `${JSON.stringify(checkpoint, null, 2)}\n`, 'utf8');
   console.log(`Checkpoint saved (${data.boards.length}/7 boards): ${CHECKPOINT_PATH}`);
+}
+
+function normalizeEventName(value) {
+  return String(value ?? '')
+    .normalize('NFKC')
+    .replace(/\s+/gu, ' ')
+    .trim()
+    .toLocaleLowerCase();
+}
+
+async function loadCheckpoint(eventName) {
+  const checkpoint = await Promise.all([
+    fs.readFile(CHECKPOINT_PATH, 'utf8'),
+    fs.stat(CHECKPOINT_PATH),
+  ]).then(([contents, stats]) => ({ ...JSON.parse(contents), modifiedAt: stats.mtimeMs }))
+    .catch(error => {
+      if (error.code === 'ENOENT') return null;
+      throw error;
+    });
+  if (!checkpoint || !Array.isArray(checkpoint.boards)) {
+    console.warn('Ignoring an invalid event-board checkpoint.');
+    return null;
+  }
+  if (normalizeEventName(checkpoint.eventName) !== normalizeEventName(eventName)) {
+    console.warn(
+      `Ignoring checkpoint for a different event: "${checkpoint.eventName}" != "${eventName}".`,
+    );
+    return null;
+  }
+  if (Date.now() - checkpoint.modifiedAt > 48 * 60 * 60 * 1000) {
+    console.warn('Ignoring an event-board checkpoint older than 48 hours.');
+    return null;
+  }
+  delete checkpoint.modifiedAt;
+  return checkpoint;
 }
 
 // UTC 日期計算：取得 n 天前的日期 (YYYY-MM-DD)
@@ -37,6 +73,12 @@ function getDateNDaysAgo(n) {
 const data = {
   eventName: 'blitz round',
   boards: []
+};
+
+const progress = {
+  eventStartDate: getDateNDaysAgo(6),
+  lastStartedDayIndex: 0,
+  missingDates: [],
 };
 
 function sleep(milliseconds) {
@@ -229,38 +271,75 @@ async function reloadAndRestoreEvent(page, eventName) {
   await page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
   await sleep(5000);
 
-  const restoredFrame = await reacquireGameFrame(page, 60000);
-  const eventLocator = restoredFrame.locator('.cell-event.clickable', {
-    has: restoredFrame.locator('.cell-title.truncate', { hasText: eventName }),
-  }).first();
+  let activeFrame = await reacquireGameFrame(page, 60000);
+  const deadline = Date.now() + 120000;
 
-  if (await eventLocator.isVisible().catch(() => false)) {
-    await eventLocator.click();
+  while (Date.now() < deadline) {
+    if (activeFrame.isDetached()) activeFrame = await reacquireGameFrame(page, 60000);
+
+    const resultReady = activeFrame.locator('.duel-result-row, .btn')
+      .filter({ hasText: /All words/i })
+      .first();
+    if (await resultReady.isVisible().catch(() => false)) {
+      console.log('Facebook Gaming reloaded directly into the game results.');
+      return activeFrame;
+    }
+
+    const eventLocator = activeFrame.locator('.cell-event.clickable', {
+      has: activeFrame.locator('.cell-title.truncate', { hasText: eventName }),
+    }).first();
+    if (await eventLocator.isVisible().catch(() => false)) {
+      console.log(`Restoring event "${eventName}"...`);
+      await eventLocator.click({ force: true });
+      await sleep(1000);
+      continue;
+    }
+
+    const letsGoButton = activeFrame.locator('.button-primary', {
+      hasText: /Let's go|Let’s go/i,
+    }).first();
+    if (await letsGoButton.isVisible().catch(() => false)) {
+      console.log('Continuing through the restored event intro...');
+      await letsGoButton.click({ force: true });
+      await sleep(2000);
+      continue;
+    }
+
+    const facebookStartButton = page.locator('div[role="button"]', {
+      hasText: /開始玩|Play now/i,
+    }).first();
+    if (await facebookStartButton.isVisible().catch(() => false)) {
+      console.log('Restarting the Facebook Instant Game session...');
+      await facebookStartButton.click({ force: true });
+      await sleep(8000);
+      if (activeFrame.isDetached()) activeFrame = await reacquireGameFrame(page, 60000);
+      continue;
+    }
+
+    const playButton = activeFrame
+      .locator('.screen-component-footer .button-primary:has-text("Play")')
+      .first();
+    if (await playButton.isVisible().catch(() => false)) {
+      throw new DayAdvancedDuringRecoveryError();
+    }
+
     await sleep(1000);
   }
 
-  const letsGoButton = restoredFrame.locator('.button-primary', {
-    hasText: /Let's go|Let’s go/i,
-  }).first();
-  if (await letsGoButton.isVisible().catch(() => false)) {
-    await letsGoButton.click({ force: true });
-    await sleep(2000);
-  }
+  throw new Error('Facebook Gaming reloaded, but the event result screen could not be restored.');
+}
 
-  const facebookStartButton = page.locator('div[role="button"]', {
-    hasText: /開始玩|Play now/i,
-  }).first();
-  if (await facebookStartButton.isVisible().catch(() => false)) {
-    await facebookStartButton.click({ force: true });
-    await sleep(8000);
+class DayAdvancedDuringRecoveryError extends Error {
+  constructor() {
+    super('Word Blitz advanced to the next board while the iframe was being recovered.');
+    this.name = 'DayAdvancedDuringRecoveryError';
   }
+}
 
-  const activeFrame = restoredFrame.isDetached()
-    ? await reacquireGameFrame(page, 60000)
-    : restoredFrame;
-  await assertGameFrameAvailable(activeFrame);
-  console.log('Facebook Gaming reloaded and the event session was restored.');
-  return activeFrame;
+function addUtcDays(date, days) {
+  const result = new Date(`${date}T00:00:00.000Z`);
+  result.setUTCDate(result.getUTCDate() + days);
+  return result.toISOString().slice(0, 10);
 }
 
 (async () => {
@@ -322,8 +401,24 @@ async function reloadAndRestoreEvent(page, eventName) {
     // 2. 擷取賽事名稱
     const titleEl = eventLocator.locator('.cell-title.truncate');
     const eventName = await titleEl.innerText();
+    data.eventName = eventName;
+    const checkpoint = await loadCheckpoint(eventName);
+    if (checkpoint) {
+      data.boards = checkpoint.boards;
+      progress.eventStartDate = checkpoint.eventStartDate || data.boards[0]?.date || progress.eventStartDate;
+      progress.lastStartedDayIndex = Number(checkpoint.lastStartedDayIndex) || 0;
+      progress.missingDates = Array.isArray(checkpoint.missingDates)
+        ? checkpoint.missingDates
+        : [];
+      console.log(
+        `Resuming after day ${progress.lastStartedDayIndex} with ` +
+        `${data.boards.length}/7 captured boards.`,
+      );
+      if (progress.missingDates.length > 0) {
+        console.warn(`Missing board dates: ${progress.missingDates.join(', ')}`);
+      }
+    }
     console.log(`🎯 找到目標賽事: "${eventName}"`);
-    data.eventName = eventName; // 更新全域資料
 
     // 3. 點擊賽事
     await eventLocator.click();
@@ -389,8 +484,8 @@ async function reloadAndRestoreEvent(page, eventName) {
 
 
   // 循環 7 天（今天到前 6 天）
-  for (let i = 1; i <= 7; i++) {
-    const date = getDateNDaysAgo(7 - i);
+  for (let i = Math.max(1, progress.lastStartedDayIndex + 1); i <= 7; i++) {
+    const date = addUtcDays(progress.eventStartDate, i - 1);
     await withFrameRecovery(
       `Preparing day ${i}`,
       currentFrame => Promise.resolve(currentFrame),
@@ -400,7 +495,10 @@ async function reloadAndRestoreEvent(page, eventName) {
     // 使用更精確的 footer selector 避免 layout offset 點到別處 (如 All Players 標籤)
     const playBtn = frame.locator('.screen-component-footer .button-primary:has-text("Play")');
     if (await playBtn.count() > 0) {
-      await playBtn.click({ force: true }).catch(() => { });
+      await playBtn.click({ force: true });
+      progress.lastStartedDayIndex = i;
+      if (!progress.missingDates.includes(date)) progress.missingDates.push(date);
+      await saveCheckpoint(data, progress);
       console.log('🎮 已點擊「Play」。等待遊戲進行中 (95 秒)...');
 
       // 1. 等待遊戲結束 (91秒預留緩衝)
@@ -408,10 +506,18 @@ async function reloadAndRestoreEvent(page, eventName) {
       console.log('⏰ 95 秒已到，展開後續自動化操作...');
 
       // Facebook may create the share dialog well after the game timer ends.
-      await withFrameRecovery(
-        'Waiting for post-game results',
-        currentFrame => waitForPostGameOverlayOrResults(page, currentFrame),
-      );
+      try {
+        await withFrameRecovery(
+          'Waiting for post-game results',
+          currentFrame => waitForPostGameOverlayOrResults(page, currentFrame),
+        );
+      } catch (error) {
+        if (error instanceof DayAdvancedDuringRecoveryError) {
+          console.warn(`${date} was played but could not be captured; continuing with the next day.`);
+          continue;
+        }
+        throw error;
+      }
 
       // 2. 自動關閉分享對話 (Facebook 覆蓋層)
       console.log('⏳ 檢查是否有分享對話/廣告...');
@@ -451,6 +557,10 @@ async function reloadAndRestoreEvent(page, eventName) {
         currentFrame => waitForEventWords(page, currentFrame),
       ));
     } catch (error) {
+      if (error instanceof DayAdvancedDuringRecoveryError) {
+        console.warn(`${date} was played but could not be captured; continuing with the next day.`);
+        continue;
+      }
       console.warn(`⚠️ ${error.message}`);
       await debugMissingEventWords(page, frame, date, i);
       throw error;
@@ -497,8 +607,12 @@ async function reloadAndRestoreEvent(page, eventName) {
       words
     };
 
-    data.boards.push(payload);
-    await saveCheckpoint(data);
+    const existingBoardIndex = data.boards.findIndex(boardEntry => boardEntry.date === date);
+    if (existingBoardIndex >= 0) data.boards[existingBoardIndex] = payload;
+    else data.boards.push(payload);
+    data.boards.sort((left, right) => left.date.localeCompare(right.date));
+    progress.missingDates = progress.missingDates.filter(missingDate => missingDate !== date);
+    await saveCheckpoint(data, progress);
     console.log(`📦 完成擷取 ${date}：共 ${words.length} 字詞，棋盤格數 ${board.length}`);
 
     // --- 自動返回與繼續 (進入下一天) ---
@@ -527,7 +641,10 @@ async function reloadAndRestoreEvent(page, eventName) {
   }
 
   // 所有天數結束後一次儲存
-  await saveJson(data);
+  const finalData = progress.missingDates.length > 0
+    ? { ...data, missingDates: [...progress.missingDates] }
+    : data;
+  await saveJson(finalData);
 
   console.log('✅ 全部七天擷取完成！視窗將保持開啟，請自行檢查。');
   await new Promise(() => { }); // 永遠不 resolve，保持視窗開啟
