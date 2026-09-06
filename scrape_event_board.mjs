@@ -162,7 +162,9 @@ async function waitForPostGameOverlayOrResults(page, frame, timeout = 90000) {
 
 async function waitForEventWords(page, frame, timeout = 180000) {
   const deadline = Date.now() + timeout;
-  const allWordsBtn = frame.locator('.btn', { hasText: 'All words' }).first();
+  const allWordsBtn = frame.locator('.tab-switch .btn')
+    .filter({ hasText: /^\s*All words\s*$/i })
+    .first();
   const wordCells = frame.locator('.duel-result-row .word span');
   let clickedAllWords = false;
   let loggedServerWait = false;
@@ -177,12 +179,29 @@ async function waitForEventWords(page, frame, timeout = 180000) {
     if (words.length > 0) return { words, wordCells };
 
     if (!clickedAllWords && await allWordsBtn.isVisible().catch(() => false)) {
-      const clicked = await allWordsBtn.click({ force: true })
+      let clicked = await allWordsBtn.click({ timeout: 5000 })
         .then(() => true)
         .catch(() => false);
+      if (!clicked) {
+        clicked = await allWordsBtn.evaluate(element => {
+          element.click();
+          return true;
+        }).catch(() => false);
+      }
       if (clicked) {
         console.log('📝 已點擊「All words」。等待字詞列表載入...');
         clickedAllWords = true;
+        await sleep(1000);
+        const selectionAccepted = await allWordsBtn
+          .evaluate(element => element.classList.contains('selected'))
+          .catch(() => false);
+        if (!selectionAccepted) {
+          console.warn('The "All words" click was not accepted; retrying shortly.');
+          clickedAllWords = false;
+          await allWordsBtn.evaluate(element => element.click()).catch(() => {});
+        } else {
+          console.log('Verified that the "All words" tab is selected.');
+        }
       }
     } else if (!loggedServerWait && await frame.locator('.loader').isVisible().catch(() => false)) {
       console.log('⏳ 遊戲已結束，但伺服器仍在載入結果；將繼續等待...');
@@ -205,6 +224,7 @@ async function debugMissingEventWords(page, frame, date, dayIndex) {
     '.letter-grid .core-letter-cell',
     '.button-primary',
     '.btn',
+    '.tab-switch .btn.selected',
     '.icon-back',
   ];
   const selectorCounts = {};
