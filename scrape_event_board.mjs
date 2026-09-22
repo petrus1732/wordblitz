@@ -5,7 +5,7 @@ import path from 'node:path';
 import readline from 'node:readline/promises';
 
 const FB_APP_PLAY_URL = 'https://www.facebook.com/gaming/play/2211386328877300/';
-const STORAGE = path.resolve('./storage_state2.json');
+const STORAGE = path.resolve('./storage_state3.json');
 const JSON_PATH = path.resolve('./event_details.json');
 const CHECKPOINT_PATH = path.resolve('./event_details.checkpoint.json');
 
@@ -556,7 +556,7 @@ function addUtcDays(date, days) {
         if (await closeAdBtn.isVisible()) {
           await closeAdBtn.click({ force: true });
           console.log('✨ 已自動關閉廣告。');
-          await sleep(1000);
+          await sleep(10000);
         }
       } catch (e) {
         console.warn('⚠️ 關閉對話/廣告時發生非預期狀況:', e.message);
