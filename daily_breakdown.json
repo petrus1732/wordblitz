@@ -84447,6 +84447,11 @@
             "score": 1492,
             "points": 14
           },
+          "2026-10-04": {
+            "rank": 3,
+            "score": 1745,
+            "points": 11
+          },
           "2026-10-05": {
             "rank": 2,
             "score": 1511,
@@ -84468,8 +84473,8 @@
             "points": 15
           }
         },
-        "total": 112,
-        "totalScore": 11769
+        "total": 123,
+        "totalScore": 13514
       },
       {
         "playerId": "3b0f13b4cba146f2372524ff3b19c6fe",
@@ -84668,55 +84673,6 @@
         "totalScore": 11335
       },
       {
-        "playerId": "98610e86acb0a629da17f0993ec0fd50",
-        "name": "奕安",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
-        "scores": {
-          "2026-10-01": {
-            "rank": 7,
-            "score": 1262,
-            "points": 4
-          },
-          "2026-10-02": {
-            "rank": 6,
-            "score": 1847,
-            "points": 5
-          },
-          "2026-10-03": {
-            "rank": 8,
-            "score": 1336,
-            "points": 6
-          },
-          "2026-10-04": {
-            "rank": 3,
-            "score": 1745,
-            "points": 11
-          },
-          "2026-10-05": {
-            "rank": 14,
-            "score": 1124,
-            "points": 0
-          },
-          "2026-10-06": {
-            "rank": 7,
-            "score": 1269,
-            "points": 4
-          },
-          "2026-10-07": {
-            "rank": 10,
-            "score": 1043,
-            "points": 1
-          },
-          "2026-10-08": {
-            "rank": 38,
-            "score": 0,
-            "points": 0
-          }
-        },
-        "total": 31,
-        "totalScore": 9626
-      },
-      {
         "playerId": "2923a7c3990777f6e12bacee960e1d72",
         "name": "Michelle Wong",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/63652594-2923a7c3990777f6e12bacee960e1d72",
@@ -84813,6 +84769,50 @@
         },
         "total": 22,
         "totalScore": 10797
+      },
+      {
+        "playerId": "98610e86acb0a629da17f0993ec0fd50",
+        "name": "奕安",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
+        "scores": {
+          "2026-10-01": {
+            "rank": 7,
+            "score": 1262,
+            "points": 4
+          },
+          "2026-10-02": {
+            "rank": 6,
+            "score": 1847,
+            "points": 5
+          },
+          "2026-10-03": {
+            "rank": 8,
+            "score": 1336,
+            "points": 6
+          },
+          "2026-10-05": {
+            "rank": 14,
+            "score": 1124,
+            "points": 0
+          },
+          "2026-10-06": {
+            "rank": 7,
+            "score": 1269,
+            "points": 4
+          },
+          "2026-10-07": {
+            "rank": 10,
+            "score": 1043,
+            "points": 1
+          },
+          "2026-10-08": {
+            "rank": 38,
+            "score": 0,
+            "points": 0
+          }
+        },
+        "total": 20,
+        "totalScore": 7881
       },
       {
         "playerId": "a0055187308a6831e6d914375d961273",
