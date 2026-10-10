@@ -227,8 +227,11 @@ async function runForStorage(storage_path) {
   const PLAYER_DISCARD_ID = '139aeeddeccb7d58d846dd92803b02fa';
   const apiPlayersByName = new Map();
   const playerDirectory = await loadPlayerMappings();
-  const mappedPlayersByName = playerDirectory.aliases;
   const isFirstAccount = STORAGE === FIRST_ACCOUNT_STORAGE;
+
+  function isSelfName(name) {
+    return [SELF_PLAYER_NAME, '奕安'].includes(normaliseWhitespace(name));
+  }
 
   function isEmptyYouRow(row) {
     return normaliseWhitespace(row.name).toLocaleLowerCase() === 'you' &&
@@ -239,11 +242,15 @@ async function runForStorage(storage_path) {
     const isYou = normaliseWhitespace(row.name).toLocaleLowerCase() === 'you';
     if (!isYou || Number(row.points) === 0 || (!isFirstAccount && !allowHistoricalMigration))
       return row;
+    if (allowHistoricalMigration && row.playerId && row.playerId !== SELF_PLAYER_ID)
+      return row;
 
-    const selfProfile = mappedPlayersByName.get(SELF_PLAYER_NAME.toLocaleLowerCase());
+    const selfProfile = playerDirectory.profiles.find(profile =>
+      profile.playerId === SELF_PLAYER_ID,
+    );
     row.name = SELF_PLAYER_NAME;
     row.playerId = SELF_PLAYER_ID;
-    row.avatar = selfProfile?.avatar || row.avatar || '';
+    row.avatar = selfProfile?.profilePhoto || row.avatar || '';
     return row;
   }
 
@@ -334,7 +341,7 @@ async function runForStorage(storage_path) {
           if (isEmptyYouRow(parsed)) return;
           replaceFirstAccountYou(parsed, true);
           if (parsed.playerId === PLAYER_DISCARD_ID) return;
-          if (parsed.playerId === PLAYER_RENAME_ID) parsed.name = '奕安';
+          if (parsed.playerId === PLAYER_RENAME_ID) parsed.name = SELF_PLAYER_NAME;
           const identity = parsed.playerId || `name:${parsed.name}`;
           const key = `${parsed.dailyDate}:${identity}`;
           records.set(key, parsed);
@@ -356,20 +363,31 @@ async function runForStorage(storage_path) {
     let inserted = 0;
     for (const row of rows) {
       if (isEmptyYouRow(row)) continue;
+      const isYou = normaliseWhitespace(row.name).toLocaleLowerCase() === 'you';
+      // The other account's own row is outside this dataset. On the first
+      // account, a named self row belongs to the namesake, not the logged-in user.
+      if ((!isFirstAccount && isYou) || (isFirstAccount && !isYou && isSelfName(row.name)))
+        continue;
       replaceFirstAccountYou(row);
-      const historicalPlayer = historicalPlayersByName.get(
+      const historicalPlayer = isSelfName(row.name) ? null : historicalPlayersByName.get(
         normaliseWhitespace(row.name).toLocaleLowerCase(),
       );
       if (!row.playerId) row.playerId = historicalPlayer?.playerId || '';
       if (!row.avatar) row.avatar = historicalPlayer?.avatar || '';
       if (row.playerId === PLAYER_DISCARD_ID) continue;
+      // Only the first account's You row is authoritative for its own score.
+      if ((!isFirstAccount && row.playerId === SELF_PLAYER_ID) ||
+          (isSelfName(row.name) && !row.playerId)) {
+        console.warn(`Ignored non-authoritative self row on ${dailyDate}.`);
+        continue;
+      }
       if (row.playerId) records.delete(`${dailyDate}:name:${row.name}`);
       const identity = row.playerId || `name:${row.name}`;
       const key = `${dailyDate}:${identity}`;
       const next = {
         dailyDate,
         playerId: row.playerId,
-        name: row.playerId === PLAYER_RENAME_ID ? '奕安' : row.name,
+        name: row.playerId === PLAYER_RENAME_ID ? SELF_PLAYER_NAME : row.name,
         points: Number(row.points) || 0,
         avatar: row.avatar || '',
         rank: '',
@@ -513,8 +531,19 @@ async function runForStorage(storage_path) {
         console.log(`Ignored invitation control at leaderboard DOM row ${index}.`);
         continue;
       }
-      const mappedPlayer = await resolveMappedPlayer(name, playerDirectory);
-      const apiPlayer = apiPlayersByName.get(name.toLocaleLowerCase());
+      const isYou = name.toLocaleLowerCase() === 'you';
+      if (isYou) {
+        if (isFirstAccount && rank && points) {
+          // Preserve You until appendCsv has checked the source account.
+          rows.push({ rank, name, points, playerId: '', avatar: '' });
+        } else {
+          ignoredControlRows++;
+        }
+        continue;
+      }
+      // Both accounts share a display name; name-based mappings cannot identify them.
+      const mappedPlayer = isSelfName(name) ? null : await resolveMappedPlayer(name, playerDirectory);
+      const apiPlayer = isSelfName(name) ? null : apiPlayersByName.get(name.toLocaleLowerCase());
       const rawAvatar = mappedPlayer || apiPlayer ? '' : await readOverlayAvatar(row);
       const idMatch = rawAvatar.match(/([0-9a-f]{32})/i);
       const playerId = idMatch
