@@ -556,7 +556,7 @@ function addUtcDays(date, days) {
         if (await closeAdBtn.isVisible()) {
           await closeAdBtn.click({ force: true });
           console.log('✨ 已自動關閉廣告。');
-          await sleep(10000);
+          await sleep(30000);
         }
       } catch (e) {
         console.warn('⚠️ 關閉對話/廣告時發生非預期狀況:', e.message);
