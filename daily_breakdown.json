@@ -91747,6 +91747,12 @@
       },
       {
         "date": "2026-11-17"
+      },
+      {
+        "date": "2026-11-18"
+      },
+      {
+        "date": "2026-11-19"
       }
     ],
     "players": [
@@ -91839,10 +91845,20 @@
             "rank": 1,
             "score": 1833,
             "points": 19
+          },
+          "2026-11-18": {
+            "rank": 1,
+            "score": 2915,
+            "points": 19
+          },
+          "2026-11-19": {
+            "rank": 2,
+            "score": 1942,
+            "points": 15
           }
         },
-        "total": 304,
-        "totalScore": 38470
+        "total": 338,
+        "totalScore": 43327
       },
       {
         "playerId": "13d27d58144a648163eaf818ac35c332",
@@ -91933,10 +91949,119 @@
             "rank": 2,
             "score": 1636,
             "points": 15
+          },
+          "2026-11-18": {
+            "rank": 4,
+            "score": 2613,
+            "points": 7
+          },
+          "2026-11-19": {
+            "rank": 1,
+            "score": 1960,
+            "points": 19
           }
         },
-        "total": 281,
-        "totalScore": 37451
+        "total": 307,
+        "totalScore": 42024
+      },
+      {
+        "playerId": "d920213885f59abd9b181514e8ed0231",
+        "name": "Lewis",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94334483-d920213885f59abd9b181514e8ed0231",
+        "scores": {
+          "2026-11-01": {
+            "rank": 11,
+            "score": 1033,
+            "points": 0
+          },
+          "2026-11-02": {
+            "rank": 5,
+            "score": 1240,
+            "points": 6
+          },
+          "2026-11-03": {
+            "rank": 2,
+            "score": 1207,
+            "points": 15
+          },
+          "2026-11-04": {
+            "rank": 13,
+            "score": 1720,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 3,
+            "score": 3301,
+            "points": 11
+          },
+          "2026-11-06": {
+            "rank": 15,
+            "score": 1167,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 4,
+            "score": 2713,
+            "points": 14
+          },
+          "2026-11-08": {
+            "rank": 4,
+            "score": 1261,
+            "points": 7
+          },
+          "2026-11-09": {
+            "rank": 3,
+            "score": 1986,
+            "points": 11
+          },
+          "2026-11-10": {
+            "rank": 4,
+            "score": 1576,
+            "points": 7
+          },
+          "2026-11-11": {
+            "rank": 3,
+            "score": 3746,
+            "points": 11
+          },
+          "2026-11-12": {
+            "rank": 8,
+            "score": 1151,
+            "points": 3
+          },
+          "2026-11-13": {
+            "rank": 4,
+            "score": 2974,
+            "points": 7
+          },
+          "2026-11-14": {
+            "rank": 2,
+            "score": 1867,
+            "points": 30
+          },
+          "2026-11-15": {
+            "rank": 2,
+            "score": 2574,
+            "points": 15
+          },
+          "2026-11-16": {
+            "rank": 7,
+            "score": 1611,
+            "points": 4
+          },
+          "2026-11-18": {
+            "rank": 2,
+            "score": 2723,
+            "points": 15
+          },
+          "2026-11-19": {
+            "rank": 5,
+            "score": 1738,
+            "points": 6
+          }
+        },
+        "total": 162,
+        "totalScore": 35588
       },
       {
         "playerId": "3b0f13b4cba146f2372524ff3b19c6fe",
@@ -92027,99 +92152,20 @@
             "rank": 3,
             "score": 1627,
             "points": 11
-          }
-        },
-        "total": 149,
-        "totalScore": 32763
-      },
-      {
-        "playerId": "d920213885f59abd9b181514e8ed0231",
-        "name": "Lewis",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/94334483-d920213885f59abd9b181514e8ed0231",
-        "scores": {
-          "2026-11-01": {
-            "rank": 11,
-            "score": 1033,
-            "points": 0
           },
-          "2026-11-02": {
-            "rank": 5,
-            "score": 1240,
-            "points": 6
-          },
-          "2026-11-03": {
-            "rank": 2,
-            "score": 1207,
-            "points": 15
-          },
-          "2026-11-04": {
-            "rank": 13,
-            "score": 1720,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 3,
-            "score": 3301,
-            "points": 11
-          },
-          "2026-11-06": {
-            "rank": 15,
-            "score": 1167,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 4,
-            "score": 2713,
-            "points": 14
-          },
-          "2026-11-08": {
-            "rank": 4,
-            "score": 1261,
-            "points": 7
-          },
-          "2026-11-09": {
-            "rank": 3,
-            "score": 1986,
-            "points": 11
-          },
-          "2026-11-10": {
-            "rank": 4,
-            "score": 1576,
-            "points": 7
-          },
-          "2026-11-11": {
-            "rank": 3,
-            "score": 3746,
-            "points": 11
-          },
-          "2026-11-12": {
+          "2026-11-18": {
             "rank": 8,
-            "score": 1151,
+            "score": 2329,
             "points": 3
           },
-          "2026-11-13": {
+          "2026-11-19": {
             "rank": 4,
-            "score": 2974,
+            "score": 1746,
             "points": 7
-          },
-          "2026-11-14": {
-            "rank": 2,
-            "score": 1867,
-            "points": 30
-          },
-          "2026-11-15": {
-            "rank": 2,
-            "score": 2574,
-            "points": 15
-          },
-          "2026-11-16": {
-            "rank": 7,
-            "score": 1611,
-            "points": 4
           }
         },
-        "total": 141,
-        "totalScore": 31127
+        "total": 159,
+        "totalScore": 36838
       },
       {
         "playerId": "f5b76a1207cd52e580007eb2d7fcc6fa",
@@ -92205,10 +92251,20 @@
             "rank": 4,
             "score": 1611,
             "points": 7
+          },
+          "2026-11-18": {
+            "rank": 6,
+            "score": 2415,
+            "points": 5
+          },
+          "2026-11-19": {
+            "rank": 3,
+            "score": 1844,
+            "points": 11
           }
         },
-        "total": 92,
-        "totalScore": 28372
+        "total": 108,
+        "totalScore": 32631
       },
       {
         "playerId": "0f7455b7ea9925a9a50a2fa90060756d",
@@ -92294,10 +92350,20 @@
             "rank": 8,
             "score": 1400,
             "points": 3
+          },
+          "2026-11-18": {
+            "rank": 3,
+            "score": 2628,
+            "points": 11
+          },
+          "2026-11-19": {
+            "rank": 8,
+            "score": 1580,
+            "points": 3
           }
         },
-        "total": 70,
-        "totalScore": 28043
+        "total": 84,
+        "totalScore": 32251
       },
       {
         "playerId": "676c8b8d1048a9b6f7dbb24b8c80b30c",
@@ -92388,287 +92454,20 @@
             "rank": 6,
             "score": 1431,
             "points": 5
-          }
-        },
-        "total": 60,
-        "totalScore": 29468
-      },
-      {
-        "playerId": "2923a7c3990777f6e12bacee960e1d72",
-        "name": "Michelle Wong",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/63652594-2923a7c3990777f6e12bacee960e1d72",
-        "scores": {
-          "2026-11-01": {
-            "rank": 9,
-            "score": 1136,
-            "points": 2
           },
-          "2026-11-02": {
-            "rank": 7,
-            "score": 1182,
-            "points": 4
-          },
-          "2026-11-03": {
-            "rank": 5,
-            "score": 1036,
-            "points": 6
-          },
-          "2026-11-04": {
-            "rank": 6,
-            "score": 1912,
-            "points": 5
-          },
-          "2026-11-05": {
-            "rank": 8,
-            "score": 2861,
-            "points": 3
-          },
-          "2026-11-06": {
+          "2026-11-18": {
             "rank": 10,
-            "score": 1215,
+            "score": 2293,
             "points": 1
           },
-          "2026-11-07": {
-            "rank": 5,
-            "score": 2687,
-            "points": 12
-          },
-          "2026-11-08": {
-            "rank": 7,
-            "score": 1143,
-            "points": 4
-          },
-          "2026-11-09": {
-            "rank": 12,
-            "score": 1570,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 14,
-            "score": 1311,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 19,
-            "score": 2528,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 15,
-            "score": 954,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 13,
-            "score": 2414,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 6,
-            "score": 1782,
-            "points": 10
-          },
-          "2026-11-15": {
-            "rank": 14,
-            "score": 1867,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 6,
-            "score": 1663,
-            "points": 5
-          },
-          "2026-11-17": {
+          "2026-11-19": {
             "rank": 11,
-            "score": 1351,
+            "score": 1533,
             "points": 0
           }
         },
-        "total": 52,
-        "totalScore": 28612
-      },
-      {
-        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "name": "Michael Lim",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
-        "scores": {
-          "2026-11-01": {
-            "rank": 5,
-            "score": 1205,
-            "points": 6
-          },
-          "2026-11-02": {
-            "rank": 12,
-            "score": 968,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 9,
-            "score": 997,
-            "points": 2
-          },
-          "2026-11-04": {
-            "rank": 17,
-            "score": 1575,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 16,
-            "score": 2623,
-            "points": 0
-          },
-          "2026-11-06": {
-            "rank": 13,
-            "score": 1197,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 14,
-            "score": 1934,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 6,
-            "score": 1163,
-            "points": 5
-          },
-          "2026-11-09": {
-            "rank": 7,
-            "score": 1733,
-            "points": 4
-          },
-          "2026-11-10": {
-            "rank": 6,
-            "score": 1516,
-            "points": 5
-          },
-          "2026-11-11": {
-            "rank": 5,
-            "score": 3502,
-            "points": 6
-          },
-          "2026-11-12": {
-            "rank": 11,
-            "score": 1054,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 11,
-            "score": 2502,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 4,
-            "score": 1794,
-            "points": 14
-          },
-          "2026-11-15": {
-            "rank": 17,
-            "score": 1731,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 14,
-            "score": 1411,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 4,
-            "score": 1611,
-            "points": 7
-          }
-        },
-        "total": 49,
-        "totalScore": 28516
-      },
-      {
-        "playerId": "98610e86acb0a629da17f0993ec0fd50",
-        "name": "陳奕安",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
-        "scores": {
-          "2026-11-01": {
-            "rank": 8,
-            "score": 1139,
-            "points": 3
-          },
-          "2026-11-02": {
-            "rank": 15,
-            "score": 892,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 8,
-            "score": 1007,
-            "points": 3
-          },
-          "2026-11-04": {
-            "rank": 9,
-            "score": 1803,
-            "points": 2
-          },
-          "2026-11-05": {
-            "rank": 4,
-            "score": 3093,
-            "points": 7
-          },
-          "2026-11-06": {
-            "rank": 6,
-            "score": 1272,
-            "points": 5
-          },
-          "2026-11-07": {
-            "rank": 13,
-            "score": 2060,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 11,
-            "score": 1075,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 5,
-            "score": 1949,
-            "points": 6
-          },
-          "2026-11-10": {
-            "rank": 10,
-            "score": 1417,
-            "points": 1
-          },
-          "2026-11-11": {
-            "rank": 6,
-            "score": 3171,
-            "points": 5
-          },
-          "2026-11-12": {
-            "rank": 5,
-            "score": 1230,
-            "points": 6
-          },
-          "2026-11-13": {
-            "rank": 8,
-            "score": 2643,
-            "points": 3
-          },
-          "2026-11-15": {
-            "rank": 15,
-            "score": 1832,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 5,
-            "score": 1678,
-            "points": 6
-          },
-          "2026-11-17": {
-            "rank": 10,
-            "score": 1377,
-            "points": 1
-          }
-        },
-        "total": 48,
-        "totalScore": 27638
+        "total": 61,
+        "totalScore": 33294
       },
       {
         "playerId": "0bcd00972615fab8942206546aff4662",
@@ -92759,10 +92558,327 @@
             "rank": 18,
             "score": 1256,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 5,
+            "score": 2423,
+            "points": 6
+          },
+          "2026-11-19": {
+            "rank": 6,
+            "score": 1665,
+            "points": 5
           }
         },
-        "total": 48,
-        "totalScore": 27327
+        "total": 59,
+        "totalScore": 31415
+      },
+      {
+        "playerId": "2923a7c3990777f6e12bacee960e1d72",
+        "name": "Michelle Wong",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/63652594-2923a7c3990777f6e12bacee960e1d72",
+        "scores": {
+          "2026-11-01": {
+            "rank": 9,
+            "score": 1136,
+            "points": 2
+          },
+          "2026-11-02": {
+            "rank": 7,
+            "score": 1182,
+            "points": 4
+          },
+          "2026-11-03": {
+            "rank": 5,
+            "score": 1036,
+            "points": 6
+          },
+          "2026-11-04": {
+            "rank": 6,
+            "score": 1912,
+            "points": 5
+          },
+          "2026-11-05": {
+            "rank": 8,
+            "score": 2861,
+            "points": 3
+          },
+          "2026-11-06": {
+            "rank": 10,
+            "score": 1215,
+            "points": 1
+          },
+          "2026-11-07": {
+            "rank": 5,
+            "score": 2687,
+            "points": 12
+          },
+          "2026-11-08": {
+            "rank": 7,
+            "score": 1143,
+            "points": 4
+          },
+          "2026-11-09": {
+            "rank": 12,
+            "score": 1570,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 14,
+            "score": 1311,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 19,
+            "score": 2528,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 15,
+            "score": 954,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 13,
+            "score": 2414,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 6,
+            "score": 1782,
+            "points": 10
+          },
+          "2026-11-15": {
+            "rank": 14,
+            "score": 1867,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 6,
+            "score": 1663,
+            "points": 5
+          },
+          "2026-11-17": {
+            "rank": 11,
+            "score": 1351,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 11,
+            "score": 2202,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 12,
+            "score": 1512,
+            "points": 0
+          }
+        },
+        "total": 52,
+        "totalScore": 32326
+      },
+      {
+        "playerId": "98610e86acb0a629da17f0993ec0fd50",
+        "name": "陳奕安",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19924602-98610e86acb0a629da17f0993ec0fd50",
+        "scores": {
+          "2026-11-01": {
+            "rank": 8,
+            "score": 1139,
+            "points": 3
+          },
+          "2026-11-02": {
+            "rank": 15,
+            "score": 892,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 8,
+            "score": 1007,
+            "points": 3
+          },
+          "2026-11-04": {
+            "rank": 9,
+            "score": 1803,
+            "points": 2
+          },
+          "2026-11-05": {
+            "rank": 4,
+            "score": 3093,
+            "points": 7
+          },
+          "2026-11-06": {
+            "rank": 6,
+            "score": 1272,
+            "points": 5
+          },
+          "2026-11-07": {
+            "rank": 13,
+            "score": 2060,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 11,
+            "score": 1075,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 5,
+            "score": 1949,
+            "points": 6
+          },
+          "2026-11-10": {
+            "rank": 10,
+            "score": 1417,
+            "points": 1
+          },
+          "2026-11-11": {
+            "rank": 6,
+            "score": 3171,
+            "points": 5
+          },
+          "2026-11-12": {
+            "rank": 5,
+            "score": 1230,
+            "points": 6
+          },
+          "2026-11-13": {
+            "rank": 8,
+            "score": 2643,
+            "points": 3
+          },
+          "2026-11-15": {
+            "rank": 15,
+            "score": 1832,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 5,
+            "score": 1678,
+            "points": 6
+          },
+          "2026-11-17": {
+            "rank": 10,
+            "score": 1377,
+            "points": 1
+          },
+          "2026-11-18": {
+            "rank": 12,
+            "score": 2119,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 7,
+            "score": 1652,
+            "points": 4
+          }
+        },
+        "total": 52,
+        "totalScore": 31409
+      },
+      {
+        "playerId": "c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "name": "Michael Lim",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/116109165-c8e2e46a7e6e8394b1aa20ef5aef061a",
+        "scores": {
+          "2026-11-01": {
+            "rank": 5,
+            "score": 1205,
+            "points": 6
+          },
+          "2026-11-02": {
+            "rank": 12,
+            "score": 968,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 9,
+            "score": 997,
+            "points": 2
+          },
+          "2026-11-04": {
+            "rank": 17,
+            "score": 1575,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 16,
+            "score": 2623,
+            "points": 0
+          },
+          "2026-11-06": {
+            "rank": 13,
+            "score": 1197,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 14,
+            "score": 1934,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 6,
+            "score": 1163,
+            "points": 5
+          },
+          "2026-11-09": {
+            "rank": 7,
+            "score": 1733,
+            "points": 4
+          },
+          "2026-11-10": {
+            "rank": 6,
+            "score": 1516,
+            "points": 5
+          },
+          "2026-11-11": {
+            "rank": 5,
+            "score": 3502,
+            "points": 6
+          },
+          "2026-11-12": {
+            "rank": 11,
+            "score": 1054,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 11,
+            "score": 2502,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 4,
+            "score": 1794,
+            "points": 14
+          },
+          "2026-11-15": {
+            "rank": 18,
+            "score": 1731,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 14,
+            "score": 1411,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 4,
+            "score": 1611,
+            "points": 7
+          },
+          "2026-11-18": {
+            "rank": 14,
+            "score": 2064,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 10,
+            "score": 1557,
+            "points": 1
+          }
+        },
+        "total": 50,
+        "totalScore": 32137
       },
       {
         "playerId": "a0055187308a6831e6d914375d961273",
@@ -92931,10 +93047,119 @@
             "rank": 14,
             "score": 1322,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 15,
+            "score": 2052,
+            "points": 0
           }
         },
         "total": 21,
-        "totalScore": 25383
+        "totalScore": 27435
+      },
+      {
+        "playerId": "82d7d89cdfdc4bd0f359b894e998cf98",
+        "name": "Barry Smith",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/118842798-82d7d89cdfdc4bd0f359b894e998cf98",
+        "scores": {
+          "2026-11-01": {
+            "rank": 14,
+            "score": 1000,
+            "points": 0
+          },
+          "2026-11-02": {
+            "rank": 11,
+            "score": 1010,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 23,
+            "score": 764,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 14,
+            "score": 1708,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 26,
+            "score": 2342,
+            "points": 0
+          },
+          "2026-11-06": {
+            "rank": 12,
+            "score": 1199,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 16,
+            "score": 1886,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 19,
+            "score": 921,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 24,
+            "score": 1142,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 23,
+            "score": 1158,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 9,
+            "score": 3134,
+            "points": 2
+          },
+          "2026-11-12": {
+            "rank": 22,
+            "score": 867,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 18,
+            "score": 2151,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 17,
+            "score": 1222,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 7,
+            "score": 2133,
+            "points": 4
+          },
+          "2026-11-16": {
+            "rank": 10,
+            "score": 1505,
+            "points": 1
+          },
+          "2026-11-17": {
+            "rank": 17,
+            "score": 1289,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 7,
+            "score": 2337,
+            "points": 4
+          },
+          "2026-11-19": {
+            "rank": 14,
+            "score": 1484,
+            "points": 0
+          }
+        },
+        "total": 11,
+        "totalScore": 29252
       },
       {
         "playerId": "525364925f8a9aee6c56c03886cdb6d2",
@@ -93046,7 +93271,7 @@
             "points": 4
           },
           "2026-11-15": {
-            "rank": 23,
+            "rank": 25,
             "score": 1469,
             "points": 0
           },
@@ -93059,104 +93284,109 @@
             "rank": 13,
             "score": 1328,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 19,
+            "score": 1914,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 17,
+            "score": 1336,
+            "points": 0
           }
         },
         "total": 8,
-        "totalScore": 23865
+        "totalScore": 27115
       },
       {
-        "playerId": "82d7d89cdfdc4bd0f359b894e998cf98",
-        "name": "Barry Smith",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/118842798-82d7d89cdfdc4bd0f359b894e998cf98",
+        "playerId": "6db5d348a7fe7079e871fd8af0c91347",
+        "name": "Chris Chan",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/35664395-6db5d348a7fe7079e871fd8af0c91347",
         "scores": {
           "2026-11-01": {
-            "rank": 14,
-            "score": 1000,
-            "points": 0
-          },
-          "2026-11-02": {
-            "rank": 11,
-            "score": 1010,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 23,
-            "score": 764,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 14,
-            "score": 1708,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 26,
-            "score": 2342,
-            "points": 0
-          },
-          "2026-11-06": {
-            "rank": 12,
-            "score": 1199,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 16,
-            "score": 1886,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 19,
+            "rank": 15,
             "score": 921,
             "points": 0
           },
-          "2026-11-09": {
-            "rank": 24,
-            "score": 1142,
+          "2026-11-03": {
+            "rank": 10,
+            "score": 966,
+            "points": 1
+          },
+          "2026-11-04": {
+            "rank": 11,
+            "score": 1734,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 23,
+            "score": 2400,
+            "points": 0
+          },
+          "2026-11-06": {
+            "rank": 17,
+            "score": 1159,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 11,
+            "score": 2086,
             "points": 0
           },
           "2026-11-10": {
-            "rank": 23,
-            "score": 1158,
+            "rank": 15,
+            "score": 1275,
             "points": 0
           },
           "2026-11-11": {
-            "rank": 9,
-            "score": 3134,
-            "points": 2
+            "rank": 20,
+            "score": 2516,
+            "points": 0
           },
           "2026-11-12": {
-            "rank": 22,
-            "score": 867,
+            "rank": 14,
+            "score": 983,
             "points": 0
           },
           "2026-11-13": {
-            "rank": 18,
-            "score": 2151,
-            "points": 0
+            "rank": 10,
+            "score": 2531,
+            "points": 1
           },
           "2026-11-14": {
-            "rank": 17,
-            "score": 1222,
+            "rank": 11,
+            "score": 1439,
             "points": 0
           },
           "2026-11-15": {
-            "rank": 7,
-            "score": 2133,
-            "points": 4
+            "rank": 13,
+            "score": 1871,
+            "points": 0
           },
           "2026-11-16": {
-            "rank": 10,
-            "score": 1505,
-            "points": 1
+            "rank": 12,
+            "score": 1492,
+            "points": 0
           },
           "2026-11-17": {
-            "rank": 17,
-            "score": 1289,
+            "rank": 24,
+            "score": 1128,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 9,
+            "score": 2303,
+            "points": 2
+          },
+          "2026-11-19": {
+            "rank": 9,
+            "score": 1566,
+            "points": 2
           }
         },
-        "total": 7,
-        "totalScore": 25431
+        "total": 6,
+        "totalScore": 26370
       },
       {
         "playerId": "fa4f087878c6b4623e74821656f628c5",
@@ -93224,12 +93454,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 19,
+            "rank": 20,
             "score": 1703,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 28,
+            "rank": 30,
             "score": 952,
             "points": 0
           },
@@ -93237,10 +93467,15 @@
             "rank": 7,
             "score": 1404,
             "points": 4
+          },
+          "2026-11-18": {
+            "rank": 18,
+            "score": 1961,
+            "points": 0
           }
         },
         "total": 4,
-        "totalScore": 17679
+        "totalScore": 19640
       },
       {
         "playerId": "630645abeeda490b1745d81ca6fa7850",
@@ -93326,89 +93561,20 @@
             "rank": 23,
             "score": 1144,
             "points": 0
-          }
-        },
-        "total": 2,
-        "totalScore": 23200
-      },
-      {
-        "playerId": "6db5d348a7fe7079e871fd8af0c91347",
-        "name": "Chris Chan",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/35664395-6db5d348a7fe7079e871fd8af0c91347",
-        "scores": {
-          "2026-11-01": {
-            "rank": 15,
-            "score": 921,
+          },
+          "2026-11-18": {
+            "rank": 26,
+            "score": 1629,
             "points": 0
           },
-          "2026-11-03": {
-            "rank": 10,
-            "score": 966,
-            "points": 1
-          },
-          "2026-11-04": {
-            "rank": 11,
-            "score": 1734,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 23,
-            "score": 2400,
-            "points": 0
-          },
-          "2026-11-06": {
-            "rank": 17,
-            "score": 1159,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 11,
-            "score": 2086,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 15,
-            "score": 1275,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 20,
-            "score": 2516,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 14,
-            "score": 983,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 10,
-            "score": 2531,
-            "points": 1
-          },
-          "2026-11-14": {
-            "rank": 11,
-            "score": 1439,
-            "points": 0
-          },
-          "2026-11-15": {
-            "rank": 13,
-            "score": 1871,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 12,
-            "score": 1492,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 24,
-            "score": 1128,
+          "2026-11-19": {
+            "rank": 16,
+            "score": 1464,
             "points": 0
           }
         },
         "total": 2,
-        "totalScore": 22501
+        "totalScore": 26293
       },
       {
         "playerId": "5c503177549b22f55503ea69a5c77908",
@@ -93470,14 +93636,34 @@
             "score": 1321,
             "points": 0
           },
+          "2026-11-15": {
+            "rank": 16,
+            "score": 1818,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 22,
+            "score": 1107,
+            "points": 0
+          },
           "2026-11-17": {
             "rank": 9,
             "score": 1379,
             "points": 2
+          },
+          "2026-11-18": {
+            "rank": 30,
+            "score": 1542,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 11,
+            "score": 1533,
+            "points": 0
           }
         },
         "total": 2,
-        "totalScore": 17341
+        "totalScore": 23341
       },
       {
         "playerId": "5df0880cd272cf42f773100b2182e09e",
@@ -93535,7 +93721,7 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 16,
+            "rank": 17,
             "score": 1807,
             "points": 0
           },
@@ -93543,104 +93729,15 @@
             "rank": 15,
             "score": 1320,
             "points": 0
+          },
+          "2026-11-19": {
+            "rank": 20,
+            "score": 1222,
+            "points": 0
           }
         },
         "total": 1,
-        "totalScore": 17985
-      },
-      {
-        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
-        "name": "Winston Robert",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
-        "scores": {
-          "2026-11-01": {
-            "rank": 35,
-            "score": 734,
-            "points": 0
-          },
-          "2026-11-02": {
-            "rank": 24,
-            "score": 775,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 29,
-            "score": 694,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 21,
-            "score": 1362,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 31,
-            "score": 2223,
-            "points": 0
-          },
-          "2026-11-06": {
-            "rank": 27,
-            "score": 897,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 25,
-            "score": 1460,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 23,
-            "score": 843,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 25,
-            "score": 1123,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 28,
-            "score": 982,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 26,
-            "score": 2231,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 24,
-            "score": 835,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 21,
-            "score": 2013,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 22,
-            "score": 1002,
-            "points": 0
-          },
-          "2026-11-15": {
-            "rank": 25,
-            "score": 1439,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 23,
-            "score": 1067,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 26,
-            "score": 1088,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 20768
+        "totalScore": 19207
       },
       {
         "playerId": "f4e0a39a3dad42ccd54bbe7b9fba1488",
@@ -93721,10 +93818,124 @@
             "rank": 16,
             "score": 1292,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 20,
+            "score": 1817,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 28,
+            "score": 1052,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 20618
+        "totalScore": 23487
+      },
+      {
+        "playerId": "c2e13ee4a1e81c34023a97599eff2e70",
+        "name": "Winston Robert",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/54071099-c2e13ee4a1e81c34023a97599eff2e70",
+        "scores": {
+          "2026-11-01": {
+            "rank": 35,
+            "score": 734,
+            "points": 0
+          },
+          "2026-11-02": {
+            "rank": 24,
+            "score": 775,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 29,
+            "score": 694,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 21,
+            "score": 1362,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 31,
+            "score": 2223,
+            "points": 0
+          },
+          "2026-11-06": {
+            "rank": 27,
+            "score": 897,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 25,
+            "score": 1460,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 23,
+            "score": 843,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 25,
+            "score": 1123,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 28,
+            "score": 982,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 26,
+            "score": 2231,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 24,
+            "score": 835,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 21,
+            "score": 2013,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 22,
+            "score": 1002,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 27,
+            "score": 1439,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 25,
+            "score": 1067,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 26,
+            "score": 1088,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 31,
+            "score": 1519,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 24,
+            "score": 1148,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 23435
       },
       {
         "playerId": "824f5426a0957ecb26741b1c7a713662",
@@ -93802,12 +94013,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 26,
+            "rank": 28,
             "score": 1415,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 29,
+            "rank": 31,
             "score": 929,
             "points": 0
           },
@@ -93815,10 +94026,20 @@
             "rank": 21,
             "score": 1158,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 29,
+            "score": 1562,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 23,
+            "score": 1170,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 20488
+        "totalScore": 23220
       },
       {
         "playerId": "e5d324b4eca1b03fc70c44746de537a7",
@@ -93886,7 +94107,7 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 32,
+            "rank": 36,
             "score": 1125,
             "points": 0
           },
@@ -93899,10 +94120,109 @@
             "rank": 25,
             "score": 1123,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 25,
+            "score": 1642,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 19,
+            "score": 1241,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 19818
+        "totalScore": 22701
+      },
+      {
+        "playerId": "800eca46a100354927f4d80b577a8f0e",
+        "name": "Kaleb Steele",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19940464-800eca46a100354927f4d80b577a8f0e",
+        "scores": {
+          "2026-11-01": {
+            "rank": 27,
+            "score": 804,
+            "points": 0
+          },
+          "2026-11-02": {
+            "rank": 21,
+            "score": 821,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 24,
+            "score": 741,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 24,
+            "score": 1306,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 21,
+            "score": 2530,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 21,
+            "score": 1613,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 33,
+            "score": 754,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 28,
+            "score": 991,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 29,
+            "score": 976,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 21,
+            "score": 2457,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 14,
+            "score": 2288,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 19,
+            "score": 1722,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 21,
+            "score": 1128,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 12,
+            "score": 1329,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 16,
+            "score": 1983,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 18,
+            "score": 1255,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 22698
       },
       {
         "playerId": "f2cf7eb43583e04a62054c79299839aa",
@@ -93975,7 +94295,7 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 21,
+            "rank": 22,
             "score": 1590,
             "points": 0
           },
@@ -93988,89 +94308,20 @@
             "rank": 22,
             "score": 1145,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 19814
-      },
-      {
-        "playerId": "800eca46a100354927f4d80b577a8f0e",
-        "name": "Kaleb Steele",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19940464-800eca46a100354927f4d80b577a8f0e",
-        "scores": {
-          "2026-11-01": {
-            "rank": 27,
-            "score": 804,
-            "points": 0
           },
-          "2026-11-02": {
+          "2026-11-18": {
             "rank": 21,
-            "score": 821,
+            "score": 1773,
             "points": 0
           },
-          "2026-11-03": {
-            "rank": 24,
-            "score": 741,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 24,
-            "score": 1306,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 21,
-            "score": 2530,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 21,
-            "score": 1613,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 33,
-            "score": 754,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 28,
-            "score": 991,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 29,
-            "score": 976,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 21,
-            "score": 2457,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 14,
-            "score": 2288,
-            "points": 0
-          },
-          "2026-11-15": {
-            "rank": 18,
-            "score": 1722,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 20,
-            "score": 1128,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 12,
-            "score": 1329,
+          "2026-11-19": {
+            "rank": 32,
+            "score": 985,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 19460
+        "totalScore": 22572
       },
       {
         "playerId": "e455e647ad1de9774a8d728de7dd8c2c",
@@ -94148,12 +94399,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 22,
+            "rank": 23,
             "score": 1586,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 26,
+            "rank": 28,
             "score": 981,
             "points": 0
           },
@@ -94161,10 +94412,20 @@
             "rank": 28,
             "score": 936,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 22,
+            "score": 1726,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 30,
+            "score": 1000,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 19291
+        "totalScore": 22017
       },
       {
         "playerId": "91c00e853e43dadbd6a5fedf16181d7c",
@@ -94242,12 +94503,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 34,
+            "rank": 38,
             "score": 856,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 30,
+            "rank": 32,
             "score": 912,
             "points": 0
           },
@@ -94255,10 +94516,20 @@
             "rank": 30,
             "score": 904,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 23,
+            "score": 1711,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 34,
+            "score": 931,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 17546
+        "totalScore": 20188
       },
       {
         "playerId": "6c7c3649b1dbfe3c89438b138986d789",
@@ -94316,12 +94587,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 30,
+            "rank": 32,
             "score": 1248,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 27,
+            "rank": 29,
             "score": 977,
             "points": 0
           },
@@ -94329,10 +94600,20 @@
             "rank": 33,
             "score": 864,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 33,
+            "score": 1424,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 25,
+            "score": 1131,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 17156
+        "totalScore": 19711
       },
       {
         "playerId": "72fa75a07f88a9fd77ee2af82e33efd3",
@@ -94400,12 +94681,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 20,
+            "rank": 21,
             "score": 1601,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 19,
+            "rank": 20,
             "score": 1135,
             "points": 0
           },
@@ -94413,10 +94694,20 @@
             "rank": 32,
             "score": 865,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 39,
+            "score": 1298,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 22,
+            "score": 1186,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 16679
+        "totalScore": 19163
       },
       {
         "playerId": "801b2f89bbbc2722fc9a1c772736caee",
@@ -94479,12 +94770,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 27,
+            "rank": 29,
             "score": 1360,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 21,
+            "rank": 23,
             "score": 1106,
             "points": 0
           },
@@ -94492,10 +94783,356 @@
             "rank": 29,
             "score": 917,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 17,
+            "score": 1977,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 26,
+            "score": 1111,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 15790
+        "totalScore": 18878
+      },
+      {
+        "playerId": "c2fb2c86593c815948595ed295b441e0",
+        "name": "Todd Otto",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/73578417-c2fb2c86593c815948595ed295b441e0",
+        "scores": {
+          "2026-11-01": {
+            "rank": 17,
+            "score": 900,
+            "points": 0
+          },
+          "2026-11-02": {
+            "rank": 28,
+            "score": 690,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 13,
+            "score": 906,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 28,
+            "score": 1198,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 29,
+            "score": 789,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 22,
+            "score": 1214,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 27,
+            "score": 1011,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 25,
+            "score": 2252,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 20,
+            "score": 903,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 29,
+            "score": 1703,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 24,
+            "score": 1561,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 19,
+            "score": 1154,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 27,
+            "score": 1009,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 24,
+            "score": 1693,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 21,
+            "score": 1204,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 18187
+      },
+      {
+        "playerId": "edc4cd3d70a7aa2b117f386b8b30aa1c",
+        "name": "Lisa Anns",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/67488182-edc4cd3d70a7aa2b117f386b8b30aa1c",
+        "scores": {
+          "2026-11-01": {
+            "rank": 38,
+            "score": 710,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 35,
+            "score": 1077,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 37,
+            "score": 1923,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 38,
+            "score": 656,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 32,
+            "score": 930,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 34,
+            "score": 921,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 30,
+            "score": 2116,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 35,
+            "score": 573,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 38,
+            "score": 1295,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 20,
+            "score": 1180,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 33,
+            "score": 1188,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 35,
+            "score": 813,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 20,
+            "score": 1183,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 37,
+            "score": 1372,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 27,
+            "score": 1066,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 17003
+      },
+      {
+        "playerId": "8683ba6fafa38e7c88016fb31d717fac",
+        "name": "Kelly John",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/105433399-8683ba6fafa38e7c88016fb31d717fac",
+        "scores": {
+          "2026-11-02": {
+            "rank": 30,
+            "score": 686,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 35,
+            "score": 623,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 34,
+            "score": 1079,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 38,
+            "score": 1820,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 35,
+            "score": 726,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 29,
+            "score": 973,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 37,
+            "score": 798,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 37,
+            "score": 1815,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 32,
+            "score": 625,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 34,
+            "score": 1529,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 18,
+            "score": 1215,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 27,
+            "score": 1439,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 37,
+            "score": 727,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 34,
+            "score": 844,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 35,
+            "score": 1394,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 16293
+      },
+      {
+        "playerId": "eb5e54a7a10dd032d4ade0133fe8d161",
+        "name": "Barbara Jordan",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/64029402-eb5e54a7a10dd032d4ade0133fe8d161",
+        "scores": {
+          "2026-11-01": {
+            "rank": 32,
+            "score": 763,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 26,
+            "score": 719,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 36,
+            "score": 1042,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 39,
+            "score": 1718,
+            "points": 0
+          },
+          "2026-11-07": {
+            "rank": 26,
+            "score": 1457,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 30,
+            "score": 942,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 42,
+            "score": 144,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 36,
+            "score": 1824,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 37,
+            "score": 467,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 28,
+            "score": 1744,
+            "points": 0
+          },
+          "2026-11-14": {
+            "rank": 23,
+            "score": 973,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 34,
+            "score": 1187,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 36,
+            "score": 734,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 32,
+            "score": 1471,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 37,
+            "score": 849,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 16034
       },
       {
         "playerId": "e8ffa03a10e89c810df0cac46c40d4a9",
@@ -94568,12 +95205,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 28,
+            "rank": 30,
             "score": 1358,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 32,
+            "rank": 34,
             "score": 882,
             "points": 0
           },
@@ -94581,84 +95218,15 @@
             "rank": 31,
             "score": 901,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 14093
-      },
-      {
-        "playerId": "eb5e54a7a10dd032d4ade0133fe8d161",
-        "name": "Barbara Jordan",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/64029402-eb5e54a7a10dd032d4ade0133fe8d161",
-        "scores": {
-          "2026-11-01": {
-            "rank": 32,
-            "score": 763,
-            "points": 0
           },
-          "2026-11-03": {
-            "rank": 26,
-            "score": 719,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 36,
-            "score": 1042,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 39,
-            "score": 1718,
-            "points": 0
-          },
-          "2026-11-07": {
-            "rank": 26,
-            "score": 1457,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 30,
-            "score": 942,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 42,
-            "score": 144,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 36,
-            "score": 1824,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 37,
-            "score": 467,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 28,
-            "score": 1744,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 23,
-            "score": 973,
-            "points": 0
-          },
-          "2026-11-15": {
-            "rank": 31,
-            "score": 1187,
-            "points": 0
-          },
-          "2026-11-16": {
-            "rank": 33,
-            "score": 734,
+          "2026-11-18": {
+            "rank": 38,
+            "score": 1363,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 13714
+        "totalScore": 15456
       },
       {
         "playerId": "5d8dc7a4eb1cbd9cd99ec2fd8c57f759",
@@ -94724,207 +95292,15 @@
             "rank": 30,
             "score": 904,
             "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 13131
-      },
-      {
-        "playerId": "8683ba6fafa38e7c88016fb31d717fac",
-        "name": "Kelly John",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/105433399-8683ba6fafa38e7c88016fb31d717fac",
-        "scores": {
-          "2026-11-02": {
-            "rank": 30,
-            "score": 686,
-            "points": 0
           },
-          "2026-11-03": {
-            "rank": 35,
-            "score": 623,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 34,
-            "score": 1079,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 38,
-            "score": 1820,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 35,
-            "score": 726,
-            "points": 0
-          },
-          "2026-11-09": {
+          "2026-11-19": {
             "rank": 29,
-            "score": 973,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 37,
-            "score": 798,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 37,
-            "score": 1815,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 32,
-            "score": 625,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 34,
-            "score": 1529,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 18,
-            "score": 1215,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 34,
-            "score": 844,
+            "score": 1027,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 12733
-      },
-      {
-        "playerId": "c2fb2c86593c815948595ed295b441e0",
-        "name": "Todd Otto",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/73578417-c2fb2c86593c815948595ed295b441e0",
-        "scores": {
-          "2026-11-01": {
-            "rank": 17,
-            "score": 900,
-            "points": 0
-          },
-          "2026-11-02": {
-            "rank": 28,
-            "score": 690,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 13,
-            "score": 906,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 28,
-            "score": 1198,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 29,
-            "score": 789,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 22,
-            "score": 1214,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 27,
-            "score": 1011,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 25,
-            "score": 2252,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 20,
-            "score": 903,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 29,
-            "score": 1703,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 27,
-            "score": 1009,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 12575
-      },
-      {
-        "playerId": "edc4cd3d70a7aa2b117f386b8b30aa1c",
-        "name": "Lisa Anns",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/67488182-edc4cd3d70a7aa2b117f386b8b30aa1c",
-        "scores": {
-          "2026-11-01": {
-            "rank": 38,
-            "score": 710,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 35,
-            "score": 1077,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 37,
-            "score": 1923,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 38,
-            "score": 656,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 32,
-            "score": 930,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 34,
-            "score": 921,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 30,
-            "score": 2116,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 35,
-            "score": 573,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 38,
-            "score": 1295,
-            "points": 0
-          },
-          "2026-11-14": {
-            "rank": 20,
-            "score": 1180,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 20,
-            "score": 1183,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 12564
+        "totalScore": 14158
       },
       {
         "playerId": "2b62dce6836b6ea135f9ec8c621fa807",
@@ -94972,12 +95348,12 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 29,
+            "rank": 31,
             "score": 1290,
             "points": 0
           },
           "2026-11-16": {
-            "rank": 31,
+            "rank": 33,
             "score": 896,
             "points": 0
           },
@@ -94985,10 +95361,79 @@
             "rank": 36,
             "score": 762,
             "points": 0
+          },
+          "2026-11-18": {
+            "rank": 27,
+            "score": 1614,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 38,
+            "score": 760,
+            "points": 0
           }
         },
         "total": 0,
-        "totalScore": 11077
+        "totalScore": 13451
+      },
+      {
+        "playerId": "b0f6d84ebda898825703576571519899",
+        "name": "Shikari Muvangua-Karuaihe",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/50546747-b0f6d84ebda898825703576571519899",
+        "scores": {
+          "2026-11-01": {
+            "rank": 19,
+            "score": 884,
+            "points": 0
+          },
+          "2026-11-03": {
+            "rank": 20,
+            "score": 813,
+            "points": 0
+          },
+          "2026-11-05": {
+            "rank": 13,
+            "score": 2717,
+            "points": 0
+          },
+          "2026-11-08": {
+            "rank": 20,
+            "score": 911,
+            "points": 0
+          },
+          "2026-11-09": {
+            "rank": 36,
+            "score": 816,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 35,
+            "score": 890,
+            "points": 0
+          },
+          "2026-11-11": {
+            "rank": 35,
+            "score": 1882,
+            "points": 0
+          },
+          "2026-11-12": {
+            "rank": 19,
+            "score": 926,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 28,
+            "score": 1571,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 15,
+            "score": 1467,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 12877
       },
       {
         "playerId": "b0a560a0d1c794ed435fa0eb72e4c085",
@@ -95041,62 +95486,107 @@
             "points": 0
           },
           "2026-11-16": {
-            "rank": 34,
+            "rank": 38,
             "score": 695,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 34,
+            "score": 1411,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 36,
+            "score": 890,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 10099
+        "totalScore": 12400
       },
       {
-        "playerId": "b0f6d84ebda898825703576571519899",
-        "name": "Shikari Muvangua-Karuaihe",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/50546747-b0f6d84ebda898825703576571519899",
+        "playerId": "af7ce3333c4c8229676bf7ef0dd32a8e",
+        "name": "Bonnie Johnston",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/117587695-af7ce3333c4c8229676bf7ef0dd32a8e",
         "scores": {
-          "2026-11-01": {
-            "rank": 19,
-            "score": 884,
+          "2026-11-02": {
+            "rank": 37,
+            "score": 294,
             "points": 0
           },
           "2026-11-03": {
-            "rank": 20,
-            "score": 813,
+            "rank": 42,
+            "score": 352,
+            "points": 0
+          },
+          "2026-11-04": {
+            "rank": 41,
+            "score": 576,
             "points": 0
           },
           "2026-11-05": {
-            "rank": 13,
-            "score": 2717,
+            "rank": 42,
+            "score": 1231,
             "points": 0
           },
           "2026-11-08": {
-            "rank": 20,
-            "score": 911,
+            "rank": 44,
+            "score": 295,
             "points": 0
           },
           "2026-11-09": {
-            "rank": 36,
-            "score": 816,
+            "rank": 39,
+            "score": 487,
             "points": 0
           },
           "2026-11-10": {
-            "rank": 35,
-            "score": 890,
+            "rank": 40,
+            "score": 505,
             "points": 0
           },
           "2026-11-11": {
-            "rank": 35,
-            "score": 1882,
+            "rank": 45,
+            "score": 717,
             "points": 0
           },
           "2026-11-12": {
-            "rank": 19,
-            "score": 926,
+            "rank": 38,
+            "score": 380,
+            "points": 0
+          },
+          "2026-11-13": {
+            "rank": 41,
+            "score": 1053,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 40,
+            "score": 599,
+            "points": 0
+          },
+          "2026-11-16": {
+            "rank": 40,
+            "score": 362,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 39,
+            "score": 506,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 41,
+            "score": 854,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 39,
+            "score": 482,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 9839
+        "totalScore": 8693
       },
       {
         "playerId": "092d0a8a0d1176ae891def5606e993c1",
@@ -95183,77 +95673,13 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 35,
+            "rank": 39,
             "score": 828,
             "points": 0
           }
         },
         "total": 0,
         "totalScore": 6445
-      },
-      {
-        "playerId": "af7ce3333c4c8229676bf7ef0dd32a8e",
-        "name": "Bonnie Johnston",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/117587695-af7ce3333c4c8229676bf7ef0dd32a8e",
-        "scores": {
-          "2026-11-02": {
-            "rank": 37,
-            "score": 294,
-            "points": 0
-          },
-          "2026-11-03": {
-            "rank": 42,
-            "score": 352,
-            "points": 0
-          },
-          "2026-11-04": {
-            "rank": 41,
-            "score": 576,
-            "points": 0
-          },
-          "2026-11-05": {
-            "rank": 42,
-            "score": 1231,
-            "points": 0
-          },
-          "2026-11-08": {
-            "rank": 44,
-            "score": 295,
-            "points": 0
-          },
-          "2026-11-09": {
-            "rank": 39,
-            "score": 487,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 40,
-            "score": 505,
-            "points": 0
-          },
-          "2026-11-11": {
-            "rank": 45,
-            "score": 717,
-            "points": 0
-          },
-          "2026-11-12": {
-            "rank": 38,
-            "score": 380,
-            "points": 0
-          },
-          "2026-11-13": {
-            "rank": 41,
-            "score": 1053,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 39,
-            "score": 506,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 6396
       },
       {
         "playerId": "fdaa2e4e18937706b6ed39b8f806cb86",
@@ -95333,6 +95759,35 @@
         "totalScore": 5152
       },
       {
+        "playerId": "647e8c20fea4d1577b88d3316f85c5a0",
+        "name": "Dan Swanek",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19134989-647e8c20fea4d1577b88d3316f85c5a0",
+        "scores": {
+          "2026-11-13": {
+            "rank": 39,
+            "score": 1218,
+            "points": 0
+          },
+          "2026-11-17": {
+            "rank": 35,
+            "score": 832,
+            "points": 0
+          },
+          "2026-11-18": {
+            "rank": 40,
+            "score": 1253,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 35,
+            "score": 918,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 4221
+      },
+      {
         "playerId": "9afda31748c57483a1da09d9cc0bd01e",
         "name": "Nera M Ak",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/20723020-9afda31748c57483a1da09d9cc0bd01e",
@@ -95387,13 +95842,42 @@
             "points": 0
           },
           "2026-11-16": {
-            "rank": 25,
+            "rank": 27,
             "score": 997,
             "points": 0
           }
         },
         "total": 0,
         "totalScore": 3878
+      },
+      {
+        "playerId": "4e959007fc0b3837482c69596ac2e227",
+        "name": "Emma Drysdale",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/47862587-4e959007fc0b3837482c69596ac2e227",
+        "scores": {
+          "2026-11-02": {
+            "rank": 34,
+            "score": 630,
+            "points": 0
+          },
+          "2026-11-10": {
+            "rank": 31,
+            "score": 953,
+            "points": 0
+          },
+          "2026-11-15": {
+            "rank": 35,
+            "score": 1142,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 33,
+            "score": 969,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 3694
       },
       {
         "playerId": "bff40345e4f34845181b5b7da29be234",
@@ -95411,7 +95895,7 @@
             "points": 0
           },
           "2026-11-15": {
-            "rank": 33,
+            "rank": 37,
             "score": 1029,
             "points": 0
           }
@@ -95434,56 +95918,37 @@
         "totalScore": 2845
       },
       {
-        "playerId": "647e8c20fea4d1577b88d3316f85c5a0",
-        "name": "Dan Swanek",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/19134989-647e8c20fea4d1577b88d3316f85c5a0",
-        "scores": {
-          "2026-11-13": {
-            "rank": 39,
-            "score": 1218,
-            "points": 0
-          },
-          "2026-11-17": {
-            "rank": 35,
-            "score": 832,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 2050
-      },
-      {
-        "playerId": "4e959007fc0b3837482c69596ac2e227",
-        "name": "Emma Drysdale",
-        "avatar": "https://storage.googleapis.com/wbuserimages/prod/47862587-4e959007fc0b3837482c69596ac2e227",
-        "scores": {
-          "2026-11-02": {
-            "rank": 34,
-            "score": 630,
-            "points": 0
-          },
-          "2026-11-10": {
-            "rank": 31,
-            "score": 953,
-            "points": 0
-          }
-        },
-        "total": 0,
-        "totalScore": 1583
-      },
-      {
         "playerId": "bd2ee11f97b8f2a8d028f695d790c2aa",
         "name": "Brandon McPherson",
         "avatar": "https://storage.googleapis.com/wbuserimages/prod/37491434-bd2ee11f97b8f2a8d028f695d790c2aa",
         "scores": {
           "2026-11-16": {
-            "rank": 22,
+            "rank": 24,
             "score": 1092,
+            "points": 0
+          },
+          "2026-11-19": {
+            "rank": 31,
+            "score": 999,
             "points": 0
           }
         },
         "total": 0,
-        "totalScore": 1092
+        "totalScore": 2091
+      },
+      {
+        "playerId": "e77ed6831e1122b6cab87ce1d42c2d26",
+        "name": "Yannis Karpasea",
+        "avatar": "https://storage.googleapis.com/wbuserimages/prod/103862274-e77ed6831e1122b6cab87ce1d42c2d26",
+        "scores": {
+          "2026-11-18": {
+            "rank": 36,
+            "score": 1384,
+            "points": 0
+          }
+        },
+        "total": 0,
+        "totalScore": 1384
       }
     ]
   }
